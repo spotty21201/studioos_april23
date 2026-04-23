@@ -1,0 +1,142 @@
+import Link from "next/link";
+import { Landmark, WalletCards, Waypoints } from "lucide-react";
+import { MetricCard } from "@/components/ui/metric-card";
+import { PageHeader } from "@/components/ui/page-header";
+import { SectionPanel } from "@/components/ui/section-panel";
+import { StatusBadge } from "@/components/ui/status-badge";
+import { formatCurrencyIdr, formatShortDate } from "@/lib/format";
+import { getFinancePageData } from "@/lib/studio-data";
+
+export default async function FinancePage() {
+  const overview = await getFinancePageData();
+
+  return (
+    <div className="space-y-8">
+      <PageHeader
+        eyebrow="Operational Finance"
+        title="Finance"
+        description="Cross-project visibility into receivables, payables, and tax exposure. V1 stays focused on oversight rather than ledger behavior."
+      />
+
+      <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <MetricCard
+          label="Contract Value"
+          value={formatCurrencyIdr(overview.summary.contractValue.amount, {
+            compact: true,
+          })}
+          supportingText="Current project contract total"
+          icon={Waypoints}
+        />
+        <MetricCard
+          label="Invoiced"
+          value={formatCurrencyIdr(overview.summary.totalInvoiced.amount, {
+            compact: true,
+          })}
+          supportingText="Total client billing issued"
+          icon={Landmark}
+          tone="accent"
+        />
+        <MetricCard
+          label="Outstanding Receivable"
+          value={formatCurrencyIdr(overview.summary.outstandingReceivable.amount, {
+            compact: true,
+          })}
+          supportingText="Open client invoices"
+          icon={Landmark}
+          tone="critical"
+        />
+        <MetricCard
+          label="Outstanding Payable"
+          value={formatCurrencyIdr(overview.summary.outstandingPayable.amount, {
+            compact: true,
+          })}
+          supportingText={formatCurrencyIdr(overview.summary.unpaidTax.amount, {
+            compact: true,
+          })}
+          icon={WalletCards}
+          tone="warning"
+          footer={
+            <div className="text-xs uppercase tracking-[0.12em] text-text-secondary">
+              Unpaid tax {formatCurrencyIdr(overview.summary.unpaidTax.amount)}
+            </div>
+          }
+        />
+      </section>
+
+      <section className="grid gap-6 xl:grid-cols-2">
+        <SectionPanel title="Overdue Invoices" description="Receivables needing follow-up.">
+          <div className="space-y-3">
+            {overview.overdueInvoices.map((invoice) => (
+              <Link
+                key={invoice.id}
+                href={`/projects/${invoice.projectId}`}
+                className="flex items-start justify-between gap-4 rounded-[20px] border border-border/80 bg-white/70 px-4 py-4 hover:border-border-strong"
+              >
+                <div className="space-y-1">
+                  <p className="text-sm font-semibold text-text-primary">
+                    {invoice.invoiceNumber} / {invoice.title}
+                  </p>
+                  <p className="text-sm text-text-secondary">
+                    {invoice.projectCode} / {invoice.projectName}
+                  </p>
+                  <p className="text-sm text-text-secondary">{invoice.clientName}</p>
+                </div>
+                <div className="space-y-2 text-right">
+                  <StatusBadge value={invoice.status} />
+                  <p className="text-sm font-semibold text-text-primary">
+                    {formatCurrencyIdr(invoice.invoiceAmount.amount)}
+                  </p>
+                  <p className="text-xs uppercase tracking-[0.14em] text-text-tertiary">
+                    Due {invoice.dueDate ? formatShortDate(invoice.dueDate) : "TBD"}
+                  </p>
+                </div>
+              </Link>
+            ))}
+            {overview.overdueInvoices.length === 0 ? (
+              <div className="rounded-[20px] border border-border/80 bg-white/75 px-4 py-4 text-sm text-text-secondary">
+                No overdue invoices are currently exposed by the backend data.
+              </div>
+            ) : null}
+          </div>
+        </SectionPanel>
+
+        <SectionPanel
+          title="Open Vendor Obligations"
+          description="Payables tracked by project and vendor."
+        >
+          <div className="space-y-3">
+            {overview.unpaidVendorObligations.map((item) => (
+              <Link
+                key={item.id}
+                href={`/projects/${item.projectId}`}
+                className="flex items-start justify-between gap-4 rounded-[20px] border border-border/80 bg-white/70 px-4 py-4 hover:border-border-strong"
+              >
+                <div className="space-y-1">
+                  <p className="text-sm font-semibold text-text-primary">{item.title}</p>
+                  <p className="text-sm text-text-secondary">
+                    {item.projectCode} / {item.projectName}
+                  </p>
+                  <p className="text-sm text-text-secondary">{item.vendorName}</p>
+                </div>
+                <div className="space-y-2 text-right">
+                  <StatusBadge value={item.status} />
+                  <p className="text-sm font-semibold text-text-primary">
+                    {formatCurrencyIdr(item.amount.amount)}
+                  </p>
+                  <p className="text-xs uppercase tracking-[0.14em] text-text-tertiary">
+                    Due {item.dueDate ? formatShortDate(item.dueDate) : "TBD"}
+                  </p>
+                </div>
+              </Link>
+            ))}
+            {overview.unpaidVendorObligations.length === 0 ? (
+              <div className="rounded-[20px] border border-border/80 bg-white/75 px-4 py-4 text-sm text-text-secondary">
+                No due or overdue vendor obligations are currently exposed by the backend data.
+              </div>
+            ) : null}
+          </div>
+        </SectionPanel>
+      </section>
+    </div>
+  );
+}

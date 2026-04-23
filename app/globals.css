@@ -1,0 +1,119 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f6f4ef;
+  --foreground: #15202b;
+  --surface: #ffffff;
+  --surface-muted: #f2efe8;
+  --surface-subtle: #ebe7df;
+  --border: #ddd8cf;
+  --border-strong: #cfc7bc;
+  --text-primary: #18212a;
+  --text-secondary: #5f6972;
+  --text-tertiary: #8a939b;
+  --accent: #244b63;
+  --accent-strong: #17384c;
+  --accent-soft: #e9f0f4;
+  --success: #3d7a57;
+  --success-soft: #edf6ef;
+  --warning: #b07a2a;
+  --warning-soft: #fbf4e7;
+  --critical: #9e5646;
+  --critical-soft: #f8eeea;
+  --info-soft: #eef4f8;
+  --shadow-soft: 0 18px 40px rgba(22, 31, 43, 0.05);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-surface-subtle: var(--surface-subtle);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-tertiary: var(--text-tertiary);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-soft: var(--accent-soft);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-critical: var(--critical);
+  --color-critical-soft: var(--critical-soft);
+  --color-info-soft: var(--info-soft);
+  --font-sans: var(--font-instrument-sans);
+  --font-mono: var(--font-plex-mono);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-instrument-sans), sans-serif;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.52) 0%, rgba(255, 255, 255, 0) 28%),
+    var(--background);
+  color: var(--text-primary);
+}
+
+a,
+button,
+input,
+select {
+  transition:
+    color 140ms ease,
+    background-color 140ms ease,
+    border-color 140ms ease,
+    box-shadow 140ms ease,
+    opacity 140ms ease;
+}
+
+::selection {
+  background: rgba(36, 75, 99, 0.14);
+  color: var(--text-primary);
+}
+
+.surface-card {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(221, 216, 207, 0.88);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(12px);
+}
+
+.panel-card {
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(221, 216, 207, 0.9);
+  backdrop-filter: blur(10px);
+}
+
+.eyebrow {
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.animate-enter {
+  animation: fade-up 420ms ease both;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
