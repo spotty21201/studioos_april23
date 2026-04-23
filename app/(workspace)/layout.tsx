@@ -6,6 +6,8 @@ import { DataSourceNotice } from "@/components/ui/data-source-notice";
 import { getWorkspaceShellData } from "@/lib/studio-data";
 import { getServerAuthState } from "@/lib/supabase/auth";
 
+export const dynamic = "force-dynamic";
+
 export default async function WorkspaceLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {

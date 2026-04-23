@@ -4,6 +4,8 @@ import { LoginForm } from "@/components/auth/login-form";
 import { DataSourceNotice } from "@/components/ui/data-source-notice";
 import { getServerAuthState } from "@/lib/supabase/auth";
 
+export const dynamic = "force-dynamic";
+
 export default async function LoginPage() {
   const authState = await getServerAuthState();
 
