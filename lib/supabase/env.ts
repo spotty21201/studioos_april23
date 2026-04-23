@@ -37,6 +37,16 @@ function isValidHttpUrl(value: string) {
   }
 }
 
+function isLikelySupabaseAnonKey(value: string) {
+  const parts = value.split(".");
+
+  return (
+    parts.length === 3 &&
+    value.startsWith("eyJ") &&
+    parts.every((part) => part.length > 0)
+  );
+}
+
 export function getSupabaseEnv(): SupabaseEnv | null {
   const configuredUrl = cleanEnvValue(
     process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -46,13 +56,16 @@ export function getSupabaseEnv(): SupabaseEnv | null {
     configuredUrl && isValidHttpUrl(configuredUrl)
       ? configuredUrl
       : AIM_STUDIOOS_SUPABASE_URL;
+  const configuredAnonKey = cleanEnvValue(
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+  );
   const anonKey =
-    cleanEnvValue(
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-      "NEXT_PUBLIC_SUPABASE_ANON_KEY",
-    ) ?? AIM_STUDIOOS_SUPABASE_ANON_KEY;
+    configuredAnonKey && isLikelySupabaseAnonKey(configuredAnonKey)
+      ? configuredAnonKey
+      : AIM_STUDIOOS_SUPABASE_ANON_KEY;
 
-  if (!anonKey) {
+  if (!isLikelySupabaseAnonKey(anonKey)) {
     return null;
   }
 
