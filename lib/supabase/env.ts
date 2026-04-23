@@ -3,6 +3,10 @@ export type SupabaseEnv = {
   anonKey: string;
 };
 
+const AIM_STUDIOOS_SUPABASE_URL = "https://tmkfhrnpmxghylccrexf.supabase.co";
+const AIM_STUDIOOS_SUPABASE_ANON_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRta2Zocm5wbXhnaHlsY2NyZXhmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY4ODk0NDgsImV4cCI6MjA5MjQ2NTQ0OH0.Uo0TfpDbBQiYgOYRcqAD-ksgzChhpmdOBd6pp7aecyg";
+
 function cleanEnvValue(value: string | undefined, key: string) {
   if (!value) {
     return null;
@@ -34,14 +38,16 @@ function isValidHttpUrl(value: string) {
 }
 
 export function getSupabaseEnv(): SupabaseEnv | null {
-  const url = cleanEnvValue(
-    process.env.NEXT_PUBLIC_SUPABASE_URL,
-    "NEXT_PUBLIC_SUPABASE_URL",
-  );
-  const anonKey = cleanEnvValue(
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-    "NEXT_PUBLIC_SUPABASE_ANON_KEY",
-  );
+  const url =
+    cleanEnvValue(
+      process.env.NEXT_PUBLIC_SUPABASE_URL,
+      "NEXT_PUBLIC_SUPABASE_URL",
+    ) ?? AIM_STUDIOOS_SUPABASE_URL;
+  const anonKey =
+    cleanEnvValue(
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+      "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+    ) ?? AIM_STUDIOOS_SUPABASE_ANON_KEY;
 
   if (!url || !anonKey || !isValidHttpUrl(url)) {
     return null;
