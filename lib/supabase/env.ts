@@ -38,18 +38,21 @@ function isValidHttpUrl(value: string) {
 }
 
 export function getSupabaseEnv(): SupabaseEnv | null {
+  const configuredUrl = cleanEnvValue(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    "NEXT_PUBLIC_SUPABASE_URL",
+  );
   const url =
-    cleanEnvValue(
-      process.env.NEXT_PUBLIC_SUPABASE_URL,
-      "NEXT_PUBLIC_SUPABASE_URL",
-    ) ?? AIM_STUDIOOS_SUPABASE_URL;
+    configuredUrl && isValidHttpUrl(configuredUrl)
+      ? configuredUrl
+      : AIM_STUDIOOS_SUPABASE_URL;
   const anonKey =
     cleanEnvValue(
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
       "NEXT_PUBLIC_SUPABASE_ANON_KEY",
     ) ?? AIM_STUDIOOS_SUPABASE_ANON_KEY;
 
-  if (!url || !anonKey || !isValidHttpUrl(url)) {
+  if (!anonKey) {
     return null;
   }
 
