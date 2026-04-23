@@ -68,7 +68,7 @@ export function LoginForm({ authEnabled }: LoginFormProps) {
           disabled={!authEnabled || isPending}
           onChange={(event) => setEmail(event.target.value)}
           className="h-12 w-full rounded-[2px] border border-border bg-white px-4 text-sm text-text-primary outline-none placeholder:text-text-tertiary focus:border-border-strong focus:ring-2 focus:ring-border-muted disabled:cursor-not-allowed disabled:bg-surface-muted"
-          placeholder="principal@aimstudio.com"
+          placeholder="ria@alami-group.com"
           required
         />
       </div>

@@ -21,12 +21,10 @@ export default async function LoginPage() {
             AIM StudioOS
           </div>
           <h1 className="mt-6 max-w-xl text-[2.8rem] font-semibold leading-[1.02] tracking-[-0.06em] text-text-primary">
-            Calm operating visibility for studio leadership.
+            Operating System for AIM Studios.
           </h1>
           <p className="mt-5 max-w-xl text-[15px] leading-7 text-text-secondary">
-            V1 is a Principal-facing internal platform for project oversight,
-            finance summaries, vendor obligations, documents, notes, and recent
-            activity. It is not a workflow-heavy ERP.
+            StudioOS will enhance your experience managing and monitoring your AIM projects and time.
           </p>
 
           <div className="mt-8 grid gap-4 sm:grid-cols-2">
@@ -36,16 +34,16 @@ export default async function LoginPage() {
                 Dashboard first
               </p>
               <p className="mt-2 text-sm leading-6 text-text-secondary">
-                Overview and drill-down come before admin complexity.
+                Overview and drill-down AIM Projects and Resources.
               </p>
             </div>
             <div className="rounded-[4px] border border-border bg-white px-5 py-5">
               <ShieldCheck className="h-5 w-5 text-accent" />
               <p className="mt-4 text-sm font-semibold text-text-primary">
-                Session-gated workspace
+                Managing Studio and Resources
               </p>
               <p className="mt-2 text-sm leading-6 text-text-secondary">
-                Workspace routes now honor Supabase session state when auth is configured.
+                Workspace for our teams, clients projects.
               </p>
             </div>
           </div>
@@ -55,11 +53,10 @@ export default async function LoginPage() {
           <div className="mx-auto w-full max-w-md">
             <p className="eyebrow">Sign in</p>
             <h2 className="mt-4 text-[2rem] font-semibold tracking-[-0.05em] text-text-primary">
-              Access AIM StudioOS
+              AIM Studio OS.
             </h2>
             <p className="mt-3 text-[15px] leading-7 text-text-secondary">
-              Sign in with the current Supabase project. If this environment is not
-              configured yet, read-only preview access is available below.
+              Sign in with your alami-group.com email address.
             </p>
 
             <div className="mt-8 rounded-[4px] border border-border bg-surface-muted px-5 py-5">
