@@ -24,7 +24,7 @@ export default async function ActivityPage() {
             {data.notes.map((note) => (
               <div
                 key={note.id}
-                className="rounded-[20px] border border-border/80 bg-white/75 px-4 py-4"
+                className="rounded-[4px] border border-border bg-white px-4 py-4"
               >
                 <div className="flex items-center justify-between gap-4">
                   <p className="text-sm font-semibold text-text-primary">
@@ -48,7 +48,7 @@ export default async function ActivityPage() {
             {data.activity.map((item) => (
               <div
                 key={item.id}
-                className="rounded-[20px] border border-border/80 bg-white/75 px-4 py-4"
+                className="rounded-[4px] border border-border bg-white px-4 py-4"
               >
                 <div className="flex items-center justify-between gap-4">
                   <p className="text-sm font-semibold text-text-primary">{item.summary}</p>

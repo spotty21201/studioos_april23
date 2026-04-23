@@ -5,7 +5,7 @@ type DataSourceNoticeProps = {
 
 export function DataSourceNotice({ title, message }: DataSourceNoticeProps) {
   return (
-    <div className="rounded-[20px] border border-warning/25 bg-warning-soft/80 px-4 py-3">
+    <div className="rounded-[4px] border border-border bg-warning-soft px-4 py-3">
       {title ? (
         <p className="text-sm font-semibold text-text-primary">{title}</p>
       ) : null}

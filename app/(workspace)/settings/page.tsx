@@ -61,7 +61,7 @@ export default async function SettingsPage() {
           description="Current auth and data connectivity state."
         >
           <div className="space-y-4">
-            <div className="flex items-start gap-4 rounded-[20px] border border-border/80 bg-white/75 px-4 py-4">
+            <div className="flex items-start gap-4 rounded-[4px] border border-border bg-white px-4 py-4">
               {authState.authEnabled ? (
                 <CheckCircle2 className="mt-1 h-5 w-5 text-success" />
               ) : (

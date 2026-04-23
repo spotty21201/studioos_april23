@@ -77,7 +77,7 @@ export function ProjectForm({ mode, options, project }: ProjectFormProps) {
       </div>
 
       {mode === "create" ? (
-        <div className="grid gap-4 rounded-[20px] border border-border/80 bg-surface-muted/55 p-4 md:grid-cols-2">
+        <div className="grid gap-4 rounded-[4px] border border-border bg-surface-muted p-4 md:grid-cols-2">
           <input type="hidden" name="client_mode" value="existing" />
           <Field
             label="Existing client"
@@ -304,7 +304,7 @@ export function ProjectForm({ mode, options, project }: ProjectFormProps) {
               defaultValue={project?.completed_at ?? ""}
             />
           </Field>
-          <label className="flex h-11 items-center gap-3 rounded-2xl border border-border bg-white px-4 text-sm font-medium text-text-primary">
+          <label className="flex h-11 items-center gap-3 rounded-[4px] border border-border bg-white px-4 text-sm font-medium text-text-primary">
             <input name="mark_reviewed" type="checkbox" className="h-4 w-4 accent-accent" />
             Mark reviewed now
           </label>

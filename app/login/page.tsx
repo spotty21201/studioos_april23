@@ -15,9 +15,9 @@ export default async function LoginPage() {
 
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-[1240px] items-center px-5 py-10 sm:px-6 lg:px-8">
-      <div className="grid w-full overflow-hidden rounded-[30px] border border-border/80 bg-white/80 shadow-[var(--shadow-soft)] backdrop-blur xl:grid-cols-[1.05fr_0.95fr]">
-        <section className="border-b border-border/80 bg-surface-muted px-7 py-8 xl:border-b-0 xl:border-r xl:px-10 xl:py-10">
-          <div className="inline-flex items-center gap-2 rounded-full border border-border bg-white/80 px-4 py-2 text-[11px] font-medium uppercase tracking-[0.14em] text-text-secondary">
+      <div className="grid w-full overflow-hidden rounded-[8px] border border-border bg-white shadow-[var(--shadow-soft)] xl:grid-cols-[1.05fr_0.95fr]">
+        <section className="border-b border-border bg-surface-muted px-7 py-8 xl:border-b-0 xl:border-r xl:px-10 xl:py-10">
+          <div className="inline-flex items-center gap-2 rounded-[2px] border border-border bg-white px-4 py-2 text-[11px] font-medium uppercase tracking-[0.14em] text-text-secondary">
             AIM StudioOS
           </div>
           <h1 className="mt-6 max-w-xl text-[2.8rem] font-semibold leading-[1.02] tracking-[-0.06em] text-text-primary">
@@ -30,7 +30,7 @@ export default async function LoginPage() {
           </p>
 
           <div className="mt-8 grid gap-4 sm:grid-cols-2">
-            <div className="rounded-[24px] border border-border/80 bg-white/75 px-5 py-5">
+            <div className="rounded-[4px] border border-border bg-white px-5 py-5">
               <Compass className="h-5 w-5 text-accent" />
               <p className="mt-4 text-sm font-semibold text-text-primary">
                 Dashboard first
@@ -39,7 +39,7 @@ export default async function LoginPage() {
                 Overview and drill-down come before admin complexity.
               </p>
             </div>
-            <div className="rounded-[24px] border border-border/80 bg-white/75 px-5 py-5">
+            <div className="rounded-[4px] border border-border bg-white px-5 py-5">
               <ShieldCheck className="h-5 w-5 text-accent" />
               <p className="mt-4 text-sm font-semibold text-text-primary">
                 Session-gated workspace
@@ -62,7 +62,7 @@ export default async function LoginPage() {
               configured yet, read-only preview access is available below.
             </p>
 
-            <div className="mt-8 rounded-[24px] border border-border/80 bg-surface-muted px-5 py-5">
+            <div className="mt-8 rounded-[4px] border border-border bg-surface-muted px-5 py-5">
               <p className="text-sm font-semibold text-text-primary">
                 Connection status
               </p>

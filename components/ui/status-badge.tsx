@@ -5,16 +5,16 @@ const styleMap: Record<
   { dot: string; text: string; surface: string; border: string }
 > = {
   info: {
-    dot: "bg-success",
-    text: "text-accent",
-    surface: "bg-accent-soft",
-    border: "border-accent/15",
+    dot: "bg-text-primary",
+    text: "text-text-primary",
+    surface: "bg-surface-muted",
+    border: "border-border",
   },
   warning: {
     dot: "bg-warning",
     text: "text-warning",
     surface: "bg-warning-soft",
-    border: "border-warning/20",
+    border: "border-border",
   },
   neutral: {
     dot: "bg-text-tertiary",
@@ -26,13 +26,13 @@ const styleMap: Record<
     dot: "bg-success",
     text: "text-success",
     surface: "bg-success-soft",
-    border: "border-success/15",
+    border: "border-border",
   },
   critical: {
     dot: "bg-critical",
     text: "text-critical",
     surface: "bg-critical-soft",
-    border: "border-critical/15",
+    border: "border-border",
   },
 };
 
@@ -97,7 +97,7 @@ export function StatusBadge({ value, tone }: StatusBadgeProps) {
 
   return (
     <span
-      className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 text-[11px] font-medium tracking-[0.14em] uppercase ${style.surface} ${style.border} ${style.text}`}
+      className={`inline-flex items-center gap-2 rounded-[2px] border px-3 py-1 text-[11px] font-medium tracking-[0.14em] uppercase ${style.surface} ${style.border} ${style.text}`}
     >
       <span className={`h-1.5 w-1.5 rounded-full ${style.dot}`} />
       {toLabel(value)}

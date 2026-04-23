@@ -19,7 +19,7 @@ export function Avatar({ name, size = "md" }: AvatarProps) {
 
   return (
     <div
-      className={`inline-flex items-center justify-center rounded-full border border-white/50 bg-accent-soft font-mono font-medium text-accent ${sizeClassMap[size]}`}
+      className={`inline-flex items-center justify-center rounded-full border border-border-strong bg-accent-soft font-mono font-medium text-text-primary ${sizeClassMap[size]}`}
     >
       {initials}
     </div>

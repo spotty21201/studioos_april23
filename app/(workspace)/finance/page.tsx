@@ -20,13 +20,13 @@ export default async function FinancePage() {
           <>
             <Link
               href="/finance/invoices/new"
-              className="inline-flex h-11 items-center justify-center rounded-full bg-accent px-5 text-sm font-medium text-white hover:bg-accent-strong"
+              className="inline-flex h-11 items-center justify-center rounded-[2px] border border-black bg-black px-5 text-sm font-medium text-white hover:bg-accent-strong"
             >
               Add Invoice
             </Link>
             <Link
               href="/finance/vendor-obligations/new"
-              className="inline-flex h-11 items-center justify-center rounded-full border border-border bg-white px-5 text-sm font-medium text-text-primary hover:border-border-strong"
+              className="inline-flex h-11 items-center justify-center rounded-[2px] border border-black bg-white px-5 text-sm font-medium text-black hover:bg-surface-muted"
             >
               Add Vendor Obligation
             </Link>
@@ -85,7 +85,7 @@ export default async function FinancePage() {
             {overview.overdueInvoices.map((invoice) => (
               <div
                 key={invoice.id}
-                className="flex items-start justify-between gap-4 rounded-[20px] border border-border/80 bg-white/70 px-4 py-4"
+                className="flex items-start justify-between gap-4 rounded-[4px] border border-border bg-white px-4 py-4"
               >
                 <div className="space-y-1">
                   <Link
@@ -111,7 +111,7 @@ export default async function FinancePage() {
               </div>
             ))}
             {overview.overdueInvoices.length === 0 ? (
-              <div className="rounded-[20px] border border-border/80 bg-white/75 px-4 py-4 text-sm text-text-secondary">
+              <div className="rounded-[4px] border border-border bg-white px-4 py-4 text-sm text-text-secondary">
                 No overdue invoices are currently exposed by the backend data.
               </div>
             ) : null}
@@ -126,7 +126,7 @@ export default async function FinancePage() {
             {overview.unpaidVendorObligations.map((item) => (
               <div
                 key={item.id}
-                className="flex items-start justify-between gap-4 rounded-[20px] border border-border/80 bg-white/70 px-4 py-4"
+                className="flex items-start justify-between gap-4 rounded-[4px] border border-border bg-white px-4 py-4"
               >
                 <div className="space-y-1">
                   <Link
@@ -152,7 +152,7 @@ export default async function FinancePage() {
               </div>
             ))}
             {overview.unpaidVendorObligations.length === 0 ? (
-              <div className="rounded-[20px] border border-border/80 bg-white/75 px-4 py-4 text-sm text-text-secondary">
+              <div className="rounded-[4px] border border-border bg-white px-4 py-4 text-sm text-text-secondary">
                 No due or overdue vendor obligations are currently exposed by the backend data.
               </div>
             ) : null}

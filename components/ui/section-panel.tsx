@@ -16,8 +16,8 @@ export function SectionPanel({
   className = "",
 }: SectionPanelProps) {
   return (
-    <section className={`panel-card rounded-[24px] ${className}`}>
-      <div className="flex flex-col gap-4 border-b border-border/80 px-6 py-5 md:flex-row md:items-start md:justify-between">
+    <section className={`panel-card rounded-[4px] ${className}`}>
+      <div className="flex flex-col gap-4 border-b border-border px-6 py-5 md:flex-row md:items-start md:justify-between">
         <div>
           <h2 className="text-lg font-semibold tracking-[-0.03em] text-text-primary">
             {title}

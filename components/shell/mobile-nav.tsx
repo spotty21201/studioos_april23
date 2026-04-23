@@ -8,7 +8,7 @@ export function MobileNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="border-b border-border/80 bg-white/70 px-4 py-3 backdrop-blur-xl lg:hidden">
+    <nav className="border-b border-border-strong bg-white px-4 py-3 lg:hidden">
       <div className="flex gap-2 overflow-x-auto">
         {navigationItems.map(({ href, label }) => {
           const active =
@@ -18,10 +18,10 @@ export function MobileNav() {
             <Link
               key={href}
               href={href}
-              className={`whitespace-nowrap rounded-full px-4 py-2 text-sm ${
+              className={`whitespace-nowrap rounded-[2px] border px-4 py-2 text-sm ${
                 active
-                  ? "bg-accent text-white"
-                  : "bg-surface-muted text-text-secondary"
+                  ? "border-black bg-black text-white"
+                  : "border-border-muted bg-surface-muted text-text-secondary"
               }`}
             >
               {label}

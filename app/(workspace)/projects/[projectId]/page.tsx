@@ -38,7 +38,7 @@ export default async function ProjectDetailPage({
             <StatusBadge value={detail.project.healthStatus} />
             <Link
               href={`/projects/${detail.project.id}/edit`}
-              className="inline-flex h-11 items-center justify-center rounded-full border border-border bg-white px-5 text-sm font-medium text-text-primary hover:border-border-strong"
+              className="inline-flex h-11 items-center justify-center rounded-[2px] border border-black bg-white px-5 text-sm font-medium text-black hover:bg-surface-muted"
             >
               Edit
             </Link>
@@ -156,7 +156,7 @@ export default async function ProjectDetailPage({
               detail.attentionItems.map((item) => (
                 <div
                   key={item.id}
-                  className="rounded-[20px] border border-border/80 bg-white/75 px-4 py-4"
+                  className="rounded-[4px] border border-border bg-white px-4 py-4"
                 >
                   <div className="flex items-center justify-between gap-3">
                     <p className="text-sm font-semibold text-text-primary">
@@ -170,7 +170,7 @@ export default async function ProjectDetailPage({
                 </div>
               ))
             ) : (
-              <div className="rounded-[20px] border border-border/80 bg-white/75 px-4 py-4 text-sm text-text-secondary">
+              <div className="rounded-[4px] border border-border bg-white px-4 py-4 text-sm text-text-secondary">
                 No project-level attention signals are currently reported for this record.
               </div>
             )}
@@ -186,13 +186,13 @@ export default async function ProjectDetailPage({
             <div className="flex flex-wrap gap-2">
               <Link
                 href={`/finance/invoices/new?projectId=${detail.project.id}`}
-                className="inline-flex h-10 items-center justify-center rounded-full border border-border bg-white px-4 text-sm font-medium text-text-primary hover:border-border-strong"
+                className="inline-flex h-10 items-center justify-center rounded-[2px] border border-black bg-white px-4 text-sm font-medium text-black hover:bg-surface-muted"
               >
                 Add Invoice
               </Link>
               <Link
                 href={`/finance/vendor-obligations/new?projectId=${detail.project.id}`}
-                className="inline-flex h-10 items-center justify-center rounded-full border border-border bg-white px-4 text-sm font-medium text-text-primary hover:border-border-strong"
+                className="inline-flex h-10 items-center justify-center rounded-[2px] border border-black bg-white px-4 text-sm font-medium text-black hover:bg-surface-muted"
               >
                 Add Vendor
               </Link>
@@ -200,16 +200,16 @@ export default async function ProjectDetailPage({
           }
         >
           <div className="space-y-6">
-            <div className="overflow-hidden rounded-[22px] border border-border/80">
-              <table className="min-w-full divide-y divide-border/80 text-left">
-                <thead className="bg-surface-muted/70 text-[11px] uppercase tracking-[0.14em] text-text-tertiary">
+            <div className="overflow-hidden rounded-[8px] border border-border">
+              <table className="min-w-full divide-y divide-border text-left">
+                <thead className="bg-surface-muted text-[11px] uppercase tracking-[0.14em] text-text-tertiary">
                   <tr>
                     <th className="px-5 py-4 font-medium">Invoices</th>
                     <th className="px-5 py-4 font-medium">Status</th>
                     <th className="px-5 py-4 font-medium text-right">Amount</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-border/70 bg-white/75">
+                <tbody className="divide-y divide-border-muted bg-white">
                   {detail.invoices.map((invoice) => (
                     <tr key={invoice.id}>
                       <td className="px-5 py-4">
@@ -242,16 +242,16 @@ export default async function ProjectDetailPage({
               </table>
             </div>
 
-            <div className="overflow-hidden rounded-[22px] border border-border/80">
-              <table className="min-w-full divide-y divide-border/80 text-left">
-                <thead className="bg-surface-muted/70 text-[11px] uppercase tracking-[0.14em] text-text-tertiary">
+            <div className="overflow-hidden rounded-[8px] border border-border">
+              <table className="min-w-full divide-y divide-border text-left">
+                <thead className="bg-surface-muted text-[11px] uppercase tracking-[0.14em] text-text-tertiary">
                   <tr>
                     <th className="px-5 py-4 font-medium">Vendor Obligations</th>
                     <th className="px-5 py-4 font-medium">Status</th>
                     <th className="px-5 py-4 font-medium text-right">Amount</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-border/70 bg-white/75">
+                <tbody className="divide-y divide-border-muted bg-white">
                   {detail.vendorObligations.map((item) => (
                     <tr key={item.id}>
                       <td className="px-5 py-4">
@@ -290,7 +290,7 @@ export default async function ProjectDetailPage({
           action={
             <Link
               href={`/documents/new?projectId=${detail.project.id}`}
-              className="inline-flex h-10 items-center justify-center rounded-full border border-border bg-white px-4 text-sm font-medium text-text-primary hover:border-border-strong"
+              className="inline-flex h-10 items-center justify-center rounded-[2px] border border-black bg-white px-4 text-sm font-medium text-black hover:bg-surface-muted"
             >
               Add Document
             </Link>
@@ -300,7 +300,7 @@ export default async function ProjectDetailPage({
             {detail.documents.map((document) => (
               <div
                 key={document.id}
-                className="rounded-[20px] border border-border/80 bg-white/75 px-4 py-4"
+                className="rounded-[4px] border border-border bg-white px-4 py-4"
               >
                 <div className="flex items-start justify-between gap-4">
                   <div>
@@ -319,7 +319,7 @@ export default async function ProjectDetailPage({
               </div>
             ))}
             {detail.documents.length === 0 ? (
-              <div className="rounded-[20px] border border-border/80 bg-white/75 px-4 py-4 text-sm text-text-secondary">
+              <div className="rounded-[4px] border border-border bg-white px-4 py-4 text-sm text-text-secondary">
                 No documents are linked to this project yet.
               </div>
             ) : null}
@@ -330,13 +330,13 @@ export default async function ProjectDetailPage({
       <section className="grid gap-6 xl:grid-cols-2">
         <SectionPanel title="Notes" description="Project-attached institutional memory.">
           <div className="space-y-6">
-            <div className="rounded-[20px] border border-border/80 bg-surface-muted/50 p-4">
+            <div className="rounded-[4px] border border-border bg-surface-muted p-4">
               <ProjectNoteForm projectId={detail.project.id} />
             </div>
             {detail.notes.map((note) => (
               <div
                 key={note.id}
-                className="rounded-[20px] border border-border/80 bg-white/75 px-4 py-4"
+                className="rounded-[4px] border border-border bg-white px-4 py-4"
               >
                 <div className="flex items-center justify-between gap-4">
                   <p className="text-sm font-semibold text-text-primary">
@@ -358,7 +358,7 @@ export default async function ProjectDetailPage({
               </div>
             ))}
             {detail.notes.length === 0 ? (
-              <div className="rounded-[20px] border border-border/80 bg-white/75 px-4 py-4 text-sm text-text-secondary">
+              <div className="rounded-[4px] border border-border bg-white px-4 py-4 text-sm text-text-secondary">
                 No notes are linked to this project yet.
               </div>
             ) : null}
@@ -368,7 +368,7 @@ export default async function ProjectDetailPage({
         <SectionPanel title="Activity" description="Recent changes for this project record.">
           <div className="space-y-4">
             {detail.activity.map((item) => (
-              <div key={item.id} className="border-b border-border/80 pb-4 last:border-b-0">
+              <div key={item.id} className="border-b border-border pb-4 last:border-b-0">
                 <div className="flex items-start justify-between gap-4">
                   <p className="text-sm font-medium text-text-primary">{item.summary}</p>
                   <StatusBadge value={item.entityType} tone="neutral" />
@@ -379,7 +379,7 @@ export default async function ProjectDetailPage({
               </div>
             ))}
             {detail.activity.length === 0 ? (
-              <div className="rounded-[20px] border border-border/80 bg-white/75 px-4 py-4 text-sm text-text-secondary">
+              <div className="rounded-[4px] border border-border bg-white px-4 py-4 text-sm text-text-secondary">
                 No activity has been recorded for this project yet.
               </div>
             ) : null}

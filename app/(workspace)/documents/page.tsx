@@ -17,7 +17,7 @@ export default async function DocumentsPage() {
         actions={
           <Link
             href="/documents/new"
-            className="inline-flex h-11 items-center justify-center rounded-full bg-accent px-5 text-sm font-medium text-white hover:bg-accent-strong"
+            className="inline-flex h-11 items-center justify-center rounded-[2px] border border-black bg-black px-5 text-sm font-medium text-white hover:bg-accent-strong"
           >
             Add Document
           </Link>
@@ -28,9 +28,9 @@ export default async function DocumentsPage() {
         title="Document Index"
         description={`${documents.totalCount} records currently available from the backend source.`}
       >
-        <div className="overflow-hidden rounded-[22px] border border-border/80">
-          <table className="min-w-full divide-y divide-border/80 text-left">
-            <thead className="bg-surface-muted/70 text-[11px] uppercase tracking-[0.14em] text-text-tertiary">
+        <div className="overflow-hidden rounded-[8px] border border-border">
+          <table className="min-w-full divide-y divide-border text-left">
+            <thead className="bg-surface-muted text-[11px] uppercase tracking-[0.14em] text-text-tertiary">
               <tr>
                 <th className="px-5 py-4 font-medium">Title</th>
                 <th className="px-5 py-4 font-medium">Project</th>
@@ -39,7 +39,7 @@ export default async function DocumentsPage() {
                 <th className="px-5 py-4 font-medium">Date</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-border/70 bg-white/75">
+            <tbody className="divide-y divide-border-muted bg-white">
               {documents.items.map((document) => (
                 <tr key={document.id} className="align-top">
                   <td className="px-5 py-4">

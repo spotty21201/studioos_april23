@@ -17,7 +17,7 @@ export default async function NewProjectPage() {
         actions={
           <Link
             href="/projects"
-            className="inline-flex h-11 items-center justify-center rounded-full border border-border bg-white px-5 text-sm font-medium text-text-primary hover:border-border-strong"
+            className="inline-flex h-11 items-center justify-center rounded-[2px] border border-black bg-white px-5 text-sm font-medium text-black hover:bg-surface-muted"
           >
             Back to Projects
           </Link>

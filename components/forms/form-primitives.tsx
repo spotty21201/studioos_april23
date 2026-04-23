@@ -4,13 +4,13 @@ import { useFormStatus } from "react-dom";
 import type { ReactNode } from "react";
 
 export const inputClass =
-  "h-11 w-full rounded-2xl border border-border bg-white px-4 text-sm text-text-primary outline-none placeholder:text-text-tertiary focus:border-accent/35 focus:ring-4 focus:ring-accent/8";
+  "h-11 w-full rounded-[2px] border border-border bg-white px-4 text-sm text-text-primary outline-none placeholder:text-text-tertiary focus:border-border-strong focus:ring-2 focus:ring-border-muted";
 
 export const selectClass =
-  "h-11 w-full rounded-2xl border border-border bg-white px-4 text-sm text-text-primary outline-none focus:border-accent/35 focus:ring-4 focus:ring-accent/8";
+  "h-11 w-full rounded-[2px] border border-border bg-white px-4 text-sm text-text-primary outline-none focus:border-border-strong focus:ring-2 focus:ring-border-muted";
 
 export const textareaClass =
-  "min-h-28 w-full rounded-2xl border border-border bg-white px-4 py-3 text-sm leading-6 text-text-primary outline-none placeholder:text-text-tertiary focus:border-accent/35 focus:ring-4 focus:ring-accent/8";
+  "min-h-28 w-full rounded-[2px] border border-border bg-white px-4 py-3 text-sm leading-6 text-text-primary outline-none placeholder:text-text-tertiary focus:border-border-strong focus:ring-2 focus:ring-border-muted";
 
 type FieldProps = {
   label: string;
@@ -39,7 +39,7 @@ export function FormError({ message }: { message: string | null }) {
   }
 
   return (
-    <div className="rounded-2xl border border-critical/20 bg-critical-soft px-4 py-3 text-sm text-critical">
+    <div className="rounded-[4px] border border-critical bg-critical-soft px-4 py-3 text-sm text-critical">
       {message}
     </div>
   );
@@ -52,7 +52,7 @@ export function SubmitButton({ children }: { children: ReactNode }) {
     <button
       type="submit"
       disabled={pending}
-      className="inline-flex h-11 items-center justify-center rounded-full bg-accent px-5 text-sm font-medium text-white hover:bg-accent-strong disabled:cursor-not-allowed disabled:bg-text-tertiary"
+      className="inline-flex h-11 items-center justify-center rounded-[2px] border border-black bg-black px-5 text-sm font-medium text-white shadow-[4px_4px_0_0_rgba(0,0,0,0.08)] hover:bg-accent-strong disabled:cursor-not-allowed disabled:border-text-tertiary disabled:bg-text-tertiary"
     >
       {pending ? "Saving..." : children}
     </button>

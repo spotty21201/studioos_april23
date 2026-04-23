@@ -27,7 +27,7 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
         actions={
           <Link
             href="/projects/new"
-            className="inline-flex h-11 items-center justify-center rounded-full bg-accent px-5 text-sm font-medium text-white hover:bg-accent-strong"
+            className="inline-flex h-11 items-center justify-center rounded-[2px] border border-black bg-black px-5 text-sm font-medium text-white hover:bg-accent-strong"
           >
             Create Project
           </Link>
@@ -46,13 +46,13 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
                 name="q"
                 defaultValue={projects.filters.q}
                 placeholder="Search code, project, or client..."
-                className="h-11 w-full rounded-full border border-border bg-white pl-11 pr-4 text-sm text-text-primary outline-none placeholder:text-text-tertiary focus:border-accent/35 focus:ring-4 focus:ring-accent/8"
+                className="h-11 w-full rounded-[2px] border border-border bg-white pl-11 pr-4 text-sm text-text-primary outline-none placeholder:text-text-tertiary focus:border-border-strong focus:ring-2 focus:ring-border-muted"
               />
             </label>
             <select
               name="lifecycle"
               defaultValue={projects.filters.lifecycle}
-              className="h-11 rounded-full border border-border bg-white px-4 text-sm text-text-primary outline-none focus:border-accent/35 focus:ring-4 focus:ring-accent/8"
+              className="h-11 rounded-[2px] border border-border bg-white px-4 text-sm text-text-primary outline-none focus:border-border-strong focus:ring-2 focus:ring-border-muted"
             >
               <option value="all">All lifecycle states</option>
               <option value="proposal">Proposal</option>
@@ -64,7 +64,7 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
             <select
               name="health"
               defaultValue={projects.filters.health}
-              className="h-11 rounded-full border border-border bg-white px-4 text-sm text-text-primary outline-none focus:border-accent/35 focus:ring-4 focus:ring-accent/8"
+              className="h-11 rounded-[2px] border border-border bg-white px-4 text-sm text-text-primary outline-none focus:border-border-strong focus:ring-2 focus:ring-border-muted"
             >
               <option value="all">All health states</option>
               <option value="on_track">On track</option>
@@ -73,16 +73,16 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
             </select>
             <button
               type="submit"
-              className="inline-flex h-11 items-center justify-center rounded-full bg-accent px-5 text-sm font-medium text-white hover:bg-accent-strong"
+              className="inline-flex h-11 items-center justify-center rounded-[2px] border border-black bg-black px-5 text-sm font-medium text-white hover:bg-accent-strong"
             >
               Apply
             </button>
           </form>
         }
       >
-        <div className="overflow-hidden rounded-[22px] border border-border/80">
-          <table className="min-w-full divide-y divide-border/80 text-left">
-            <thead className="bg-surface-muted/70 text-[11px] uppercase tracking-[0.14em] text-text-tertiary">
+        <div className="overflow-hidden rounded-[8px] border border-border">
+          <table className="min-w-full divide-y divide-border text-left">
+            <thead className="bg-surface-muted text-[11px] uppercase tracking-[0.14em] text-text-tertiary">
               <tr>
                 <th className="px-5 py-4 font-medium">Project</th>
                 <th className="px-5 py-4 font-medium">Status</th>
@@ -94,7 +94,7 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
                 <th className="px-5 py-4 font-medium">Updated</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-border/70 bg-white/75">
+            <tbody className="divide-y divide-border-muted bg-white">
               {projects.items.map((project) => (
                 <tr key={project.id} className="align-top">
                   <td className="px-5 py-4">

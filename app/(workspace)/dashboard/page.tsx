@@ -69,7 +69,7 @@ export default async function DashboardPage() {
                 <Link
                   key={item.id}
                   href={`/projects/${item.projectId}`}
-                  className="group flex items-start justify-between gap-4 rounded-[20px] border border-border/80 bg-white/65 px-4 py-4 hover:border-border-strong hover:bg-white"
+                  className="group flex items-start justify-between gap-4 rounded-[4px] border border-border bg-white px-4 py-4 hover:border-border-strong hover:bg-white"
                 >
                   <div className="space-y-2">
                     <div className="flex items-center gap-3">
@@ -92,7 +92,7 @@ export default async function DashboardPage() {
                 </Link>
               ))
             ) : (
-              <div className="rounded-[20px] border border-border/80 bg-white/70 px-4 py-4 text-sm text-text-secondary">
+              <div className="rounded-[4px] border border-border bg-white px-4 py-4 text-sm text-text-secondary">
                 No active attention flags are currently exposed by the backend views.
               </div>
             )}
@@ -107,7 +107,7 @@ export default async function DashboardPage() {
             {snapshot.recentNotes.map((note) => (
               <div
                 key={note.id}
-                className="rounded-[20px] border border-border/80 bg-white/75 px-4 py-4"
+                className="rounded-[4px] border border-border bg-white px-4 py-4"
               >
                 <div className="flex items-center justify-between gap-4">
                   <p className="text-sm font-semibold text-text-primary">
@@ -132,9 +132,9 @@ export default async function DashboardPage() {
           title="Overdue Invoices"
           description="Open receivable issues that need follow-up."
         >
-          <div className="overflow-hidden rounded-[22px] border border-border/80">
-            <table className="min-w-full divide-y divide-border/80 text-left">
-              <thead className="bg-surface-muted/70 text-[11px] uppercase tracking-[0.14em] text-text-tertiary">
+          <div className="overflow-hidden rounded-[8px] border border-border">
+            <table className="min-w-full divide-y divide-border text-left">
+              <thead className="bg-surface-muted text-[11px] uppercase tracking-[0.14em] text-text-tertiary">
                 <tr>
                   <th className="px-5 py-4 font-medium">Invoice</th>
                   <th className="px-5 py-4 font-medium">Project</th>
@@ -142,7 +142,7 @@ export default async function DashboardPage() {
                   <th className="px-5 py-4 font-medium text-right">Amount</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-border/70 bg-white/75">
+              <tbody className="divide-y divide-border-muted bg-white">
                 {snapshot.overdueInvoices.map((invoice) => (
                   <tr key={invoice.id}>
                     <td className="px-5 py-4">
@@ -181,9 +181,9 @@ export default async function DashboardPage() {
           title="Vendor Obligations"
           description="Due and overdue vendor commitments across projects."
         >
-          <div className="overflow-hidden rounded-[22px] border border-border/80">
-            <table className="min-w-full divide-y divide-border/80 text-left">
-              <thead className="bg-surface-muted/70 text-[11px] uppercase tracking-[0.14em] text-text-tertiary">
+          <div className="overflow-hidden rounded-[8px] border border-border">
+            <table className="min-w-full divide-y divide-border text-left">
+              <thead className="bg-surface-muted text-[11px] uppercase tracking-[0.14em] text-text-tertiary">
                 <tr>
                   <th className="px-5 py-4 font-medium">Vendor</th>
                   <th className="px-5 py-4 font-medium">Project</th>
@@ -191,7 +191,7 @@ export default async function DashboardPage() {
                   <th className="px-5 py-4 font-medium text-right">Amount</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-border/70 bg-white/75">
+              <tbody className="divide-y divide-border-muted bg-white">
                 {snapshot.unpaidVendorObligations.map((item) => (
                   <tr key={item.id}>
                     <td className="px-5 py-4">
@@ -230,9 +230,9 @@ export default async function DashboardPage() {
           title="Active Projects"
           description="Current live work sorted by most recently updated record."
         >
-          <div className="overflow-hidden rounded-[22px] border border-border/80">
-            <table className="min-w-full divide-y divide-border/80 text-left">
-              <thead className="bg-surface-muted/70 text-[11px] uppercase tracking-[0.14em] text-text-tertiary">
+          <div className="overflow-hidden rounded-[8px] border border-border">
+            <table className="min-w-full divide-y divide-border text-left">
+              <thead className="bg-surface-muted text-[11px] uppercase tracking-[0.14em] text-text-tertiary">
                 <tr>
                   <th className="px-5 py-4 font-medium">Project</th>
                   <th className="px-5 py-4 font-medium">Status</th>
@@ -241,7 +241,7 @@ export default async function DashboardPage() {
                   <th className="px-5 py-4 font-medium text-right">Payable</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-border/70 bg-white/75">
+              <tbody className="divide-y divide-border-muted bg-white">
                 {snapshot.activeProjects.map((project) => (
                   <tr key={project.id}>
                     <td className="px-5 py-4">
@@ -283,7 +283,7 @@ export default async function DashboardPage() {
             {snapshot.recentActivity.map((item) => (
               <div
                 key={item.id}
-                className="rounded-[20px] border border-border/80 bg-white/75 px-4 py-4"
+                className="rounded-[4px] border border-border bg-white px-4 py-4"
               >
                 <div className="flex items-center justify-between gap-4">
                   <p className="text-sm font-semibold text-text-primary">

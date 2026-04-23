@@ -67,7 +67,7 @@ export function LoginForm({ authEnabled }: LoginFormProps) {
           value={email}
           disabled={!authEnabled || isPending}
           onChange={(event) => setEmail(event.target.value)}
-          className="h-12 w-full rounded-2xl border border-border bg-white px-4 text-sm text-text-primary outline-none placeholder:text-text-tertiary focus:border-accent/35 focus:ring-4 focus:ring-accent/8 disabled:cursor-not-allowed disabled:bg-surface-muted"
+          className="h-12 w-full rounded-[2px] border border-border bg-white px-4 text-sm text-text-primary outline-none placeholder:text-text-tertiary focus:border-border-strong focus:ring-2 focus:ring-border-muted disabled:cursor-not-allowed disabled:bg-surface-muted"
           placeholder="principal@aimstudio.com"
           required
         />
@@ -87,14 +87,14 @@ export function LoginForm({ authEnabled }: LoginFormProps) {
           value={password}
           disabled={!authEnabled || isPending}
           onChange={(event) => setPassword(event.target.value)}
-          className="h-12 w-full rounded-2xl border border-border bg-white px-4 text-sm text-text-primary outline-none placeholder:text-text-tertiary focus:border-accent/35 focus:ring-4 focus:ring-accent/8 disabled:cursor-not-allowed disabled:bg-surface-muted"
+          className="h-12 w-full rounded-[2px] border border-border bg-white px-4 text-sm text-text-primary outline-none placeholder:text-text-tertiary focus:border-border-strong focus:ring-2 focus:ring-border-muted disabled:cursor-not-allowed disabled:bg-surface-muted"
           placeholder="Enter your password"
           required
         />
       </div>
 
       {errorMessage ? (
-        <div className="rounded-2xl border border-critical/20 bg-critical-soft px-4 py-3 text-sm text-critical">
+        <div className="rounded-[4px] border border-critical bg-critical-soft px-4 py-3 text-sm text-critical">
           {errorMessage}
         </div>
       ) : null}
@@ -102,19 +102,19 @@ export function LoginForm({ authEnabled }: LoginFormProps) {
       <button
         type="submit"
         disabled={!authEnabled || isPending}
-        className="inline-flex h-12 w-full items-center justify-center rounded-2xl bg-accent px-4 text-sm font-medium text-white hover:bg-accent-strong disabled:cursor-not-allowed disabled:bg-text-tertiary"
+        className="inline-flex h-12 w-full items-center justify-center rounded-[2px] border border-black bg-black px-4 text-sm font-medium text-white shadow-[4px_4px_0_0_rgba(0,0,0,0.08)] hover:bg-accent-strong disabled:cursor-not-allowed disabled:border-text-tertiary disabled:bg-text-tertiary"
       >
         {isPending ? "Signing in..." : "Sign In"}
       </button>
 
       {!authEnabled ? (
-        <div className="rounded-2xl border border-border/80 bg-surface-muted px-4 py-4 text-sm leading-6 text-text-secondary">
+        <div className="rounded-[4px] border border-border bg-surface-muted px-4 py-4 text-sm leading-6 text-text-secondary">
           This environment is currently running without Supabase authentication. You can
           still review the interface in read-only preview.
           <div className="mt-3">
             <Link
               href="/dashboard"
-              className="inline-flex items-center rounded-full border border-border bg-white px-4 py-2 text-sm font-medium text-text-primary hover:border-border-strong"
+              className="inline-flex items-center rounded-[2px] border border-black bg-white px-4 py-2 text-sm font-medium text-black hover:bg-surface-muted"
             >
               Open Read-Only Preview
             </Link>

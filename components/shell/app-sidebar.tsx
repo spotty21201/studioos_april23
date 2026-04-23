@@ -17,7 +17,7 @@ export function AppSidebar({ studioName, subtitle, viewer }: AppSidebarProps) {
   const pathname = usePathname();
 
   return (
-    <aside className="hidden w-72 shrink-0 border-r border-border/80 bg-white/80 px-5 py-6 backdrop-blur-xl lg:flex lg:flex-col">
+    <aside className="hidden w-72 shrink-0 border-r border-border-strong bg-white px-5 py-6 lg:flex lg:flex-col">
       <div className="mb-10 px-2">
         <div className="text-[1.2rem] font-semibold tracking-[-0.05em] text-accent">
           {studioName} StudioOS
@@ -36,9 +36,9 @@ export function AppSidebar({ studioName, subtitle, viewer }: AppSidebarProps) {
             <Link
               key={href}
               href={href}
-              className={`group flex items-center justify-between rounded-2xl px-4 py-3 ${
+              className={`group flex items-center justify-between rounded-[2px] px-4 py-3 ${
                 active
-                  ? "bg-accent text-white shadow-[0_14px_28px_rgba(23,56,76,0.14)]"
+                  ? "bg-black text-white"
                   : "text-text-secondary hover:bg-surface-muted hover:text-text-primary"
               }`}
             >
@@ -57,7 +57,7 @@ export function AppSidebar({ studioName, subtitle, viewer }: AppSidebarProps) {
         })}
       </nav>
 
-      <div className="mt-auto rounded-[24px] border border-border/80 bg-surface-muted px-4 py-4">
+      <div className="mt-auto rounded-[4px] border border-border bg-surface-muted px-4 py-4">
         <div className="flex items-center gap-3">
           <Avatar name={viewer.name} />
           <div>
@@ -65,7 +65,7 @@ export function AppSidebar({ studioName, subtitle, viewer }: AppSidebarProps) {
             <p className="text-xs text-text-secondary">{viewer.title}</p>
           </div>
         </div>
-        <div className="mt-4 rounded-2xl bg-white/70 px-3 py-2.5 text-xs leading-5 text-text-secondary">
+        <div className="mt-4 rounded-[2px] border border-border-muted bg-white px-3 py-2.5 text-xs leading-5 text-text-secondary">
           Principal overview mode is active. Surfaces prioritize visibility,
           exceptions, and briefing-level clarity.
         </div>

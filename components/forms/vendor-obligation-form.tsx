@@ -84,7 +84,7 @@ export function VendorObligationForm({
         </Field>
       </div>
 
-      <div className="grid gap-4 rounded-[20px] border border-border/80 bg-surface-muted/55 p-4 md:grid-cols-2">
+      <div className="grid gap-4 rounded-[4px] border border-border bg-surface-muted p-4 md:grid-cols-2">
         <input type="hidden" name="vendor_mode" value="existing" />
         <Field
           label="Existing vendor"

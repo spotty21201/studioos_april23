@@ -34,10 +34,8 @@ export default function RootLayout({
       <body className="min-h-full bg-background text-foreground">
         <div
           aria-hidden="true"
-          className="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
+          className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-[radial-gradient(circle_at_10%_20%,rgba(0,0,0,0.04)_0%,transparent_40%),radial-gradient(circle_at_90%_80%,rgba(0,0,0,0.04)_0%,transparent_40%)]"
         >
-          <div className="absolute left-0 top-0 h-[32rem] w-[32rem] rounded-full bg-[radial-gradient(circle_at_center,rgba(36,75,99,0.12),transparent_68%)]" />
-          <div className="absolute right-[-8rem] top-[10rem] h-[28rem] w-[28rem] rounded-full bg-[radial-gradient(circle_at_center,rgba(176,122,42,0.08),transparent_68%)]" />
         </div>
         {children}
       </body>
