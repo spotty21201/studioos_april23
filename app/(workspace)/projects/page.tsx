@@ -24,6 +24,14 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
         eyebrow="Anchor Domain"
         title="Projects"
         description="Projects remain the primary operating record in V1. Finance, documents, notes, and activity all attach here."
+        actions={
+          <Link
+            href="/projects/new"
+            className="inline-flex h-11 items-center justify-center rounded-full bg-accent px-5 text-sm font-medium text-white hover:bg-accent-strong"
+          >
+            Create Project
+          </Link>
+        }
       />
 
       <SectionPanel

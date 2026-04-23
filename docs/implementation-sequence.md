@@ -90,6 +90,7 @@ Owner:
 
 Work:
 
+- use [crud-v1.md](/Users/doddy/Desktop/Github/studioos_vscode_april22/docs/crud-v1.md:1) as the V1 CRUD scope and interaction handoff
 - add create and edit flows only after read paths remain stable
 - emit `activity_events` from meaningful writes
 - avoid introducing new entities or statuses during write-surface work

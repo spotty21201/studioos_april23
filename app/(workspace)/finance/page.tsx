@@ -13,9 +13,25 @@ export default async function FinancePage() {
   return (
     <div className="space-y-8">
       <PageHeader
-        eyebrow="Operational Finance"
+        eyebrow="Operations"
         title="Finance"
         description="Cross-project visibility into receivables, payables, and tax exposure. V1 stays focused on oversight rather than ledger behavior."
+        actions={
+          <>
+            <Link
+              href="/finance/invoices/new"
+              className="inline-flex h-11 items-center justify-center rounded-full bg-accent px-5 text-sm font-medium text-white hover:bg-accent-strong"
+            >
+              Add Invoice
+            </Link>
+            <Link
+              href="/finance/vendor-obligations/new"
+              className="inline-flex h-11 items-center justify-center rounded-full border border-border bg-white px-5 text-sm font-medium text-text-primary hover:border-border-strong"
+            >
+              Add Vendor Obligation
+            </Link>
+          </>
+        }
       />
 
       <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
@@ -67,15 +83,17 @@ export default async function FinancePage() {
         <SectionPanel title="Overdue Invoices" description="Receivables needing follow-up.">
           <div className="space-y-3">
             {overview.overdueInvoices.map((invoice) => (
-              <Link
+              <div
                 key={invoice.id}
-                href={`/projects/${invoice.projectId}`}
-                className="flex items-start justify-between gap-4 rounded-[20px] border border-border/80 bg-white/70 px-4 py-4 hover:border-border-strong"
+                className="flex items-start justify-between gap-4 rounded-[20px] border border-border/80 bg-white/70 px-4 py-4"
               >
                 <div className="space-y-1">
-                  <p className="text-sm font-semibold text-text-primary">
+                  <Link
+                    href={`/finance/invoices/${invoice.id}/edit`}
+                    className="text-sm font-semibold text-text-primary hover:text-accent"
+                  >
                     {invoice.invoiceNumber} / {invoice.title}
-                  </p>
+                  </Link>
                   <p className="text-sm text-text-secondary">
                     {invoice.projectCode} / {invoice.projectName}
                   </p>
@@ -90,7 +108,7 @@ export default async function FinancePage() {
                     Due {invoice.dueDate ? formatShortDate(invoice.dueDate) : "TBD"}
                   </p>
                 </div>
-              </Link>
+              </div>
             ))}
             {overview.overdueInvoices.length === 0 ? (
               <div className="rounded-[20px] border border-border/80 bg-white/75 px-4 py-4 text-sm text-text-secondary">
@@ -106,13 +124,17 @@ export default async function FinancePage() {
         >
           <div className="space-y-3">
             {overview.unpaidVendorObligations.map((item) => (
-              <Link
+              <div
                 key={item.id}
-                href={`/projects/${item.projectId}`}
-                className="flex items-start justify-between gap-4 rounded-[20px] border border-border/80 bg-white/70 px-4 py-4 hover:border-border-strong"
+                className="flex items-start justify-between gap-4 rounded-[20px] border border-border/80 bg-white/70 px-4 py-4"
               >
                 <div className="space-y-1">
-                  <p className="text-sm font-semibold text-text-primary">{item.title}</p>
+                  <Link
+                    href={`/finance/vendor-obligations/${item.id}/edit`}
+                    className="text-sm font-semibold text-text-primary hover:text-accent"
+                  >
+                    {item.title}
+                  </Link>
                   <p className="text-sm text-text-secondary">
                     {item.projectCode} / {item.projectName}
                   </p>
@@ -127,7 +149,7 @@ export default async function FinancePage() {
                     Due {item.dueDate ? formatShortDate(item.dueDate) : "TBD"}
                   </p>
                 </div>
-              </Link>
+              </div>
             ))}
             {overview.unpaidVendorObligations.length === 0 ? (
               <div className="rounded-[20px] border border-border/80 bg-white/75 px-4 py-4 text-sm text-text-secondary">

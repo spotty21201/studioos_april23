@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { PageHeader } from "@/components/ui/page-header";
 import { SectionPanel } from "@/components/ui/section-panel";
 import { StatusBadge } from "@/components/ui/status-badge";
@@ -13,6 +14,14 @@ export default async function DocumentsPage() {
         eyebrow="Record Visibility"
         title="Documents"
         description="Cross-project document visibility with clean linkage back to project context. V1 supports uploaded files and external links only, and document completeness is not part of the live attention contract."
+        actions={
+          <Link
+            href="/documents/new"
+            className="inline-flex h-11 items-center justify-center rounded-full bg-accent px-5 text-sm font-medium text-white hover:bg-accent-strong"
+          >
+            Add Document
+          </Link>
+        }
       />
 
       <SectionPanel
@@ -34,20 +43,12 @@ export default async function DocumentsPage() {
               {documents.items.map((document) => (
                 <tr key={document.id} className="align-top">
                   <td className="px-5 py-4">
-                    {document.linkHref ? (
-                      <a
-                        href={document.linkHref}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-sm font-semibold text-text-primary hover:text-accent"
-                      >
-                        {document.title}
-                      </a>
-                    ) : (
-                      <p className="text-sm font-semibold text-text-primary">
-                        {document.title}
-                      </p>
-                    )}
+                    <Link
+                      href={`/documents/${document.id}/edit`}
+                      className="text-sm font-semibold text-text-primary hover:text-accent"
+                    >
+                      {document.title}
+                    </Link>
                     <p className="mt-1 text-sm text-text-secondary">{document.reference}</p>
                   </td>
                   <td className="px-5 py-4">

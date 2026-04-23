@@ -15,7 +15,7 @@ const plexMono = IBM_Plex_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "AIM StudioOS",
+    default: "AIM-StudioOS",
     template: "%s · AIM StudioOS",
   },
   description: "The operating system and dashboard for AIM.",

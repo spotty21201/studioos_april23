@@ -1,5 +1,7 @@
 import { notFound } from "next/navigation";
+import Link from "next/link";
 import { Landmark, Receipt, WalletCards, Waypoints } from "lucide-react";
+import { ProjectNoteForm } from "@/components/forms/project-note-form";
 import { MetricCard } from "@/components/ui/metric-card";
 import { PageHeader } from "@/components/ui/page-header";
 import { SectionPanel } from "@/components/ui/section-panel";
@@ -34,6 +36,12 @@ export default async function ProjectDetailPage({
           <>
             <StatusBadge value={detail.project.lifecycleStatus} />
             <StatusBadge value={detail.project.healthStatus} />
+            <Link
+              href={`/projects/${detail.project.id}/edit`}
+              className="inline-flex h-11 items-center justify-center rounded-full border border-border bg-white px-5 text-sm font-medium text-text-primary hover:border-border-strong"
+            >
+              Edit
+            </Link>
           </>
         }
       />
@@ -174,6 +182,22 @@ export default async function ProjectDetailPage({
         <SectionPanel
           title="Project Finance"
           description="Invoices and vendor obligations tied directly to this project."
+          action={
+            <div className="flex flex-wrap gap-2">
+              <Link
+                href={`/finance/invoices/new?projectId=${detail.project.id}`}
+                className="inline-flex h-10 items-center justify-center rounded-full border border-border bg-white px-4 text-sm font-medium text-text-primary hover:border-border-strong"
+              >
+                Add Invoice
+              </Link>
+              <Link
+                href={`/finance/vendor-obligations/new?projectId=${detail.project.id}`}
+                className="inline-flex h-10 items-center justify-center rounded-full border border-border bg-white px-4 text-sm font-medium text-text-primary hover:border-border-strong"
+              >
+                Add Vendor
+              </Link>
+            </div>
+          }
         >
           <div className="space-y-6">
             <div className="overflow-hidden rounded-[22px] border border-border/80">
@@ -189,9 +213,12 @@ export default async function ProjectDetailPage({
                   {detail.invoices.map((invoice) => (
                     <tr key={invoice.id}>
                       <td className="px-5 py-4">
-                        <p className="text-sm font-semibold text-text-primary">
+                        <Link
+                          href={`/finance/invoices/${invoice.id}/edit`}
+                          className="text-sm font-semibold text-text-primary hover:text-accent"
+                        >
                           {invoice.invoiceNumber}
-                        </p>
+                        </Link>
                         <p className="mt-1 text-sm text-text-secondary">
                           {invoice.title}
                         </p>
@@ -228,9 +255,12 @@ export default async function ProjectDetailPage({
                   {detail.vendorObligations.map((item) => (
                     <tr key={item.id}>
                       <td className="px-5 py-4">
-                        <p className="text-sm font-semibold text-text-primary">
+                        <Link
+                          href={`/finance/vendor-obligations/${item.id}/edit`}
+                          className="text-sm font-semibold text-text-primary hover:text-accent"
+                        >
                           {item.vendorName}
-                        </p>
+                        </Link>
                         <p className="mt-1 text-sm text-text-secondary">{item.title}</p>
                       </td>
                       <td className="px-5 py-4">
@@ -257,6 +287,14 @@ export default async function ProjectDetailPage({
         <SectionPanel
           title="Documents"
           description="Files and links currently attached to this project record. Missing-document detection is intentionally not part of the live attention read model."
+          action={
+            <Link
+              href={`/documents/new?projectId=${detail.project.id}`}
+              className="inline-flex h-10 items-center justify-center rounded-full border border-border bg-white px-4 text-sm font-medium text-text-primary hover:border-border-strong"
+            >
+              Add Document
+            </Link>
+          }
         >
           <div className="space-y-3">
             {detail.documents.map((document) => (
@@ -266,20 +304,12 @@ export default async function ProjectDetailPage({
               >
                 <div className="flex items-start justify-between gap-4">
                   <div>
-                    {document.linkHref ? (
-                      <a
-                        href={document.linkHref}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-sm font-semibold text-text-primary hover:text-accent"
-                      >
-                        {document.title}
-                      </a>
-                    ) : (
-                      <p className="text-sm font-semibold text-text-primary">
-                        {document.title}
-                      </p>
-                    )}
+                    <Link
+                      href={`/documents/${document.id}/edit`}
+                      className="text-sm font-semibold text-text-primary hover:text-accent"
+                    >
+                      {document.title}
+                    </Link>
                     <p className="mt-1 text-sm text-text-secondary">
                       {document.reference}
                     </p>
@@ -299,7 +329,10 @@ export default async function ProjectDetailPage({
 
       <section className="grid gap-6 xl:grid-cols-2">
         <SectionPanel title="Notes" description="Project-attached institutional memory.">
-          <div className="space-y-4">
+          <div className="space-y-6">
+            <div className="rounded-[20px] border border-border/80 bg-surface-muted/50 p-4">
+              <ProjectNoteForm projectId={detail.project.id} />
+            </div>
             {detail.notes.map((note) => (
               <div
                 key={note.id}
@@ -307,7 +340,12 @@ export default async function ProjectDetailPage({
               >
                 <div className="flex items-center justify-between gap-4">
                   <p className="text-sm font-semibold text-text-primary">
-                    {note.title ?? "Untitled note"}
+                    <Link
+                      href={`/projects/${detail.project.id}/notes/${note.id}/edit`}
+                      className="hover:text-accent"
+                    >
+                      {note.title ?? "Untitled note"}
+                    </Link>
                   </p>
                   <StatusBadge value={note.noteType} />
                 </div>

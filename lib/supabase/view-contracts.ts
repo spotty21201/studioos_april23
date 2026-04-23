@@ -352,3 +352,56 @@ export type ActivityEventRecordRow = ActivityEventRow & {
   project: ProjectRelationRow | null;
   actor: ProfileRelationRow | null;
 };
+
+export type CreateProjectWithActivityArgs = {
+  p_project_code: string;
+  p_name: string;
+  p_slug: string;
+  p_client_id: string;
+  p_lifecycle_status?: ProjectLifecycleStatus;
+  p_health_status?: ProjectHealthStatus;
+  p_contract_value?: number;
+  p_currency?: CurrencyCode;
+  p_primary_contact_id?: string | null;
+  p_summary?: string | null;
+  p_location?: string | null;
+  p_start_date?: string | null;
+  p_target_end_date?: string | null;
+  p_completed_at?: string | null;
+  p_project_owner_id?: string | null;
+  p_last_reviewed_at?: string | null;
+};
+
+export type UpdateProjectWithActivityPatch = Partial<{
+  project_code: string;
+  name: string;
+  slug: string;
+  client_id: string;
+  primary_contact_id: string | null;
+  lifecycle_status: ProjectLifecycleStatus;
+  health_status: ProjectHealthStatus;
+  summary: string | null;
+  location: string | null;
+  start_date: string | null;
+  target_end_date: string | null;
+  completed_at: string | null;
+  contract_value: number;
+  currency: CurrencyCode;
+  project_owner_id: string | null;
+  last_reviewed_at: string | null;
+}>;
+
+export type UpdateProjectWithActivityArgs = {
+  p_project_id: string;
+  p_patch: UpdateProjectWithActivityPatch;
+};
+
+export type CreateNoteWithActivityArgs = {
+  p_project_id: string;
+  p_body: string;
+  p_note_type?: NoteType;
+  p_title?: string | null;
+  p_linked_entity_type?: LinkedEntityType | null;
+  p_linked_entity_id?: string | null;
+  p_noted_at?: string | null;
+};

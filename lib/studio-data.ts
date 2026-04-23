@@ -491,7 +491,7 @@ export async function getWorkspaceShellData(
   return {
     meta: toMeta(source.source, source.warning),
     studioName: source.data.studioProfile?.studio_name ?? "AIM",
-    subtitle: "The operating system and dashboard for AIM.",
+    subtitle: "Studio Operating System + Dashboard. Powered by Kolabs.Design",
     viewer: viewer ? buildViewer(viewer) : fallbackViewer,
   };
 }

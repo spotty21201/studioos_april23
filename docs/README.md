@@ -48,6 +48,7 @@ The repo and the deployed environment are not currently equivalent.
 | [docs/data-model.md](/Users/doddy/Desktop/Github/studioos_vscode_april22/docs/data-model.md:1) | human-readable reflection of the current migration |
 | [docs/interface-contracts.md](/Users/doddy/Desktop/Github/studioos_vscode_april22/docs/interface-contracts.md:1) | per-screen handoff for frontend, backend, and QA |
 | [docs/implementation-sequence.md](/Users/doddy/Desktop/Github/studioos_vscode_april22/docs/implementation-sequence.md:1) | current integration state and next sequencing |
+| [docs/crud-v1.md](/Users/doddy/Desktop/Github/studioos_vscode_april22/docs/crud-v1.md:1) | V1 editable-record scope, route additions, form requirements, and mutation handoff |
 
 ## Precedence Rule
 
@@ -101,6 +102,7 @@ Interpretation:
 4. [data-model.md](/Users/doddy/Desktop/Github/studioos_vscode_april22/docs/data-model.md:1)
 5. [interface-contracts.md](/Users/doddy/Desktop/Github/studioos_vscode_april22/docs/interface-contracts.md:1)
 6. [implementation-sequence.md](/Users/doddy/Desktop/Github/studioos_vscode_april22/docs/implementation-sequence.md:1)
+7. [crud-v1.md](/Users/doddy/Desktop/Github/studioos_vscode_april22/docs/crud-v1.md:1)
 
 ## Non-Authoritative Files
 
