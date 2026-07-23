@@ -1,4 +1,4 @@
-# AIM StudioOS V1 Interface Contracts
+# HDA StudioOS V1 Interface Contracts
 
 This document is the handoff contract for frontend, backend, and QA.
 

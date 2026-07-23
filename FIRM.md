@@ -1,16 +1,16 @@
 # FIRM.md
 
-## AIM
+## HDA
 
-AIM is a studio operating at the intersection of **design, strategy, research, communication, and emerging technology**. It is part of a broader ecosystem working alongside HDA and Kolabs Design, but this document describes AIM specifically as the primary studio context for **AIM StudioOS**.
+HDA is a studio operating at the intersection of **design, strategy, research, communication, and emerging technology**. It is part of a broader ecosystem working alongside Kolabs Design, but this document describes HDA specifically as the primary studio context for **HDA StudioOS**.
 
-AIM’s work is not limited to producing design outputs as isolated deliverables. The studio approaches projects as broader strategic efforts that may include project framing, concept development, communication, research support, planning input, coordination, and decision support. AIM’s role can therefore sit between creative studio, strategic unit, research support platform, and operational partner depending on the assignment.
+HDA’s work is not limited to producing design outputs as isolated deliverables. The studio approaches projects as broader strategic efforts that may include project framing, concept development, communication, research support, planning input, coordination, and decision support. HDA’s role can therefore sit between creative studio, strategic unit, research support platform, and operational partner depending on the assignment.
 
 ---
 
-## What AIM Does
+## What HDA Does
 
-AIM typically contributes in areas such as:
+HDA typically contributes in areas such as:
 
 - architectural design projects
 - urban design and planning projects
@@ -21,18 +21,17 @@ AIM typically contributes in areas such as:
 - internal coordination and project visibility
 - collaboration across planning, design, and AI-enabled workflows
 
-AIM should be understood as a studio that supports both **creative production** and **decision-oriented work**, especially where clarity, structure, and communication matter.
+HDA should be understood as a studio that supports both **creative production** and **decision-oriented work**, especially where clarity, structure, and communication matter.
 
 ---
 
 ## Studio Context
 
-AIM is part of a connected studio environment that also includes:
+HDA is part of a connected studio environment that also includes:
 
-- **HDA** — planning, design, architecture, and development-related work
 - **Kolabs Design** — AI think tank, tools, research, and experimentation at the intersection of design, development, and generative AI
 
-AIM may collaborate closely with these related entities, but for current implementation purposes, **AIM StudioOS is single-studio and AIM-specific**.
+HDA may collaborate closely with these related entities, but for current implementation purposes, **HDA StudioOS is single-studio and HDA-specific**.
 
 ---
 
@@ -40,8 +39,8 @@ AIM may collaborate closely with these related entities, but for current impleme
 
 This repository and its related product documentation are intended to support the development of:
 
-**AIM StudioOS**  
-*The operating system and dashboard for AIM.*
+**HDA StudioOS**
+*The operating system and dashboard for HDA.*
 
 This means the repository should prioritize:
 
@@ -56,7 +55,7 @@ This means the repository should prioritize:
 
 ## Location
 
-AIM is based in **Bandung, Indonesia**.
+HDA is based in **Bandung, Indonesia**.
 
 Unless stated otherwise, operational assumptions should follow:
 
@@ -68,7 +67,7 @@ Unless stated otherwise, operational assumptions should follow:
 
 ## Currency
 
-The primary working currency for AIM is:
+The primary working currency for HDA is:
 
 - **IDR — Indonesian Rupiah**
 - use thousand separators, rounded
@@ -103,7 +102,7 @@ This matters especially for:
 
 ## Product and Design Preferences
 
-AIM-related digital products should generally follow these preferences:
+HDA-related digital products should generally follow these preferences:
 
 - calm, professional, low-cognitive-load experience
 - structured, readable, non-bureaucratic interface
@@ -156,6 +155,6 @@ should function as part of the project’s working memory and alignment layer fo
 
 ## Summary
 
-AIM is a Bandung-based Indonesian studio working across design, strategy, communication, research, and adjacent technology-enabled workflows. Its default operating currency is **IDR**, its working timezone is **Asia/Jakarta**, and its documentation and product planning should default to **English**.
+HDA is a Bandung-based Indonesian studio working across design, strategy, communication, research, and adjacent technology-enabled workflows. Its default operating currency is **IDR**, its working timezone is **Asia/Jakarta**, and its documentation and product planning should default to **English**.
 
-For this repository, AIM should be treated as the primary studio context for a calm, structured, Principal-facing internal operating system: **AIM StudioOS**.
+For this repository, HDA should be treated as the primary studio context for a calm, structured, Principal-facing internal operating system: **HDA StudioOS**.

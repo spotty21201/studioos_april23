@@ -1,12 +1,12 @@
-# AIM StudioOS — Product Requirements Document (PRD)
+# HDA StudioOS — Product Requirements Document (PRD)
 
 ## Document Control
 
 **Product Name**  
-AIM StudioOS
+HDA StudioOS
 
 **Subtitle**  
-The operating system and dashboard for AIM.
+The operating system and dashboard for HDA.
 
 **Document Type**  
 Product Requirements Document (PRD)
@@ -15,7 +15,7 @@ Product Requirements Document (PRD)
 V1 / MVP
 
 **Primary Studio**  
-AIM
+HDA
 
 **Primary User for V1**  
 Principal
@@ -30,7 +30,7 @@ This PRD is written to guide multiple coding agents and human review across plan
 
 # 1. Executive Summary
 
-AIM StudioOS is a Principal-facing internal platform for AIM that centralizes project visibility, commercial tracking, records, documents, notes, and operational oversight into one system.
+HDA StudioOS is a Principal-facing internal platform for HDA that centralizes project visibility, commercial tracking, records, documents, notes, and operational oversight into one system.
 
 V1 is intentionally designed as a **leadership command dashboard**, not a full ERP and not a complete team workflow platform. Its purpose is to allow the Principal to understand the operational state of the studio quickly, drill into key projects, inspect commercial and document status, review notes and activity, and identify what needs attention.
 
@@ -40,7 +40,7 @@ The product should feel calm, premium, low-cognitive-load, and structured. It sh
 
 # 2. Product Vision
 
-AIM StudioOS will become a modular internal operating system for project-based studio work, capable over time of supporting:
+HDA StudioOS will become a modular internal operating system for project-based studio work, capable over time of supporting:
 
 - project visibility and control
 - client and vendor records
@@ -55,13 +55,13 @@ However, V1 must remain disciplined.
 
 ## V1 Vision Statement
 
-**AIM StudioOS V1 is a Principal-facing command dashboard that provides fast, structured visibility into project status, finance, documents, notes, and operational risk across AIM.**
+**HDA StudioOS V1 is a Principal-facing command dashboard that provides fast, structured visibility into project status, finance, documents, notes, and operational risk across HDA.**
 
 ---
 
 # 3. Problem Statement
 
-AIM StudioOS is being built because project-based studios often operate through fragmented systems. Common problems include:
+HDA StudioOS is being built because project-based studios often operate through fragmented systems. Common problems include:
 
 - project information scattered across spreadsheets, folders, email, and messaging apps
 - no reliable single source of truth for active projects
@@ -77,9 +77,9 @@ The product exists to solve these problems through a structured but lightweight 
 
 # 4. Product Positioning
 
-## What AIM StudioOS Is
+## What HDA StudioOS Is
 
-AIM StudioOS is:
+HDA StudioOS is:
 
 - a studio operating system
 - a Principal-facing dashboard and oversight tool in V1
@@ -87,9 +87,9 @@ AIM StudioOS is:
 - a single source of truth for selected project, finance, document, and note data
 - a calm command center for studio leadership
 
-## What AIM StudioOS Is Not in V1
+## What HDA StudioOS Is Not in V1
 
-AIM StudioOS V1 is not:
+HDA StudioOS V1 is not:
 
 - a full ERP
 - a full accounting system
@@ -147,7 +147,7 @@ The following are explicitly out of scope for V1 unless otherwise reintroduced l
 
 **Principal**
 
-The Principal uses AIM StudioOS to:
+The Principal uses HDA StudioOS to:
 
 - review the state of the studio quickly
 - inspect project-level status and exposure
@@ -248,7 +248,7 @@ Do not simulate enterprise complexity that the studio does not need in V1.
 
 # 10. Success Metrics
 
-AIM StudioOS V1 is successful if:
+HDA StudioOS V1 is successful if:
 
 - the Principal can review all active projects from one place
 - the Principal can quickly identify projects needing attention
@@ -277,7 +277,7 @@ Support data such as Clients and Vendors may exist in forms and linked records, 
 
 ## 11.2 Product Mental Model
 
-Users should understand AIM StudioOS in this order:
+Users should understand HDA StudioOS in this order:
 
 1. Dashboard = studio overview
 2. Projects = all projects at a glance
@@ -291,7 +291,7 @@ Users should understand AIM StudioOS in this order:
 
 ## 12.1 Principal Daily Flow
 
-1. Principal logs into AIM StudioOS
+1. Principal logs into HDA StudioOS
 2. Lands on Dashboard
 3. Reviews summary cards and attention panel
 4. Opens a flagged project or browses projects
@@ -1284,7 +1284,7 @@ These should not distort V1.
 
 # 32. Final Product Statement
 
-AIM StudioOS V1 is a Principal-facing studio operating system for AIM. It is designed to give leadership a calm, structured, low-friction way to review project status, financial exposure, documents, notes, and operational attention points in one place.
+HDA StudioOS V1 is a Principal-facing studio operating system for HDA. It is designed to give leadership a calm, structured, low-friction way to review project status, financial exposure, documents, notes, and operational attention points in one place.
 
 Its job is not to simulate enterprise software. Its job is to make the studio legible.
 

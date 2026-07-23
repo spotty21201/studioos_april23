@@ -1,15 +1,15 @@
 # AGENT.md
 
-## AIM StudioOS
-**The operating system and dashboard for AIM.**
+## HDA StudioOS
+**The operating system and dashboard for HDA.**
 
-This file defines how coding agents should collaborate on AIM StudioOS V1.
+This file defines how coding agents should collaborate on HDA StudioOS V1.
 
 ---
 
 ## 1. Product Context
 
-AIM StudioOS is a Principal-facing internal web application for AIM. V1 is designed as a calm, structured, low-cognitive-load command dashboard for studio leadership.
+HDA StudioOS is a Principal-facing internal web application for HDA. V1 is designed as a calm, structured, low-cognitive-load command dashboard for studio leadership.
 
 The product is **not** a full ERP, not a full accounting system, and not a complete multi-role workflow platform in V1.
 
@@ -346,7 +346,7 @@ V1 is ready when:
 
 ## 15. Final Guidance
 
-AIM StudioOS should make the studio legible.
+HDA StudioOS should make the studio legible.
 
 Every agent should optimize for:
 - clarity

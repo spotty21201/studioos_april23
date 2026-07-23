@@ -1,4 +1,4 @@
-# AIM StudioOS Controlled Vocabulary
+# HDA StudioOS Controlled Vocabulary
 
 This file lists the exact current vocabulary that matches:
 

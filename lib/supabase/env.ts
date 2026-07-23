@@ -3,9 +3,6 @@ export type SupabaseEnv = {
   anonKey: string;
 };
 
-const AIM_STUDIOOS_SUPABASE_URL = "https://tmkfhrnpmxghylccrexf.supabase.co";
-const AIM_STUDIOOS_SUPABASE_ANON_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRta2Zocm5wbXhnaHlsY2NyZXhmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY4ODk0NDgsImV4cCI6MjA5MjQ2NTQ0OH0.Uo0TfpDbBQiYgOYRcqAD-ksgzChhpmdOBd6pp7aecyg";
 
 function cleanEnvValue(value: string | undefined, key: string) {
   if (!value) {
@@ -48,30 +45,41 @@ function isLikelySupabaseAnonKey(value: string) {
 }
 
 export function getSupabaseEnv(): SupabaseEnv | null {
-  const configuredUrl = cleanEnvValue(
+  const url = cleanEnvValue(
     process.env.NEXT_PUBLIC_SUPABASE_URL,
     "NEXT_PUBLIC_SUPABASE_URL",
   );
-  const url =
-    configuredUrl && isValidHttpUrl(configuredUrl)
-      ? configuredUrl
-      : AIM_STUDIOOS_SUPABASE_URL;
-  const configuredAnonKey = cleanEnvValue(
+  const anonKey = cleanEnvValue(
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     "NEXT_PUBLIC_SUPABASE_ANON_KEY",
   );
-  const anonKey =
-    configuredAnonKey && isLikelySupabaseAnonKey(configuredAnonKey)
-      ? configuredAnonKey
-      : AIM_STUDIOOS_SUPABASE_ANON_KEY;
 
-  if (!isLikelySupabaseAnonKey(anonKey)) {
+  if (!url || !isValidHttpUrl(url)) {
+    return null;
+  }
+
+  if (!anonKey || !isLikelySupabaseAnonKey(anonKey)) {
     return null;
   }
 
   return { url, anonKey };
 }
 
-export function hasSupabaseEnv() {
+export function hasSupabaseEnv(): boolean {
   return getSupabaseEnv() !== null;
+}
+
+export type SupabaseEnvMode =
+  | "configured_live"
+  | "allowed_local_preview"
+  | "production_config_error";
+
+export function getSupabaseEnvMode(): SupabaseEnvMode {
+  if (hasSupabaseEnv()) {
+    return "configured_live";
+  }
+  if (process.env.NODE_ENV === "development") {
+    return "allowed_local_preview";
+  }
+  return "production_config_error";
 }

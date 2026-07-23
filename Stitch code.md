@@ -4,7 +4,7 @@
 <html class="light" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Notes &amp; Activity - AIM StudioOS</title>
+<title>Notes &amp; Activity - HDA StudioOS</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
@@ -113,7 +113,7 @@
 <!-- SideNavBar Component -->
 <nav class="h-screen w-64 fixed left-0 top-0 border-r border-[#E4E7EB] dark:border-zinc-800 bg-white dark:bg-zinc-950 flex flex-col py-8 px-4 z-50">
 <div class="mb-8 px-2">
-<div class="text-lg font-bold tracking-tighter text-[#2F5E7A] dark:text-zinc-100">AIM StudioOS</div>
+<div class="text-lg font-bold tracking-tighter text-[#2F5E7A] dark:text-zinc-100">HDA StudioOS</div>
 <div class="font-['Inter'] antialiased tracking-tight text-zinc-800 dark:text-zinc-200 text-sm opacity-70">Executive Briefing</div>
 </div>
 <div class="flex flex-col space-y-1">
@@ -301,7 +301,7 @@
 <html class="light" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Settings - AIM StudioOS</title>
+<title>Settings - HDA StudioOS</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
@@ -410,7 +410,7 @@
 <!-- SideNavBar -->
 <nav class="hidden md:flex h-screen w-64 fixed left-0 top-0 border-r border-border-subtle bg-white dark:bg-zinc-950 flex-col h-full py-8 px-4 font-['Inter'] antialiased tracking-tight text-zinc-800 dark:text-zinc-200 z-50">
 <div class="mb-8 px-4">
-<h1 aria-label="AIM StudioOS Logo" class="text-lg font-bold tracking-tighter text-[#2F5E7A] dark:text-zinc-100">AIM StudioOS</h1>
+<h1 aria-label="HDA StudioOS Logo" class="text-lg font-bold tracking-tighter text-[#2F5E7A] dark:text-zinc-100">HDA StudioOS</h1>
 <p class="font-metadata text-metadata text-text-secondary mt-1">Executive Briefing</p>
 </div>
 <div class="flex-1 flex flex-col gap-2 mt-4">
@@ -445,7 +445,7 @@
 <!-- TopNavBar -->
 <header class="sticky top-0 z-40 w-full border-b border-border-subtle bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md font-['Inter'] text-sm font-medium flex items-center justify-between px-8 h-16 ml-0 md:ml-64">
 <div class="flex items-center gap-4">
-<span class="md:hidden text-base font-bold text-zinc-900 dark:text-zinc-50">AIM StudioOS</span>
+<span class="md:hidden text-base font-bold text-zinc-900 dark:text-zinc-50">HDA StudioOS</span>
 </div>
 <div class="flex items-center gap-4 text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-100 transition-all ease-in-out duration-150 cursor-pointer">
 <span class="material-symbols-outlined" data-icon="notifications">notifications</span>
@@ -597,7 +597,7 @@
 <html lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Finance Overview - AIM StudioOS</title>
+<title>Finance Overview - HDA StudioOS</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
@@ -716,7 +716,7 @@
 <nav class="h-screen w-64 fixed left-0 top-0 border-r border-[#E4E7EB] dark:border-zinc-800 bg-white dark:bg-zinc-950 flex flex-col py-8 px-4 z-50 font-['Inter'] antialiased tracking-tight text-zinc-800 dark:text-zinc-200">
 <!-- Header -->
 <div class="mb-10 px-4">
-<h1 class="text-lg font-bold tracking-tighter text-[#2F5E7A] dark:text-zinc-100">AIM StudioOS</h1>
+<h1 class="text-lg font-bold tracking-tighter text-[#2F5E7A] dark:text-zinc-100">HDA StudioOS</h1>
 <p class="text-xs text-zinc-500 font-medium mt-1">Executive Briefing</p>
 </div>
 <!-- Navigation Tabs -->
@@ -942,7 +942,7 @@
 <html lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>AIM StudioOS - Documents</title>
+<title>HDA StudioOS - Documents</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
@@ -1055,7 +1055,7 @@
 <body class="bg-background min-h-screen text-text-primary antialiased flex flex-col">
 <aside class="bg-white dark:bg-zinc-950 font-['Inter'] antialiased tracking-tight text-zinc-800 dark:text-zinc-200 h-screen w-64 fixed left-0 top-0 border-r border-r border-[#E4E7EB] dark:border-zinc-800 flex flex-col h-full py-8 px-4 z-50">
 <div class="mb-10 px-4">
-<h1 class="text-lg font-bold tracking-tighter text-[#2F5E7A] dark:text-zinc-100">AIM StudioOS</h1>
+<h1 class="text-lg font-bold tracking-tighter text-[#2F5E7A] dark:text-zinc-100">HDA StudioOS</h1>
 <p class="font-metadata text-metadata text-zinc-500 mt-1">Executive Briefing</p>
 </div>
 <nav class="flex flex-col gap-2">
@@ -1268,7 +1268,7 @@
 <html class="light" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>AIM StudioOS - Projects List</title>
+<title>HDA StudioOS - Projects List</title>
 <!-- Google Fonts: Inter -->
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
@@ -1393,7 +1393,7 @@
 <!-- Brand Identity -->
 <div class="mb-12 px-4 flex flex-col gap-1">
 <div class="text-lg font-bold tracking-tighter text-[#2F5E7A] dark:text-zinc-100 font-['Inter']">
-                AIM StudioOS
+                HDA StudioOS
             </div>
 <div class="text-xs font-medium text-zinc-500 uppercase tracking-wider">
                 Executive Briefing
@@ -1669,7 +1669,7 @@
 <html lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>AIM StudioOS - Project Detail</title>
+<title>HDA StudioOS - Project Detail</title>
 <!-- Fonts & Icons -->
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
@@ -1788,7 +1788,7 @@
                 A
             </div>
 <div>
-<h1 class="text-lg font-bold tracking-tighter text-[#2F5E7A] dark:text-zinc-100 leading-tight">AIM StudioOS</h1>
+<h1 class="text-lg font-bold tracking-tighter text-[#2F5E7A] dark:text-zinc-100 leading-tight">HDA StudioOS</h1>
 <p class="text-zinc-500 dark:text-zinc-400 text-xs font-medium">Executive Briefing</p>
 </div>
 </div>
@@ -2056,7 +2056,7 @@
 <html class="light" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Principal Dashboard - AIM StudioOS</title>
+<title>Principal Dashboard - HDA StudioOS</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
@@ -2170,7 +2170,7 @@
 <!-- SideNavBar (from JSON) -->
 <nav class="h-screen w-64 fixed left-0 top-0 border-r border-r border-[#E4E7EB] bg-white hidden md:flex flex-col py-8 px-4 font-['Inter'] antialiased tracking-tight text-zinc-800 z-50">
 <div class="mb-10 px-4">
-<h1 class="text-lg font-bold tracking-tighter text-[#2F5E7A]">AIM StudioOS</h1>
+<h1 class="text-lg font-bold tracking-tighter text-[#2F5E7A]">HDA StudioOS</h1>
 <p class="font-metadata text-metadata text-text-secondary mt-1">Executive Briefing</p>
 </div>
 <div class="flex-1 flex flex-col gap-2">

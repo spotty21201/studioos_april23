@@ -3,13 +3,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { navigationItems } from "@/lib/navigation";
+import { SignOutButton } from "@/components/auth/sign-out-button";
 
 export function MobileNav() {
   const pathname = usePathname();
 
   return (
     <nav className="border-b border-border-strong bg-white px-4 py-3 lg:hidden">
-      <div className="flex gap-2 overflow-x-auto">
+      <div className="flex items-center gap-2 overflow-x-auto">
         {navigationItems.map(({ href, label }) => {
           const active =
             pathname === href || (href !== "/dashboard" && pathname.startsWith(href));
@@ -28,6 +29,13 @@ export function MobileNav() {
             </Link>
           );
         })}
+        <div className="ml-auto shrink-0">
+          <SignOutButton
+            className="whitespace-nowrap rounded-[2px] border border-critical bg-critical-soft px-3 py-2 text-xs font-medium text-critical hover:bg-critical hover:text-white"
+          >
+            Sign Out
+          </SignOutButton>
+        </div>
       </div>
     </nav>
   );

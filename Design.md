@@ -1,12 +1,12 @@
-# AIM StudioOS — Web UI Direction
+# HDA StudioOS — Web UI Direction
 
 ## Product
-**AIM StudioOS**
+**HDA StudioOS**
 
-**Subtitle:** The operating system and dashboard for AIM.
+**Subtitle:** The operating system and dashboard for HDA.
 
 ## Purpose
-AIM StudioOS is a **Principal-facing internal dashboard** for a design, architecture, and planning studio.
+HDA StudioOS is a **Principal-facing internal dashboard** for a design, architecture, and planning studio.
 
 V1 is **not** an ERP, not a workflow management tool, and not a dense back-office system. Its purpose is to give studio leadership a fast, structured executive view of:
 - active projects
@@ -142,8 +142,8 @@ Sidebar design:
 - narrow, elegant, light-toned panel
 - subtle active indicator
 - monochrome icons or no icons
-- brand/title at top: **AIM StudioOS**
-- optional small subtitle beneath: *Operating system and dashboard for AIM*
+- brand/title at top: **HDA StudioOS**
+- optional small subtitle beneath: *Operating system and dashboard for HDA*
 
 ### Content Width
 - Use a max-width content frame around `1280–1440px`
@@ -671,13 +671,13 @@ This product should feel consistent because the same few patterns repeat well.
 
 ## 9. V1 Product Framing
 
-AIM StudioOS V1 is:
+HDA StudioOS V1 is:
 - a principal dashboard
 - a studio visibility layer
 - a structured executive interface
 - a portfolio and finance health view
 
-AIM StudioOS V1 is not:
+HDA StudioOS V1 is not:
 - an ERP
 - a task manager
 - a team operations platform
@@ -688,7 +688,7 @@ AIM StudioOS V1 is not:
 
 ## 10. Final UI Direction Summary
 
-Design AIM StudioOS as a **light, premium, executive dashboard for studio leadership**.
+Design HDA StudioOS as a **light, premium, executive dashboard for studio leadership**.
 
 The design should feel:
 - calm

@@ -1,8 +1,8 @@
 # TEAM.md
 
-# AIM Team Structure
+# HDA Team Structure
 
-This document defines the current team structure of AIM and expands the role of each person in a way that is useful for internal alignment, onboarding, collaboration, and future system documentation.
+This document defines the current team structure of HDA and expands the role of each person in a way that is useful for internal alignment, onboarding, collaboration, and future system documentation.
 
 The descriptions below are written to clarify functional responsibility, likely contribution areas, and the internal logic of how the studio operates. They are not meant to rigidly limit anyone’s role, but to make the studio legible.
 
@@ -11,7 +11,7 @@ The descriptions below are written to clarify functional responsibility, likely 
 ## 1. Leadership
 
 ### Farid Ramdani — Director
-Farid Ramdani serves as one of AIM’s Directors and should be understood as part of the studio’s senior decision-making layer. This role carries responsibility for helping steer the direction of the practice at the organizational and business level.
+Farid Ramdani serves as one of HDA’s Directors and should be understood as part of the studio’s senior decision-making layer. This role carries responsibility for helping steer the direction of the practice at the organizational and business level.
 
 Key responsibilities may include:
 - contributing to the overall direction and positioning of the studio
@@ -23,7 +23,7 @@ Key responsibilities may include:
 In practical terms, the Director role should be understood as part leadership, part stewardship, and part high-level oversight.
 
 ### Dodi Supriyatna — Director
-Dodi Supriyatna serves as one of AIM’s Directors and forms part of the studio’s top leadership structure. The role should be understood as both managerial and strategic, with responsibility for helping ensure that the studio remains aligned, effective, and professionally grounded.
+Dodi Supriyatna serves as one of HDA’s Directors and forms part of the studio’s top leadership structure. The role should be understood as both managerial and strategic, with responsibility for helping ensure that the studio remains aligned, effective, and professionally grounded.
 
 Key responsibilities may include:
 - helping guide the studio’s direction and major internal decisions
@@ -44,7 +44,7 @@ Key responsibilities may include:
 - engaging with senior clients, partners, and stakeholders on matters of direction and opportunity
 - guiding project narratives, quality expectations, and major review moments
 - identifying new opportunities, collaborations, and future growth pathways
-- ensuring that AIM’s work remains intellectually strong, commercially aware, and relevant
+- ensuring that HDA’s work remains intellectually strong, commercially aware, and relevant
 
 The Principal role should be understood as the studio’s leading source of direction, synthesis, and judgment.
 
@@ -151,7 +151,7 @@ This role forms part of the studio’s essential production and design support s
 
 ## 5. Suggested Team Logic
 
-For internal understanding, the current AIM team may be read in four broad layers:
+For internal understanding, the current HDA team may be read in four broad layers:
 
 ### Leadership
 - Farid Ramdani — Director
@@ -181,14 +181,14 @@ This layered reading is useful because it clarifies:
 
 ## 6. Why This Matters for StudioOS
 
-This team structure is relevant to AIM StudioOS because the system may later need to reflect:
+This team structure is relevant to HDA StudioOS because the system may later need to reflect:
 - user roles and permissions
 - project ownership and accountability
 - operational visibility by responsibility layer
 - note and activity attribution
 - future workflow logic for leadership, coordination, operations, and production
 
-For V1, AIM StudioOS is Principal-facing. But over time, this team structure can help define how the system grows into a broader internal operating platform.
+For V1, HDA StudioOS is Principal-facing. But over time, this team structure can help define how the system grows into a broader internal operating platform.
 
 ---
 
@@ -211,6 +211,6 @@ For V1, AIM StudioOS is Principal-facing. But over time, this team structure can
 
 ## 8. Closing Note
 
-This document is intended to make the AIM team structure clearer, more legible, and more usable for internal documentation, onboarding, and future system design.
+This document is intended to make the HDA team structure clearer, more legible, and more usable for internal documentation, onboarding, and future system design.
 
 It should be updated as the studio evolves, roles deepen, or additional members join the team.

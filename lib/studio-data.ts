@@ -483,15 +483,15 @@ export async function getWorkspaceShellData(
 ): Promise<WorkspaceShellData> {
   const source = await getStudioOsSource();
   const fallbackViewer = buildViewer({
-    full_name: "AIM Principal Preview",
+    full_name: "HDA Principal Preview",
     role: "principal",
-    email: "principal-preview@aimstudio.id",
+    email: "principal-preview@hdadesign.id",
   });
 
   return {
     meta: toMeta(source.source, source.warning),
-    studioName: source.data.studioProfile?.studio_name ?? "AIM",
-    subtitle: "Studio Operating System + Dashboard. Powered by Kolabs.Design",
+    studioName: source.data.studioProfile?.studio_name ?? "HDA",
+    subtitle: "",
     viewer: viewer ? buildViewer(viewer) : fallbackViewer,
   };
 }
@@ -786,7 +786,7 @@ export async function getSettingsPageData(input?: {
 
   return {
     meta: toMeta(source.source, source.warning),
-    studioName: source.data.studioProfile?.studio_name ?? "AIM",
+    studioName: source.data.studioProfile?.studio_name ?? "HDA",
     defaultCurrency: source.data.studioProfile?.default_currency ?? currency,
     timezone: source.data.studioProfile?.timezone ?? "Asia/Jakarta",
     viewerRole: input?.viewerRole ? roleToTitle(input.viewerRole) : null,

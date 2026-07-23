@@ -3,6 +3,14 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import {
+  requireEnumValue,
+  validateCalendarDateString,
+  validateCompletedDate,
+  validateDateOrdering,
+  validateExternalUrl,
+  validatePaidStatus,
+} from "@/lib/validation/domain-validation";
 import type {
   DocumentCategory,
   DocumentSourceType,
@@ -89,11 +97,9 @@ function fail(message: string, fieldErrors: FieldErrors = {}): FormActionState {
 
 function value(formData: FormData, key: string) {
   const raw = formData.get(key);
-
   if (typeof raw !== "string") {
     return "";
   }
-
   return raw.trim();
 }
 
@@ -104,22 +110,10 @@ function nullableValue(formData: FormData, key: string) {
 
 function requireText(formData: FormData, key: string, label: string, errors: FieldErrors) {
   const next = value(formData, key);
-
   if (next.length === 0) {
     errors[key] = `${label} is required.`;
   }
-
   return next;
-}
-
-function enumValue<T extends string>(
-  formData: FormData,
-  key: string,
-  allowed: readonly T[],
-  fallback: T,
-) {
-  const next = value(formData, key);
-  return allowed.includes(next as T) ? (next as T) : fallback;
 }
 
 function optionalId(formData: FormData, key: string) {
@@ -129,21 +123,20 @@ function optionalId(formData: FormData, key: string) {
 
 function optionalDate(formData: FormData, key: string, errors: FieldErrors) {
   const next = nullableValue(formData, key);
-
-  if (next && !/^\d{4}-\d{2}-\d{2}$/.test(next)) {
-    errors[key] = "Use a valid date.";
+  if (next) {
+    const error = validateCalendarDateString(next);
+    if (error) {
+      errors[key] = error;
+    }
   }
-
   return next;
 }
 
 function optionalDateTime(formData: FormData, key: string, errors: FieldErrors) {
   const next = nullableValue(formData, key);
-
   if (next && Number.isNaN(Date.parse(next))) {
     errors[key] = "Use a valid date and time.";
   }
-
   return next ? new Date(next).toISOString() : null;
 }
 
@@ -160,7 +153,6 @@ function numberValue(
     if (options.required) {
       errors[key] = `${label} is required.`;
     }
-
     return null;
   }
 
@@ -253,12 +245,36 @@ export async function createProjectAction(
   const newClientName = nullableValue(formData, "new_client_name");
   const newContactName = nullableValue(formData, "new_contact_name");
   const primaryContactId = optionalId(formData, "primary_contact_id");
+
+  const lifecycleStatus = requireEnumValue(
+    value(formData, "lifecycle_status"),
+    "lifecycle_status",
+    "Lifecycle status",
+    lifecycleStatuses,
+    errors,
+    { default: "proposal" },
+  );
+
+  const healthStatus = requireEnumValue(
+    value(formData, "health_status"),
+    "health_status",
+    "Health status",
+    healthStatuses,
+    errors,
+    { default: "on_track" },
+  );
+
   const contractValue = numberValue(formData, "contract_value", "Contract value", errors, {
     required: true,
     min: 0,
   });
   const startDate = optionalDate(formData, "start_date", errors);
   const targetEndDate = optionalDate(formData, "target_end_date", errors);
+
+  const dateOrderError = validateDateOrdering(startDate, targetEndDate);
+  if (dateOrderError) {
+    errors.target_end_date = dateOrderError;
+  }
 
   if (clientMode === "existing" && !existingClientId) {
     errors.client_id = "Select an existing client or add a new one.";
@@ -307,6 +323,20 @@ export async function createProjectAction(
     return fail("Select a valid client.", { client_id: "Client is required." });
   }
 
+  if (contactId && clientMode === "existing") {
+    const { data: contactRow } = await supabase
+      .from("client_contacts")
+      .select("id, client_id")
+      .eq("id", contactId)
+      .maybeSingle();
+
+    if (!contactRow || contactRow.client_id !== clientId) {
+      return fail("Review the highlighted project fields.", {
+        primary_contact_id: "Selected primary contact does not belong to the chosen client.",
+      });
+    }
+  }
+
   if (newContactName) {
     const { data: contact, error } = await supabase
       .from("client_contacts")
@@ -340,18 +370,8 @@ export async function createProjectAction(
       p_slug: slugify(`${projectCode} ${name}`),
       p_client_id: clientId,
       p_primary_contact_id: contactId,
-      p_lifecycle_status: enumValue(
-        formData,
-        "lifecycle_status",
-        lifecycleStatuses,
-        "proposal",
-      ),
-      p_health_status: enumValue(
-        formData,
-        "health_status",
-        healthStatuses,
-        "on_track",
-      ),
+      p_lifecycle_status: lifecycleStatus ?? "proposal",
+      p_health_status: healthStatus ?? "on_track",
       p_summary: nullableValue(formData, "summary"),
       p_location: nullableValue(formData, "location"),
       p_start_date: startDate,
@@ -382,6 +402,26 @@ export async function updateProjectAction(
   const projectCode = requireText(formData, "project_code", "Project code", errors);
   const name = requireText(formData, "name", "Project name", errors);
   const clientId = requireText(formData, "client_id", "Client", errors);
+  const primaryContactId = optionalId(formData, "primary_contact_id");
+
+  const lifecycleStatus = requireEnumValue(
+    value(formData, "lifecycle_status"),
+    "lifecycle_status",
+    "Lifecycle status",
+    lifecycleStatuses,
+    errors,
+    { default: "proposal" },
+  );
+
+  const healthStatus = requireEnumValue(
+    value(formData, "health_status"),
+    "health_status",
+    "Health status",
+    healthStatuses,
+    errors,
+    { default: "on_track" },
+  );
+
   const contractValue = numberValue(formData, "contract_value", "Contract value", errors, {
     required: true,
     min: 0,
@@ -389,6 +429,16 @@ export async function updateProjectAction(
   const startDate = optionalDate(formData, "start_date", errors);
   const targetEndDate = optionalDate(formData, "target_end_date", errors);
   const completedAt = optionalDate(formData, "completed_at", errors);
+
+  const dateOrderError = validateDateOrdering(startDate, targetEndDate);
+  if (dateOrderError) {
+    errors.target_end_date = dateOrderError;
+  }
+
+  const completedError = validateCompletedDate(completedAt, lifecycleStatus);
+  if (completedError) {
+    errors.completed_at = completedError;
+  }
 
   if (Object.keys(errors).length > 0) {
     return fail("Review the highlighted project fields.", errors);
@@ -401,19 +451,28 @@ export async function updateProjectAction(
     return fail(auth.error ?? "Sign in is required.");
   }
 
+  if (primaryContactId) {
+    const { data: contactRow } = await supabase
+      .from("client_contacts")
+      .select("id, client_id")
+      .eq("id", primaryContactId)
+      .maybeSingle();
+
+    if (!contactRow || contactRow.client_id !== clientId) {
+      return fail("Review the highlighted project fields.", {
+        primary_contact_id: "Selected primary contact does not belong to the chosen client.",
+      });
+    }
+  }
+
   const patch: Record<string, string | number | null> = {
     project_code: projectCode,
     name,
     slug: slugify(`${projectCode} ${name}`),
     client_id: clientId,
-    primary_contact_id: optionalId(formData, "primary_contact_id"),
-    lifecycle_status: enumValue(
-      formData,
-      "lifecycle_status",
-      lifecycleStatuses,
-      "proposal",
-    ),
-    health_status: enumValue(formData, "health_status", healthStatuses, "on_track"),
+    primary_contact_id: primaryContactId,
+    lifecycle_status: lifecycleStatus ?? "proposal",
+    health_status: healthStatus ?? "on_track",
     summary: nullableValue(formData, "summary"),
     location: nullableValue(formData, "location"),
     start_date: startDate,
@@ -455,10 +514,39 @@ export async function createInvoiceAction(
   });
   const issuedDate = optionalDate(formData, "issued_date", errors);
   const dueDate = optionalDate(formData, "due_date", errors);
-  const paidAt = optionalDate(formData, "paid_at", errors);
+  const rawPaidAt = optionalDate(formData, "paid_at", errors);
+
+  const status = requireEnumValue(
+    value(formData, "status"),
+    "status",
+    "Invoice status",
+    invoiceStatuses,
+    errors,
+    { default: "draft" },
+  );
+
+  const taxStatus = requireEnumValue(
+    value(formData, "tax_status"),
+    "tax_status",
+    "Tax status",
+    taxStatuses,
+    errors,
+    { default: "not_applicable" },
+  );
+
   const taxPercentage = numberValue(formData, "tax_percentage", "Tax percentage", errors, {
     min: 0,
   });
+
+  const dateOrderError = validateDateOrdering(issuedDate, dueDate);
+  if (dateOrderError) {
+    errors.due_date = "Due date cannot precede issued date.";
+  }
+
+  const paidResult = validatePaidStatus(status, rawPaidAt, "invoice");
+  if (paidResult.error) {
+    errors.paid_at = paidResult.error;
+  }
 
   if (Object.keys(errors).length > 0) {
     return fail("Review the highlighted invoice fields.", errors);
@@ -490,11 +578,11 @@ export async function createInvoiceAction(
       issued_date: issuedDate,
       due_date: dueDate,
       invoice_amount: amount ?? 0,
-      status: enumValue(formData, "status", invoiceStatuses, "draft"),
-      paid_at: paidAt,
+      status: status ?? "draft",
+      paid_at: paidResult.paidAt,
       tax_percentage: taxPercentage,
       tax_amount: taxAmount,
-      tax_status: enumValue(formData, "tax_status", taxStatuses, "not_applicable"),
+      tax_status: taxStatus ?? "not_applicable",
       notes: nullableValue(formData, "notes"),
       created_by: auth.userId,
       updated_by: auth.userId,
@@ -516,12 +604,6 @@ export async function updateInvoiceAction(
 ): Promise<FormActionState> {
   const errors: FieldErrors = {};
   const invoiceId = requireText(formData, "invoice_id", "Invoice", errors);
-  const originalProjectId = requireText(
-    formData,
-    "original_project_id",
-    "Original project",
-    errors,
-  );
   const projectId = requireText(formData, "project_id", "Project", errors);
   const invoiceNumber = requireText(formData, "invoice_number", "Invoice number", errors);
   const title = requireText(formData, "title", "Title", errors);
@@ -531,10 +613,39 @@ export async function updateInvoiceAction(
   });
   const issuedDate = optionalDate(formData, "issued_date", errors);
   const dueDate = optionalDate(formData, "due_date", errors);
-  const paidAt = optionalDate(formData, "paid_at", errors);
+  const rawPaidAt = optionalDate(formData, "paid_at", errors);
+
+  const status = requireEnumValue(
+    value(formData, "status"),
+    "status",
+    "Invoice status",
+    invoiceStatuses,
+    errors,
+    { default: "draft" },
+  );
+
+  const taxStatus = requireEnumValue(
+    value(formData, "tax_status"),
+    "tax_status",
+    "Tax status",
+    taxStatuses,
+    errors,
+    { default: "not_applicable" },
+  );
+
   const taxPercentage = numberValue(formData, "tax_percentage", "Tax percentage", errors, {
     min: 0,
   });
+
+  const dateOrderError = validateDateOrdering(issuedDate, dueDate);
+  if (dateOrderError) {
+    errors.due_date = "Due date cannot precede issued date.";
+  }
+
+  const paidResult = validatePaidStatus(status, rawPaidAt, "invoice");
+  if (paidResult.error) {
+    errors.paid_at = paidResult.error;
+  }
 
   if (Object.keys(errors).length > 0) {
     return fail("Review the highlighted invoice fields.", errors);
@@ -547,6 +658,17 @@ export async function updateInvoiceAction(
     return fail(auth.error ?? "Sign in is required.");
   }
 
+  const { data: existingInvoice } = await supabase
+    .from("invoices")
+    .select("id, project_id")
+    .eq("id", invoiceId)
+    .maybeSingle();
+
+  if (!existingInvoice) {
+    return fail("Invoice not found or access denied.");
+  }
+  const originalProjectId = existingInvoice.project_id;
+
   const projectResult = await getProjectClientId(supabase, projectId);
 
   if (!projectResult.data) {
@@ -556,7 +678,7 @@ export async function updateInvoiceAction(
   }
 
   const taxAmount = taxPercentage && amount ? (amount * taxPercentage) / 100 : 0;
-  const { error } = await supabase
+  const { data: updatedRows, error } = await supabase
     .from("invoices")
     .update({
       project_id: projectId,
@@ -566,18 +688,19 @@ export async function updateInvoiceAction(
       issued_date: issuedDate,
       due_date: dueDate,
       invoice_amount: amount ?? 0,
-      status: enumValue(formData, "status", invoiceStatuses, "draft"),
-      paid_at: paidAt,
+      status: status ?? "draft",
+      paid_at: paidResult.paidAt,
       tax_percentage: taxPercentage,
       tax_amount: taxAmount,
-      tax_status: enumValue(formData, "tax_status", taxStatuses, "not_applicable"),
+      tax_status: taxStatus ?? "not_applicable",
       notes: nullableValue(formData, "notes"),
       updated_by: auth.userId,
     })
-    .eq("id", invoiceId);
+    .eq("id", invoiceId)
+    .select("id, project_id");
 
-  if (error) {
-    return fail(error.message);
+  if (error || !updatedRows || updatedRows.length === 0) {
+    return fail(error?.message ?? "Unable to update invoice.");
   }
 
   revalidateWorkspace(originalProjectId);
@@ -600,10 +723,34 @@ export async function createVendorObligationAction(
     min: 0,
   });
   const dueDate = optionalDate(formData, "due_date", errors);
-  const paidAt = optionalDate(formData, "paid_at", errors);
+  const rawPaidAt = optionalDate(formData, "paid_at", errors);
+
+  const status = requireEnumValue(
+    value(formData, "status"),
+    "status",
+    "Obligation status",
+    vendorObligationStatuses,
+    errors,
+    { default: "planned" },
+  );
+
+  const taxStatus = requireEnumValue(
+    value(formData, "tax_status"),
+    "tax_status",
+    "Tax status",
+    taxStatuses,
+    errors,
+    { default: "not_applicable" },
+  );
+
   const taxPercentage = numberValue(formData, "tax_percentage", "Tax percentage", errors, {
     min: 0,
   });
+
+  const paidResult = validatePaidStatus(status, rawPaidAt, "vendor obligation");
+  if (paidResult.error) {
+    errors.paid_at = paidResult.error;
+  }
 
   if (vendorMode === "existing" && !existingVendorId) {
     errors.vendor_id = "Select an existing vendor or add a new one.";
@@ -669,11 +816,11 @@ export async function createVendorObligationAction(
       description: nullableValue(formData, "description"),
       due_date: dueDate,
       amount: amount ?? 0,
-      status: enumValue(formData, "status", vendorObligationStatuses, "planned"),
-      paid_at: paidAt,
+      status: status ?? "planned",
+      paid_at: paidResult.paidAt,
       tax_percentage: taxPercentage,
       tax_amount: taxAmount,
-      tax_status: enumValue(formData, "tax_status", taxStatuses, "not_applicable"),
+      tax_status: taxStatus ?? "not_applicable",
       notes: nullableValue(formData, "notes"),
       created_by: auth.userId,
       updated_by: auth.userId,
@@ -695,12 +842,6 @@ export async function updateVendorObligationAction(
 ): Promise<FormActionState> {
   const errors: FieldErrors = {};
   const obligationId = requireText(formData, "obligation_id", "Vendor obligation", errors);
-  const originalProjectId = requireText(
-    formData,
-    "original_project_id",
-    "Original project",
-    errors,
-  );
   const projectId = requireText(formData, "project_id", "Project", errors);
   const vendorId = requireText(formData, "vendor_id", "Vendor", errors);
   const title = requireText(formData, "title", "Title", errors);
@@ -709,10 +850,34 @@ export async function updateVendorObligationAction(
     min: 0,
   });
   const dueDate = optionalDate(formData, "due_date", errors);
-  const paidAt = optionalDate(formData, "paid_at", errors);
+  const rawPaidAt = optionalDate(formData, "paid_at", errors);
+
+  const status = requireEnumValue(
+    value(formData, "status"),
+    "status",
+    "Obligation status",
+    vendorObligationStatuses,
+    errors,
+    { default: "planned" },
+  );
+
+  const taxStatus = requireEnumValue(
+    value(formData, "tax_status"),
+    "tax_status",
+    "Tax status",
+    taxStatuses,
+    errors,
+    { default: "not_applicable" },
+  );
+
   const taxPercentage = numberValue(formData, "tax_percentage", "Tax percentage", errors, {
     min: 0,
   });
+
+  const paidResult = validatePaidStatus(status, rawPaidAt, "vendor obligation");
+  if (paidResult.error) {
+    errors.paid_at = paidResult.error;
+  }
 
   if (Object.keys(errors).length > 0) {
     return fail("Review the highlighted vendor obligation fields.", errors);
@@ -725,6 +890,17 @@ export async function updateVendorObligationAction(
     return fail(auth.error ?? "Sign in is required.");
   }
 
+  const { data: existingObligation } = await supabase
+    .from("vendor_obligations")
+    .select("id, project_id")
+    .eq("id", obligationId)
+    .maybeSingle();
+
+  if (!existingObligation) {
+    return fail("Vendor obligation not found or access denied.");
+  }
+  const originalProjectId = existingObligation.project_id;
+
   const projectResult = await getProjectClientId(supabase, projectId);
 
   if (!projectResult.data) {
@@ -734,7 +910,7 @@ export async function updateVendorObligationAction(
   }
 
   const taxAmount = taxPercentage && amount ? (amount * taxPercentage) / 100 : 0;
-  const { error } = await supabase
+  const { data: updatedRows, error } = await supabase
     .from("vendor_obligations")
     .update({
       project_id: projectId,
@@ -743,18 +919,19 @@ export async function updateVendorObligationAction(
       description: nullableValue(formData, "description"),
       due_date: dueDate,
       amount: amount ?? 0,
-      status: enumValue(formData, "status", vendorObligationStatuses, "planned"),
-      paid_at: paidAt,
+      status: status ?? "planned",
+      paid_at: paidResult.paidAt,
       tax_percentage: taxPercentage,
       tax_amount: taxAmount,
-      tax_status: enumValue(formData, "tax_status", taxStatuses, "not_applicable"),
+      tax_status: taxStatus ?? "not_applicable",
       notes: nullableValue(formData, "notes"),
       updated_by: auth.userId,
     })
-    .eq("id", obligationId);
+    .eq("id", obligationId)
+    .select("id, project_id");
 
-  if (error) {
-    return fail(error.message);
+  if (error || !updatedRows || updatedRows.length === 0) {
+    return fail(error?.message ?? "Unable to update vendor obligation.");
   }
 
   revalidateWorkspace(originalProjectId);
@@ -769,12 +946,25 @@ export async function createDocumentAction(
   const errors: FieldErrors = {};
   const projectId = requireText(formData, "project_id", "Project", errors);
   const title = requireText(formData, "title", "Title", errors);
-  const sourceType = enumValue(
-    formData,
+
+  const sourceType = requireEnumValue(
+    value(formData, "source_type"),
     "source_type",
+    "Source type",
     documentSourceTypes,
-    "external_link",
+    errors,
+    { default: "external_link" },
   );
+
+  const category = requireEnumValue(
+    value(formData, "category"),
+    "category",
+    "Document category",
+    documentCategories,
+    errors,
+    { default: "support_document" },
+  );
+
   const filePath = nullableValue(formData, "file_path");
   const externalUrl = nullableValue(formData, "external_url");
   const documentDate = optionalDate(formData, "document_date", errors);
@@ -788,10 +978,9 @@ export async function createDocumentAction(
   }
 
   if (externalUrl) {
-    try {
-      new URL(externalUrl);
-    } catch {
-      errors.external_url = "Use a valid URL.";
+    const urlError = validateExternalUrl(externalUrl);
+    if (urlError) {
+      errors.external_url = urlError;
     }
   }
 
@@ -819,8 +1008,8 @@ export async function createDocumentAction(
     .insert({
       project_id: projectId,
       title,
-      category: enumValue(formData, "category", documentCategories, "support_document"),
-      source_type: sourceType,
+      category: category ?? "support_document",
+      source_type: sourceType ?? "external_link",
       file_path: sourceType === "file" ? filePath : null,
       external_url: sourceType === "external_link" ? externalUrl : null,
       linked_entity_type: "project",
@@ -847,20 +1036,27 @@ export async function updateDocumentAction(
 ): Promise<FormActionState> {
   const errors: FieldErrors = {};
   const documentId = requireText(formData, "document_id", "Document", errors);
-  const originalProjectId = requireText(
-    formData,
-    "original_project_id",
-    "Original project",
-    errors,
-  );
   const projectId = requireText(formData, "project_id", "Project", errors);
   const title = requireText(formData, "title", "Title", errors);
-  const sourceType = enumValue(
-    formData,
+
+  const sourceType = requireEnumValue(
+    value(formData, "source_type"),
     "source_type",
+    "Source type",
     documentSourceTypes,
-    "external_link",
+    errors,
+    { default: "external_link" },
   );
+
+  const category = requireEnumValue(
+    value(formData, "category"),
+    "category",
+    "Document category",
+    documentCategories,
+    errors,
+    { default: "support_document" },
+  );
+
   const filePath = nullableValue(formData, "file_path");
   const externalUrl = nullableValue(formData, "external_url");
   const documentDate = optionalDate(formData, "document_date", errors);
@@ -874,10 +1070,9 @@ export async function updateDocumentAction(
   }
 
   if (externalUrl) {
-    try {
-      new URL(externalUrl);
-    } catch {
-      errors.external_url = "Use a valid URL.";
+    const urlError = validateExternalUrl(externalUrl);
+    if (urlError) {
+      errors.external_url = urlError;
     }
   }
 
@@ -892,6 +1087,17 @@ export async function updateDocumentAction(
     return fail(auth.error ?? "Sign in is required.");
   }
 
+  const { data: existingDocument } = await supabase
+    .from("documents")
+    .select("id, project_id")
+    .eq("id", documentId)
+    .maybeSingle();
+
+  if (!existingDocument) {
+    return fail("Document not found or access denied.");
+  }
+  const originalProjectId = existingDocument.project_id;
+
   const projectResult = await getProjectClientId(supabase, projectId);
 
   if (!projectResult.data) {
@@ -900,13 +1106,13 @@ export async function updateDocumentAction(
     });
   }
 
-  const { error } = await supabase
+  const { data: updatedRows, error } = await supabase
     .from("documents")
     .update({
       project_id: projectId,
       title,
-      category: enumValue(formData, "category", documentCategories, "support_document"),
-      source_type: sourceType,
+      category: category ?? "support_document",
+      source_type: sourceType ?? "external_link",
       file_path: sourceType === "file" ? filePath : null,
       external_url: sourceType === "external_link" ? externalUrl : null,
       linked_entity_type: "project",
@@ -915,10 +1121,11 @@ export async function updateDocumentAction(
       description: nullableValue(formData, "description"),
       updated_by: auth.userId,
     })
-    .eq("id", documentId);
+    .eq("id", documentId)
+    .select("id, project_id");
 
-  if (error) {
-    return fail(error.message);
+  if (error || !updatedRows || updatedRows.length === 0) {
+    return fail(error?.message ?? "Unable to update document.");
   }
 
   revalidateWorkspace(originalProjectId);
@@ -934,6 +1141,15 @@ export async function createProjectNoteAction(
   const projectId = requireText(formData, "project_id", "Project", errors);
   const body = requireText(formData, "body", "Note body", errors);
   const notedAt = optionalDateTime(formData, "noted_at", errors);
+
+  const noteType = requireEnumValue(
+    value(formData, "note_type"),
+    "note_type",
+    "Note type",
+    noteTypes,
+    errors,
+    { default: "meeting_note" },
+  );
 
   if (Object.keys(errors).length > 0) {
     return fail("Review the highlighted note fields.", errors);
@@ -957,7 +1173,7 @@ export async function createProjectNoteAction(
   const { data: note, error } = await supabase.rpc("create_note_with_activity", {
     p_project_id: projectId,
     p_body: body,
-    p_note_type: enumValue(formData, "note_type", noteTypes, "meeting_note"),
+    p_note_type: noteType ?? "meeting_note",
     p_title: nullableValue(formData, "title"),
     p_linked_entity_type: "project",
     p_linked_entity_id: projectId,
@@ -982,6 +1198,15 @@ export async function updateProjectNoteAction(
   const body = requireText(formData, "body", "Note body", errors);
   const notedAt = optionalDateTime(formData, "noted_at", errors);
 
+  const noteType = requireEnumValue(
+    value(formData, "note_type"),
+    "note_type",
+    "Note type",
+    noteTypes,
+    errors,
+    { default: "meeting_note" },
+  );
+
   if (Object.keys(errors).length > 0) {
     return fail("Review the highlighted note fields.", errors);
   }
@@ -993,6 +1218,16 @@ export async function updateProjectNoteAction(
     return fail(auth.error ?? "Sign in is required.");
   }
 
+  const { data: existingNote } = await supabase
+    .from("notes")
+    .select("id, project_id")
+    .eq("id", noteId)
+    .maybeSingle();
+
+  if (!existingNote) {
+    return fail("Project note not found or access denied.");
+  }
+
   const projectResult = await getProjectClientId(supabase, projectId);
 
   if (!projectResult.data) {
@@ -1001,22 +1236,23 @@ export async function updateProjectNoteAction(
     });
   }
 
-  const { error } = await supabase
+  const { data: updatedRows, error } = await supabase
     .from("notes")
     .update({
       title: nullableValue(formData, "title"),
       body,
-      note_type: enumValue(formData, "note_type", noteTypes, "meeting_note"),
+      note_type: noteType ?? "meeting_note",
       linked_entity_type: "project",
       linked_entity_id: projectId,
       noted_at: notedAt ?? new Date().toISOString(),
       updated_by: auth.userId,
     })
     .eq("id", noteId)
-    .eq("project_id", projectId);
+    .eq("project_id", projectId)
+    .select("id");
 
-  if (error) {
-    return fail(error.message);
+  if (error || !updatedRows || updatedRows.length === 0) {
+    return fail(error?.message ?? "Unable to update project note.");
   }
 
   revalidateWorkspace(projectId);

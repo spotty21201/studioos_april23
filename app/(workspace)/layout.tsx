@@ -13,7 +13,7 @@ export default async function WorkspaceLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   const authState = await getServerAuthState();
 
-  if (authState.authEnabled && !authState.isAuthenticated) {
+  if (!authState.canAccessWorkspace) {
     redirect("/login");
   }
 

@@ -31,8 +31,8 @@ export type FallbackStudioOsSource = {
 
 const fallbackViewerProfile: ProfileRow = {
   id: "00000000-0000-4000-8000-000000000001",
-  email: "principal-preview@aimstudio.id",
-  full_name: "AIM Principal Preview",
+  email: "principal-preview@hdadesign.id",
+  full_name: "HDA Principal Preview",
   role: "principal",
   is_active: true,
   created_at: "2026-04-22T08:00:00.000Z",
@@ -41,7 +41,7 @@ const fallbackViewerProfile: ProfileRow = {
 
 const fallbackStudioProfile: StudioProfileRow = {
   id: "10000000-0000-4000-8000-000000000001",
-  studio_name: "AIM",
+  studio_name: "HDA",
   default_currency: "IDR",
   timezone: "Asia/Jakarta",
   created_at: "2026-04-22T08:00:00.000Z",
@@ -51,20 +51,19 @@ const fallbackStudioProfile: StudioProfileRow = {
 const fallbackProjects: ProjectRecordRow[] = [
   {
     id: "20000000-0000-4000-8000-000000000001",
-    project_code: "AIM-26014",
-    name: "Bandung Creative Hub Expansion",
-    slug: "bandung-creative-hub-expansion",
+    project_code: "HDA-26001",
+    name: "Lippo Pekanbaru 36 ha",
+    slug: "lippo-pekanbaru-36-ha",
     client_id: "30000000-0000-4000-8000-000000000001",
     primary_contact_id: "40000000-0000-4000-8000-000000000001",
     lifecycle_status: "active",
     health_status: "watch",
-    summary:
-      "Permit packaging is nearly ready, but one external structural review remains open and leadership follow-up is required on the overdue milestone invoice.",
-    location: "Bandung, Indonesia",
+    summary: "Master planning and architectural design for 36 ha Lippo Pekanbaru development.",
+    location: "Pekanbaru, Riau",
     start_date: "2026-01-12",
     target_end_date: "2026-07-10",
     completed_at: null,
-    contract_value: 18600000000,
+    contract_value: 125000000,
     currency: "IDR",
     project_owner_id: "00000000-0000-4000-8000-000000000002",
     last_reviewed_at: "2026-04-22T02:10:00.000Z",
@@ -74,37 +73,36 @@ const fallbackProjects: ProjectRecordRow[] = [
     updated_by: null,
     client: {
       id: "30000000-0000-4000-8000-000000000001",
-      name: "Bandung Urban Development",
+      name: "Lippo Group",
     },
     primary_contact: {
       id: "40000000-0000-4000-8000-000000000001",
       full_name: "Maya Puspa",
-      email: "maya@bandungud.id",
-      job_title: "Head of Development",
+      email: "maya@lippo.com",
+      job_title: "Development Director",
     },
     project_owner: {
       id: "00000000-0000-4000-8000-000000000002",
-      full_name: "Ria Asyurani",
-      email: "ria@aimstudio.id",
+      full_name: "Doddy",
+      email: "doddy@hda.design",
       role: "director",
     },
   },
   {
     id: "20000000-0000-4000-8000-000000000002",
-    project_code: "AIM-26011",
-    name: "West Java Design Center",
-    slug: "west-java-design-center",
-    client_id: "30000000-0000-4000-8000-000000000002",
-    primary_contact_id: "40000000-0000-4000-8000-000000000002",
+    project_code: "HDA-26002",
+    name: "Lippo Puncak 18 ha",
+    slug: "lippo-puncak-18-ha",
+    client_id: "30000000-0000-4000-8000-000000000001",
+    primary_contact_id: "40000000-0000-4000-8000-000000000001",
     lifecycle_status: "active",
     health_status: "on_track",
-    summary:
-      "Tender packaging and consultant coordination are progressing cleanly with no open receivable risk.",
-    location: "Bandung, Indonesia",
+    summary: "Resort master plan and landscape design for 18 ha Lippo Puncak site.",
+    location: "Puncak, Jawa Barat",
     start_date: "2026-01-05",
     target_end_date: "2026-06-02",
     completed_at: null,
-    contract_value: 22400000000,
+    contract_value: 85000000,
     currency: "IDR",
     project_owner_id: "00000000-0000-4000-8000-000000000003",
     last_reviewed_at: "2026-04-21T08:30:00.000Z",
@@ -113,38 +111,37 @@ const fallbackProjects: ProjectRecordRow[] = [
     created_by: null,
     updated_by: null,
     client: {
-      id: "30000000-0000-4000-8000-000000000002",
-      name: "Provincial Design Council",
+      id: "30000000-0000-4000-8000-000000000001",
+      name: "Lippo Group",
     },
     primary_contact: {
-      id: "40000000-0000-4000-8000-000000000002",
-      full_name: "Raka Nugraha",
-      email: "raka@pdc.id",
-      job_title: "Program Lead",
+      id: "40000000-0000-4000-8000-000000000001",
+      full_name: "Maya Puspa",
+      email: "maya@lippo.com",
+      job_title: "Development Director",
     },
     project_owner: {
       id: "00000000-0000-4000-8000-000000000003",
-      full_name: "Luthfiyyah",
-      email: "luthfiyyah@aimstudio.id",
+      full_name: "Indri",
+      email: "indri@hda.design",
       role: "senior_associate",
     },
   },
   {
     id: "20000000-0000-4000-8000-000000000003",
-    project_code: "AIM-26017",
-    name: "Nusantara Living Lab",
-    slug: "nusantara-living-lab",
-    client_id: "30000000-0000-4000-8000-000000000003",
-    primary_contact_id: "40000000-0000-4000-8000-000000000003",
+    project_code: "HDA-26003",
+    name: "Lippo Cikao 20 ha",
+    slug: "lippo-cikao-20-ha",
+    client_id: "30000000-0000-4000-8000-000000000001",
+    primary_contact_id: "40000000-0000-4000-8000-000000000001",
     lifecycle_status: "on_hold",
     health_status: "at_risk",
-    summary:
-      "Commercial staging remains unresolved. The project is paused, one invoice is overdue, and a vendor obligation has crossed its due date.",
-    location: "IKN, Indonesia",
+    summary: "Mixed-use concept development and site layout for 20 ha Lippo Cikao.",
+    location: "Purwakarta, Jawa Barat",
     start_date: "2026-02-02",
     target_end_date: "2026-08-14",
     completed_at: null,
-    contract_value: 9300000000,
+    contract_value: 95000000,
     currency: "IDR",
     project_owner_id: "00000000-0000-4000-8000-000000000004",
     last_reviewed_at: "2026-04-01T09:00:00.000Z",
@@ -153,51 +150,99 @@ const fallbackProjects: ProjectRecordRow[] = [
     created_by: null,
     updated_by: null,
     client: {
-      id: "30000000-0000-4000-8000-000000000003",
-      name: "Kolabs Ecosystem",
+      id: "30000000-0000-4000-8000-000000000001",
+      name: "Lippo Group",
     },
     primary_contact: {
-      id: "40000000-0000-4000-8000-000000000003",
-      full_name: "Tania Arundina",
-      email: "tania@kolabs.id",
-      job_title: "Innovation Partnerships",
+      id: "40000000-0000-4000-8000-000000000001",
+      full_name: "Maya Puspa",
+      email: "maya@lippo.com",
+      job_title: "Development Director",
     },
     project_owner: {
       id: "00000000-0000-4000-8000-000000000004",
-      full_name: "Astri Endawati",
-      email: "astri@aimstudio.id",
+      full_name: "Mira",
+      email: "mira@hda.design",
       role: "operations",
     },
   },
   {
     id: "20000000-0000-4000-8000-000000000004",
-    project_code: "AIM-25022",
-    name: "Jakarta HQ Refresh",
-    slug: "jakarta-hq-refresh",
-    client_id: "30000000-0000-4000-8000-000000000004",
-    primary_contact_id: null,
+    project_code: "HDA-26004",
+    name: "KLH Sentul 100 ha",
+    slug: "klh-sentul-100-ha",
+    client_id: "30000000-0000-4000-8000-000000000002",
+    primary_contact_id: "40000000-0000-4000-8000-000000000002",
+    lifecycle_status: "proposal",
+    health_status: "on_track",
+    summary: "Township master plan and environmental framework for 100 ha KLH Sentul.",
+    location: "Sentul, Bogor",
+    start_date: "2026-03-01",
+    target_end_date: "2026-12-31",
+    completed_at: null,
+    contract_value: 150000000,
+    currency: "IDR",
+    project_owner_id: "00000000-0000-4000-8000-000000000002",
+    last_reviewed_at: "2026-04-15T08:00:00.000Z",
+    created_at: "2026-03-01T02:00:00.000Z",
+    updated_at: "2026-04-15T08:00:00.000Z",
+    created_by: null,
+    updated_by: null,
+    client: {
+      id: "30000000-0000-4000-8000-000000000002",
+      name: "KLH Group",
+    },
+    primary_contact: {
+      id: "40000000-0000-4000-8000-000000000002",
+      full_name: "Budi Santoso",
+      email: "budi@klh.co.id",
+      job_title: "Project Lead",
+    },
+    project_owner: {
+      id: "00000000-0000-4000-8000-000000000002",
+      full_name: "Doddy",
+      email: "doddy@hda.design",
+      role: "director",
+    },
+  },
+  {
+    id: "20000000-0000-4000-8000-000000000005",
+    project_code: "HDA-26005",
+    name: "YPT Purwokerto 30 ha",
+    slug: "ypt-purwokerto-30-ha",
+    client_id: "30000000-0000-4000-8000-000000000003",
+    primary_contact_id: "40000000-0000-4000-8000-000000000003",
     lifecycle_status: "completed",
     health_status: "on_track",
-    summary:
-      "Operational work is complete. Administrative closeout remains limited to final payment and archive release.",
-    location: "Jakarta, Indonesia",
+    summary: "Educational campus master plan and facility guidelines for 30 ha YPT Purwokerto.",
+    location: "Purwokerto, Jawa Tengah",
     start_date: "2025-10-18",
     target_end_date: "2026-04-30",
     completed_at: "2026-04-20",
-    contract_value: 7600000000,
+    contract_value: 110000000,
     currency: "IDR",
-    project_owner_id: null,
+    project_owner_id: "00000000-0000-4000-8000-000000000003",
     last_reviewed_at: "2026-04-20T03:20:00.000Z",
     created_at: "2025-10-18T02:00:00.000Z",
     updated_at: "2026-04-20T03:20:00.000Z",
     created_by: null,
     updated_by: null,
     client: {
-      id: "30000000-0000-4000-8000-000000000004",
-      name: "Apex Advisory",
+      id: "30000000-0000-4000-8000-000000000003",
+      name: "Yayasan Pendidikan Telkom",
     },
-    primary_contact: null,
-    project_owner: null,
+    primary_contact: {
+      id: "40000000-0000-4000-8000-000000000003",
+      full_name: "Rina Wijaya",
+      email: "rina@ypt.or.id",
+      job_title: "Estate Director",
+    },
+    project_owner: {
+      id: "00000000-0000-4000-8000-000000000003",
+      full_name: "Indri",
+      email: "indri@hda.design",
+      role: "senior_associate",
+    },
   },
 ];
 
@@ -206,15 +251,15 @@ const fallbackInvoices: InvoiceRecordRow[] = [
     id: "50000000-0000-4000-8000-000000000001",
     project_id: fallbackProjects[0].id,
     client_id: fallbackProjects[0].client_id,
-    invoice_number: "INV-26041",
-    title: "Permit package milestone",
+    invoice_number: "INV-26001",
+    title: "Master Plan Concept Milestone",
     issued_date: "2026-03-28",
     due_date: "2026-04-12",
-    invoice_amount: 1400000000,
+    invoice_amount: 40000000,
     status: "overdue",
     paid_at: null,
     tax_percentage: 11,
-    tax_amount: 154000000,
+    tax_amount: 4400000,
     tax_status: "unpaid",
     notes: null,
     created_at: "2026-03-28T02:00:00.000Z",
@@ -231,17 +276,44 @@ const fallbackInvoices: InvoiceRecordRow[] = [
   },
   {
     id: "50000000-0000-4000-8000-000000000002",
+    project_id: fallbackProjects[1].id,
+    client_id: fallbackProjects[1].client_id,
+    invoice_number: "INV-26002",
+    title: "Resort Layout Approval Stage",
+    issued_date: "2026-04-01",
+    due_date: "2026-04-25",
+    invoice_amount: 30000000,
+    status: "issued",
+    paid_at: null,
+    tax_percentage: 11,
+    tax_amount: 3300000,
+    tax_status: "unpaid",
+    notes: null,
+    created_at: "2026-04-01T02:00:00.000Z",
+    updated_at: "2026-04-01T02:00:00.000Z",
+    created_by: null,
+    updated_by: null,
+    project: {
+      id: fallbackProjects[1].id,
+      project_code: fallbackProjects[1].project_code,
+      name: fallbackProjects[1].name,
+      slug: fallbackProjects[1].slug,
+    },
+    client: fallbackProjects[1].client,
+  },
+  {
+    id: "50000000-0000-4000-8000-000000000003",
     project_id: fallbackProjects[2].id,
     client_id: fallbackProjects[2].client_id,
-    invoice_number: "INV-26044",
-    title: "Concept framing stage",
+    invoice_number: "INV-26003",
+    title: "Concept Framing Phase",
     issued_date: "2026-03-30",
     due_date: "2026-04-15",
-    invoice_amount: 1300000000,
+    invoice_amount: 35000000,
     status: "overdue",
     paid_at: null,
     tax_percentage: 11,
-    tax_amount: 143000000,
+    tax_amount: 3850000,
     tax_status: "unpaid",
     notes: null,
     created_at: "2026-03-30T02:00:00.000Z",
@@ -257,31 +329,31 @@ const fallbackInvoices: InvoiceRecordRow[] = [
     client: fallbackProjects[2].client,
   },
   {
-    id: "50000000-0000-4000-8000-000000000003",
-    project_id: fallbackProjects[3].id,
-    client_id: fallbackProjects[3].client_id,
-    invoice_number: "INV-26046",
-    title: "Final closeout certificate",
-    issued_date: "2026-04-10",
-    due_date: "2026-04-30",
-    invoice_amount: 700000000,
-    status: "issued",
-    paid_at: null,
+    id: "50000000-0000-4000-8000-000000000004",
+    project_id: fallbackProjects[4].id,
+    client_id: fallbackProjects[4].client_id,
+    invoice_number: "INV-26005",
+    title: "Final Campus Closeout Certificate",
+    issued_date: "2026-04-05",
+    due_date: "2026-04-20",
+    invoice_amount: 40000000,
+    status: "paid",
+    paid_at: "2026-04-15",
     tax_percentage: 11,
-    tax_amount: 77000000,
-    tax_status: "unpaid",
+    tax_amount: 4400000,
+    tax_status: "paid",
     notes: null,
-    created_at: "2026-04-10T02:00:00.000Z",
-    updated_at: "2026-04-20T03:00:00.000Z",
+    created_at: "2026-04-05T02:00:00.000Z",
+    updated_at: "2026-04-15T03:00:00.000Z",
     created_by: null,
     updated_by: null,
     project: {
-      id: fallbackProjects[3].id,
-      project_code: fallbackProjects[3].project_code,
-      name: fallbackProjects[3].name,
-      slug: fallbackProjects[3].slug,
+      id: fallbackProjects[4].id,
+      project_code: fallbackProjects[4].project_code,
+      name: fallbackProjects[4].name,
+      slug: fallbackProjects[4].slug,
     },
-    client: fallbackProjects[3].client,
+    client: fallbackProjects[4].client,
   },
 ];
 
@@ -290,14 +362,14 @@ const fallbackVendorObligations: VendorObligationRecordRow[] = [
     id: "60000000-0000-4000-8000-000000000001",
     project_id: fallbackProjects[0].id,
     vendor_id: "70000000-0000-4000-8000-000000000001",
-    title: "Structural review package",
+    title: "Structural survey package",
     description: null,
     due_date: "2026-04-24",
-    amount: 480000000,
+    amount: 15000000,
     status: "due",
     paid_at: null,
     tax_percentage: 11,
-    tax_amount: 52800000,
+    tax_amount: 1650000,
     tax_status: "unpaid",
     notes: null,
     created_at: "2026-04-09T02:00:00.000Z",
@@ -317,49 +389,20 @@ const fallbackVendorObligations: VendorObligationRecordRow[] = [
   },
   {
     id: "60000000-0000-4000-8000-000000000002",
-    project_id: fallbackProjects[1].id,
-    vendor_id: "70000000-0000-4000-8000-000000000002",
-    title: "MEP coordination support",
-    description: null,
-    due_date: "2026-04-28",
-    amount: 640000000,
-    status: "due",
-    paid_at: null,
-    tax_percentage: 11,
-    tax_amount: 70400000,
-    tax_status: "unpaid",
-    notes: null,
-    created_at: "2026-04-08T02:00:00.000Z",
-    updated_at: "2026-04-20T05:00:00.000Z",
-    created_by: null,
-    updated_by: null,
-    project: {
-      id: fallbackProjects[1].id,
-      project_code: fallbackProjects[1].project_code,
-      name: fallbackProjects[1].name,
-      slug: fallbackProjects[1].slug,
-    },
-    vendor: {
-      id: "70000000-0000-4000-8000-000000000002",
-      name: "Studio Grid MEP",
-    },
-  },
-  {
-    id: "60000000-0000-4000-8000-000000000003",
     project_id: fallbackProjects[2].id,
-    vendor_id: "70000000-0000-4000-8000-000000000003",
-    title: "Narrative visualization package",
+    vendor_id: "70000000-0000-4000-8000-000000000002",
+    title: "Topographic mapping report",
     description: null,
-    due_date: "2026-04-16",
-    amount: 220000000,
+    due_date: "2026-04-10",
+    amount: 12000000,
     status: "overdue",
     paid_at: null,
     tax_percentage: 11,
-    tax_amount: 24200000,
+    tax_amount: 1320000,
     tax_status: "unpaid",
     notes: null,
-    created_at: "2026-04-01T02:00:00.000Z",
-    updated_at: "2026-04-16T05:00:00.000Z",
+    created_at: "2026-03-15T02:00:00.000Z",
+    updated_at: "2026-04-11T05:00:00.000Z",
     created_by: null,
     updated_by: null,
     project: {
@@ -369,8 +412,8 @@ const fallbackVendorObligations: VendorObligationRecordRow[] = [
       slug: fallbackProjects[2].slug,
     },
     vendor: {
-      id: "70000000-0000-4000-8000-000000000003",
-      name: "Ruang Narasi",
+      id: "70000000-0000-4000-8000-000000000002",
+      name: "GeoSurvey Utama",
     },
   },
 ];
@@ -379,17 +422,17 @@ const fallbackDocuments: DocumentRecordRow[] = [
   {
     id: "80000000-0000-4000-8000-000000000001",
     project_id: fallbackProjects[0].id,
-    title: "Client agreement addendum",
+    title: "Lippo Pekanbaru 36 ha Master Plan Agreement",
     category: "contract",
-    source_type: "file",
-    file_path: "documents/aim-26014/client-agreement-addendum.pdf",
-    external_url: null,
+    source_type: "external_link",
+    file_path: null,
+    external_url: "https://hda-docs.example.com/contracts/hda-26001-master-plan.pdf",
     linked_entity_type: "project",
     linked_entity_id: fallbackProjects[0].id,
-    document_date: "2026-04-04",
-    description: null,
-    created_at: "2026-04-04T02:00:00.000Z",
-    updated_at: "2026-04-20T08:00:00.000Z",
+    document_date: "2026-01-10",
+    description: "Signed master planning and architectural design agreement.",
+    created_at: "2026-01-10T02:00:00.000Z",
+    updated_at: "2026-01-10T02:00:00.000Z",
     created_by: null,
     updated_by: null,
     project: {
@@ -402,17 +445,17 @@ const fallbackDocuments: DocumentRecordRow[] = [
   {
     id: "80000000-0000-4000-8000-000000000002",
     project_id: fallbackProjects[1].id,
-    title: "Tender issue drawing set",
-    category: "deliverable",
-    source_type: "file",
-    file_path: "documents/aim-26011/tender-issue-drawing-set.pdf",
-    external_url: null,
+    title: "Lippo Puncak 18 ha Resort Concept Brief",
+    category: "support_document",
+    source_type: "external_link",
+    file_path: null,
+    external_url: "https://hda-docs.example.com/briefs/hda-26002-concept-brief.pdf",
     linked_entity_type: "project",
     linked_entity_id: fallbackProjects[1].id,
-    document_date: "2026-04-18",
-    description: null,
-    created_at: "2026-04-18T02:00:00.000Z",
-    updated_at: "2026-04-21T09:20:00.000Z",
+    document_date: "2026-01-15",
+    description: "Landscape and resort design vision document.",
+    created_at: "2026-01-15T02:00:00.000Z",
+    updated_at: "2026-01-15T02:00:00.000Z",
     created_by: null,
     updated_by: null,
     project: {
@@ -425,17 +468,17 @@ const fallbackDocuments: DocumentRecordRow[] = [
   {
     id: "80000000-0000-4000-8000-000000000003",
     project_id: fallbackProjects[2].id,
-    title: "Commercial clarification memo",
-    category: "client_document",
+    title: "Lippo Cikao 20 ha Site Layout Package",
+    category: "deliverable",
     source_type: "external_link",
     file_path: null,
-    external_url: "https://example.com/nusantara-commercial-clarification",
+    external_url: "https://hda-docs.example.com/deliverables/hda-26003-site-layout.pdf",
     linked_entity_type: "project",
     linked_entity_id: fallbackProjects[2].id,
-    document_date: "2026-04-17",
-    description: null,
-    created_at: "2026-04-17T02:00:00.000Z",
-    updated_at: "2026-04-18T01:40:00.000Z",
+    document_date: "2026-02-10",
+    description: "Concept site layout and zoning framework.",
+    created_at: "2026-02-10T02:00:00.000Z",
+    updated_at: "2026-02-10T02:00:00.000Z",
     created_by: null,
     updated_by: null,
     project: {
@@ -448,17 +491,17 @@ const fallbackDocuments: DocumentRecordRow[] = [
   {
     id: "80000000-0000-4000-8000-000000000004",
     project_id: fallbackProjects[3].id,
-    title: "Final invoice backup",
-    category: "invoice_attachment",
-    source_type: "file",
-    file_path: "documents/aim-25022/final-invoice-backup.pdf",
-    external_url: null,
-    linked_entity_type: "invoice",
-    linked_entity_id: fallbackInvoices[2].id,
-    document_date: "2026-04-10",
-    description: null,
-    created_at: "2026-04-10T02:00:00.000Z",
-    updated_at: "2026-04-20T03:00:00.000Z",
+    title: "KLH Sentul 100 ha Master Plan Proposal",
+    category: "proposal",
+    source_type: "external_link",
+    file_path: null,
+    external_url: "https://hda-docs.example.com/proposals/hda-26004-proposal.pdf",
+    linked_entity_type: "project",
+    linked_entity_id: fallbackProjects[3].id,
+    document_date: "2026-03-05",
+    description: "100 ha township master plan proposal framework.",
+    created_at: "2026-03-05T02:00:00.000Z",
+    updated_at: "2026-03-05T02:00:00.000Z",
     created_by: null,
     updated_by: null,
     project: {
@@ -468,6 +511,29 @@ const fallbackDocuments: DocumentRecordRow[] = [
       slug: fallbackProjects[3].slug,
     },
   },
+  {
+    id: "80000000-0000-4000-8000-000000000005",
+    project_id: fallbackProjects[4].id,
+    title: "YPT Purwokerto 30 ha Campus Guidelines",
+    category: "deliverable",
+    source_type: "external_link",
+    file_path: null,
+    external_url: "https://hda-docs.example.com/deliverables/hda-26005-campus-guidelines.pdf",
+    linked_entity_type: "project",
+    linked_entity_id: fallbackProjects[4].id,
+    document_date: "2026-04-18",
+    description: "Final campus master plan design guidelines.",
+    created_at: "2026-04-18T02:00:00.000Z",
+    updated_at: "2026-04-18T02:00:00.000Z",
+    created_by: null,
+    updated_by: null,
+    project: {
+      id: fallbackProjects[4].id,
+      project_code: fallbackProjects[4].project_code,
+      name: fallbackProjects[4].name,
+      slug: fallbackProjects[4].slug,
+    },
+  },
 ];
 
 const fallbackNotes: NoteRecordRow[] = [
@@ -475,15 +541,14 @@ const fallbackNotes: NoteRecordRow[] = [
     id: "90000000-0000-4000-8000-000000000001",
     project_id: fallbackProjects[0].id,
     author_id: "00000000-0000-4000-8000-000000000002",
-    title: "Permit risk remains external",
-    body:
-      "Structural review is still the gating item. Client is aligned, but the permit submission package should not be committed until consultant comments are integrated.",
-    note_type: "issue",
+    title: "Lippo Pekanbaru 36 ha Client Alignment",
+    body: "Client confirmed 36 ha phase 1 boundary and zoning approval timeline.",
+    note_type: "meeting_note",
     linked_entity_type: "project",
     linked_entity_id: fallbackProjects[0].id,
-    noted_at: "2026-04-22T02:10:00.000Z",
-    created_at: "2026-04-22T02:10:00.000Z",
-    updated_at: "2026-04-22T02:10:00.000Z",
+    noted_at: "2026-04-19T03:00:00.000Z",
+    created_at: "2026-04-19T03:00:00.000Z",
+    updated_at: "2026-04-19T03:00:00.000Z",
     created_by: null,
     updated_by: null,
     project: {
@@ -494,47 +559,18 @@ const fallbackNotes: NoteRecordRow[] = [
     },
     author: {
       id: "00000000-0000-4000-8000-000000000002",
-      full_name: "Ria Asyurani",
-      email: "ria@aimstudio.id",
+      full_name: "Doddy",
+      email: "doddy@hda.design",
       role: "director",
     },
   },
   {
     id: "90000000-0000-4000-8000-000000000002",
-    project_id: fallbackProjects[1].id,
-    author_id: "00000000-0000-4000-8000-000000000003",
-    title: "Tender packaging sequence confirmed",
-    body:
-      "Internal review agreed on a two-wave issue set. This keeps documentation calm without increasing client coordination overhead.",
-    note_type: "decision",
-    linked_entity_type: "project",
-    linked_entity_id: fallbackProjects[1].id,
-    noted_at: "2026-04-21T08:30:00.000Z",
-    created_at: "2026-04-21T08:30:00.000Z",
-    updated_at: "2026-04-21T08:30:00.000Z",
-    created_by: null,
-    updated_by: null,
-    project: {
-      id: fallbackProjects[1].id,
-      project_code: fallbackProjects[1].project_code,
-      name: fallbackProjects[1].name,
-      slug: fallbackProjects[1].slug,
-    },
-    author: {
-      id: "00000000-0000-4000-8000-000000000003",
-      full_name: "Luthfiyyah",
-      email: "luthfiyyah@aimstudio.id",
-      role: "senior_associate",
-    },
-  },
-  {
-    id: "90000000-0000-4000-8000-000000000003",
     project_id: fallbackProjects[2].id,
     author_id: "00000000-0000-4000-8000-000000000004",
-    title: "Client waiting on staging decision",
-    body:
-      "Commercial clarity remains the block. No additional design iteration should be released until land-use staging is confirmed.",
-    note_type: "follow_up",
+    title: "Lippo Cikao 20 ha Pause Notice",
+    body: "Commercial staging paused pending revised land use permit from regional authority.",
+    note_type: "issue",
     linked_entity_type: "project",
     linked_entity_id: fallbackProjects[2].id,
     noted_at: "2026-04-18T04:00:00.000Z",
@@ -550,8 +586,8 @@ const fallbackNotes: NoteRecordRow[] = [
     },
     author: {
       id: "00000000-0000-4000-8000-000000000004",
-      full_name: "Astri Endawati",
-      email: "astri@aimstudio.id",
+      full_name: "Mira",
+      email: "mira@hda.design",
       role: "operations",
     },
   },
@@ -559,17 +595,17 @@ const fallbackNotes: NoteRecordRow[] = [
 
 const fallbackActivityEvents: ActivityEventRecordRow[] = [
   {
-    id: "91000000-0000-4000-8000-000000000001",
+    id: "a0000000-0000-4000-8000-000000000001",
     project_id: fallbackProjects[0].id,
     actor_id: "00000000-0000-4000-8000-000000000002",
-    event_type: "project_status_changed",
-    entity_type: "project",
-    entity_id: fallbackProjects[0].id,
-    summary: "Project health moved to watch after structural review delay.",
-    metadata: {},
-    occurred_at: "2026-04-22T02:10:00.000Z",
-    created_at: "2026-04-22T02:10:00.000Z",
-    updated_at: "2026-04-22T02:10:00.000Z",
+    event_type: "note_created",
+    entity_type: "note",
+    entity_id: fallbackNotes[0].id,
+    summary: "Doddy logged a meeting note for Lippo Pekanbaru 36 ha.",
+    metadata: { note_type: "meeting_note" },
+    occurred_at: "2026-04-19T03:00:00.000Z",
+    created_at: "2026-04-19T03:00:00.000Z",
+    updated_at: "2026-04-19T03:00:00.000Z",
     project: {
       id: fallbackProjects[0].id,
       project_code: fallbackProjects[0].project_code,
@@ -578,48 +614,26 @@ const fallbackActivityEvents: ActivityEventRecordRow[] = [
     },
     actor: {
       id: "00000000-0000-4000-8000-000000000002",
-      full_name: "Ria Asyurani",
-      email: "ria@aimstudio.id",
+      full_name: "Doddy",
+      email: "doddy@hda.design",
       role: "director",
     },
   },
   {
-    id: "91000000-0000-4000-8000-000000000002",
-    project_id: fallbackProjects[1].id,
-    actor_id: "00000000-0000-4000-8000-000000000003",
-    event_type: "document_added",
-    entity_type: "document",
-    entity_id: fallbackDocuments[1].id,
-    summary: "Tender issue drawing set uploaded to the project record.",
-    metadata: {},
-    occurred_at: "2026-04-21T09:20:00.000Z",
-    created_at: "2026-04-21T09:20:00.000Z",
-    updated_at: "2026-04-21T09:20:00.000Z",
-    project: {
-      id: fallbackProjects[1].id,
-      project_code: fallbackProjects[1].project_code,
-      name: fallbackProjects[1].name,
-      slug: fallbackProjects[1].slug,
-    },
-    actor: {
-      id: "00000000-0000-4000-8000-000000000003",
-      full_name: "Luthfiyyah",
-      email: "luthfiyyah@aimstudio.id",
-      role: "senior_associate",
-    },
-  },
-  {
-    id: "91000000-0000-4000-8000-000000000003",
+    id: "a0000000-0000-4000-8000-000000000002",
     project_id: fallbackProjects[2].id,
-    actor_id: "00000000-0000-4000-8000-000000000001",
-    event_type: "invoice_status_changed",
-    entity_type: "invoice",
-    entity_id: fallbackInvoices[1].id,
-    summary: "Concept framing invoice is now overdue and requires client follow-up.",
-    metadata: {},
-    occurred_at: "2026-04-18T10:20:00.000Z",
-    created_at: "2026-04-18T10:20:00.000Z",
-    updated_at: "2026-04-18T10:20:00.000Z",
+    actor_id: "00000000-0000-4000-8000-000000000004",
+    event_type: "project_status_changed",
+    entity_type: "project",
+    entity_id: fallbackProjects[2].id,
+    summary: "Mira set Lippo Cikao 20 ha lifecycle status to on_hold.",
+    metadata: {
+      from: "active",
+      to: "on_hold",
+    },
+    occurred_at: "2026-04-18T04:00:00.000Z",
+    created_at: "2026-04-18T04:00:00.000Z",
+    updated_at: "2026-04-18T04:00:00.000Z",
     project: {
       id: fallbackProjects[2].id,
       project_code: fallbackProjects[2].project_code,
@@ -627,254 +641,184 @@ const fallbackActivityEvents: ActivityEventRecordRow[] = [
       slug: fallbackProjects[2].slug,
     },
     actor: {
-      id: fallbackViewerProfile.id,
-      full_name: fallbackViewerProfile.full_name,
-      email: fallbackViewerProfile.email,
-      role: fallbackViewerProfile.role,
+      id: "00000000-0000-4000-8000-000000000004",
+      full_name: "Mira",
+      email: "mira@hda.design",
+      role: "operations",
     },
-  },
-  {
-    id: "91000000-0000-4000-8000-000000000004",
-    project_id: fallbackProjects[3].id,
-    actor_id: null,
-    event_type: "note_created",
-    entity_type: "note",
-    entity_id: fallbackNotes[2].id,
-    summary: "Closeout note added covering final archive package and invoice timing.",
-    metadata: {},
-    occurred_at: "2026-04-20T03:20:00.000Z",
-    created_at: "2026-04-20T03:20:00.000Z",
-    updated_at: "2026-04-20T03:20:00.000Z",
-    project: {
-      id: fallbackProjects[3].id,
-      project_code: fallbackProjects[3].project_code,
-      name: fallbackProjects[3].name,
-      slug: fallbackProjects[3].slug,
-    },
-    actor: null,
   },
 ];
 
-function buildProjectFinanceSummaries(): ProjectFinanceSummaryRow[] {
-  return fallbackProjects.map((project) => {
-    const projectInvoices = fallbackInvoices.filter((invoice) => invoice.project_id === project.id);
-    const projectObligations = fallbackVendorObligations.filter(
-      (obligation) => obligation.project_id === project.id,
-    );
+const fallbackProjectFinanceSummaries: ProjectFinanceSummaryRow[] = [
+  {
+    project_id: fallbackProjects[0].id,
+    contract_value: 125000000,
+    total_invoiced: 40000000,
+    total_paid: 0,
+    outstanding_receivable: 40000000,
+    total_vendor_value: 15000000,
+    total_vendor_paid: 0,
+    outstanding_payable: 15000000,
+    total_tax_unpaid: 6050000,
+  },
+  {
+    project_id: fallbackProjects[1].id,
+    contract_value: 85000000,
+    total_invoiced: 30000000,
+    total_paid: 0,
+    outstanding_receivable: 30000000,
+    total_vendor_value: 10000000,
+    total_vendor_paid: 0,
+    outstanding_payable: 10000000,
+    total_tax_unpaid: 4400000,
+  },
+  {
+    project_id: fallbackProjects[2].id,
+    contract_value: 95000000,
+    total_invoiced: 35000000,
+    total_paid: 0,
+    outstanding_receivable: 35000000,
+    total_vendor_value: 12000000,
+    total_vendor_paid: 0,
+    outstanding_payable: 12000000,
+    total_tax_unpaid: 5170000,
+  },
+  {
+    project_id: fallbackProjects[3].id,
+    contract_value: 150000000,
+    total_invoiced: 50000000,
+    total_paid: 0,
+    outstanding_receivable: 0,
+    total_vendor_value: 20000000,
+    total_vendor_paid: 0,
+    outstanding_payable: 0,
+    total_tax_unpaid: 0,
+  },
+  {
+    project_id: fallbackProjects[4].id,
+    contract_value: 110000000,
+    total_invoiced: 40000000,
+    total_paid: 40000000,
+    outstanding_receivable: 0,
+    total_vendor_value: 15000000,
+    total_vendor_paid: 15000000,
+    outstanding_payable: 0,
+    total_tax_unpaid: 0,
+  },
+];
 
-    const totalInvoiced = projectInvoices.reduce(
-      (sum, invoice) => sum + invoice.invoice_amount,
-      0,
-    );
-    const totalPaid = projectInvoices
-      .filter((invoice) => invoice.status === "paid")
-      .reduce((sum, invoice) => sum + invoice.invoice_amount, 0);
-    const outstandingReceivable = projectInvoices
-      .filter((invoice) => invoice.status === "issued" || invoice.status === "overdue")
-      .reduce((sum, invoice) => sum + invoice.invoice_amount, 0);
-    const unpaidInvoiceTax = projectInvoices
-      .filter((invoice) => invoice.tax_status === "unpaid")
-      .reduce((sum, invoice) => sum + invoice.tax_amount, 0);
+const fallbackProjectAttentionItems: ProjectAttentionItemRow[] = [
+  {
+    attention_item_id: "att-101",
+    project_id: fallbackProjects[0].id,
+    project_code: fallbackProjects[0].project_code,
+    project_name: fallbackProjects[0].name,
+    client_name: "Lippo Group",
+    attention_label: "watch",
+    attention_summary: "Project health status is watch: layout approval and external survey review required.",
+    created_at: "2026-04-12T00:00:00.000Z",
+  },
+  {
+    attention_item_id: "att-102",
+    project_id: fallbackProjects[0].id,
+    project_code: fallbackProjects[0].project_code,
+    project_name: fallbackProjects[0].name,
+    client_name: "Lippo Group",
+    attention_label: "overdue_invoice",
+    attention_summary: "Invoice INV-26001 (Rp 40.000.000) is overdue since 2026-04-12.",
+    created_at: "2026-04-13T00:00:00.000Z",
+  },
+  {
+    attention_item_id: "att-103",
+    project_id: fallbackProjects[2].id,
+    project_code: fallbackProjects[2].project_code,
+    project_name: fallbackProjects[2].name,
+    client_name: "Lippo Group",
+    attention_label: "at_risk",
+    attention_summary: "Project health status is at_risk: commercial staging paused.",
+    created_at: "2026-04-15T00:00:00.000Z",
+  },
+  {
+    attention_item_id: "att-104",
+    project_id: fallbackProjects[2].id,
+    project_code: fallbackProjects[2].project_code,
+    project_name: fallbackProjects[2].name,
+    client_name: "Lippo Group",
+    attention_label: "overdue_invoice",
+    attention_summary: "Invoice INV-26003 (Rp 35.000.000) is overdue since 2026-04-15.",
+    created_at: "2026-04-16T00:00:00.000Z",
+  },
+  {
+    attention_item_id: "att-105",
+    project_id: fallbackProjects[2].id,
+    project_code: fallbackProjects[2].project_code,
+    project_name: fallbackProjects[2].name,
+    client_name: "Lippo Group",
+    attention_label: "unpaid_vendor",
+    attention_summary: "Vendor obligation VO-26003 (Rp 12.000.000) is overdue since 2026-04-10.",
+    created_at: "2026-04-11T00:00:00.000Z",
+  },
+];
 
-    const totalVendorValue = projectObligations.reduce(
-      (sum, obligation) => sum + obligation.amount,
-      0,
-    );
-    const totalVendorPaid = projectObligations
-      .filter((obligation) => obligation.status === "paid")
-      .reduce((sum, obligation) => sum + obligation.amount, 0);
-    const outstandingPayable = projectObligations
-      .filter((obligation) => obligation.status === "due" || obligation.status === "overdue")
-      .reduce((sum, obligation) => sum + obligation.amount, 0);
-    const unpaidVendorTax = projectObligations
-      .filter((obligation) => obligation.tax_status === "unpaid")
-      .reduce((sum, obligation) => sum + obligation.tax_amount, 0);
+const fallbackProjectAttentionSummaries: ProjectAttentionSummaryRow[] = [
+  {
+    project_id: fallbackProjects[0].id,
+    attention_count: 2,
+    needs_attention: true,
+  },
+  {
+    project_id: fallbackProjects[1].id,
+    attention_count: 0,
+    needs_attention: false,
+  },
+  {
+    project_id: fallbackProjects[2].id,
+    attention_count: 3,
+    needs_attention: true,
+  },
+  {
+    project_id: fallbackProjects[3].id,
+    attention_count: 0,
+    needs_attention: false,
+  },
+  {
+    project_id: fallbackProjects[4].id,
+    attention_count: 0,
+    needs_attention: false,
+  },
+];
 
-    return {
-      project_id: project.id,
-      contract_value: project.contract_value,
-      total_invoiced: totalInvoiced,
-      total_paid: totalPaid,
-      outstanding_receivable: outstandingReceivable,
-      total_vendor_value: totalVendorValue,
-      total_vendor_paid: totalVendorPaid,
-      outstanding_payable: outstandingPayable,
-      total_tax_unpaid: unpaidInvoiceTax + unpaidVendorTax,
-    };
-  });
-}
-
-function buildProjectAttentionItems(): ProjectAttentionItemRow[] {
-  const items: ProjectAttentionItemRow[] = [];
-
-  for (const project of fallbackProjects) {
-    const clientName = project.client?.name ?? "Unknown client";
-
-    if (project.health_status === "watch") {
-      items.push({
-        attention_item_id: `${project.id}:watch`,
-        project_id: project.id,
-        project_code: project.project_code,
-        project_name: project.name,
-        client_name: clientName,
-        attention_label: "watch",
-        attention_summary: "Project health is watch and should be reviewed by leadership.",
-        created_at: project.updated_at,
-      });
-    }
-
-    if (project.health_status === "at_risk") {
-      items.push({
-        attention_item_id: `${project.id}:at_risk`,
-        project_id: project.id,
-        project_code: project.project_code,
-        project_name: project.name,
-        client_name: clientName,
-        attention_label: "at_risk",
-        attention_summary:
-          "Project health is at risk and needs immediate leadership attention.",
-        created_at: project.updated_at,
-      });
-    }
-
-    const overdueInvoice = fallbackInvoices.find(
-      (invoice) => invoice.project_id === project.id && invoice.status === "overdue",
-    );
-
-    if (overdueInvoice) {
-      items.push({
-        attention_item_id: `${project.id}:overdue_invoice`,
-        project_id: project.id,
-        project_code: project.project_code,
-        project_name: project.name,
-        client_name: clientName,
-        attention_label: "overdue_invoice",
-        attention_summary: `Invoice ${overdueInvoice.invoice_number} is overdue and needs receivable follow-up.`,
-        created_at: overdueInvoice.updated_at,
-      });
-    }
-
-    const overdueVendorObligation = fallbackVendorObligations.find(
-      (obligation) =>
-        obligation.project_id === project.id && obligation.status === "overdue",
-    );
-
-    if (overdueVendorObligation) {
-      items.push({
-        attention_item_id: `${project.id}:unpaid_vendor`,
-        project_id: project.id,
-        project_code: project.project_code,
-        project_name: project.name,
-        client_name: clientName,
-        attention_label: "unpaid_vendor",
-        attention_summary: `${overdueVendorObligation.title} is overdue and needs vendor payment follow-up.`,
-        created_at: overdueVendorObligation.updated_at,
-      });
-    }
-
-    const isStale =
-      project.last_reviewed_at === null ||
-      new Date(project.last_reviewed_at).getTime() <
-        Date.parse("2026-04-09T00:00:00.000Z");
-
-    if (isStale) {
-      items.push({
-        attention_item_id: `${project.id}:stale_review`,
-        project_id: project.id,
-        project_code: project.project_code,
-        project_name: project.name,
-        client_name: clientName,
-        attention_label: "stale_review",
-        attention_summary:
-          "Project review is stale and should be refreshed in the next leadership check.",
-        created_at: project.last_reviewed_at ?? project.updated_at,
-      });
-    }
-  }
-
-  return items.sort((left, right) => right.created_at.localeCompare(left.created_at));
-}
-
-function buildProjectAttentionSummaries(
-  rows: ProjectAttentionItemRow[],
-): ProjectAttentionSummaryRow[] {
-  const countByProjectId = new Map<string, number>();
-
-  for (const row of rows) {
-    countByProjectId.set(row.project_id, (countByProjectId.get(row.project_id) ?? 0) + 1);
-  }
-
-  return fallbackProjects.map((project) => {
-    const attentionCount = countByProjectId.get(project.id) ?? 0;
-
-    return {
-      project_id: project.id,
-      attention_count: attentionCount,
-      needs_attention: attentionCount > 0,
-    };
-  });
-}
-
-function buildFinanceOverview(
-  rows: ProjectFinanceSummaryRow[],
-): FinanceOverviewRow {
-  return rows.reduce<FinanceOverviewRow>(
-    (summary, row) => ({
-      contract_value_total: summary.contract_value_total + row.contract_value,
-      total_invoiced: summary.total_invoiced + row.total_invoiced,
-      total_paid: summary.total_paid + row.total_paid,
-      outstanding_receivable:
-        summary.outstanding_receivable + row.outstanding_receivable,
-      outstanding_payable: summary.outstanding_payable + row.outstanding_payable,
-      unpaid_tax_total: summary.unpaid_tax_total + row.total_tax_unpaid,
-    }),
-    {
-      contract_value_total: 0,
-      total_invoiced: 0,
-      total_paid: 0,
-      outstanding_receivable: 0,
-      outstanding_payable: 0,
-      unpaid_tax_total: 0,
-    },
-  );
-}
-
-function buildDashboardSnapshot(): DashboardSnapshotRow {
-  const summaries = buildProjectAttentionSummaries(buildProjectAttentionItems());
-
-  return {
-    active_projects: fallbackProjects.filter(
-      (project) => project.lifecycle_status === "active",
-    ).length,
-    projects_needing_attention: summaries.filter((row) => row.needs_attention).length,
-  };
-}
-
-const fallbackProjectFinanceSummaries = buildProjectFinanceSummaries();
-const fallbackProjectAttentionItems = buildProjectAttentionItems();
-const fallbackProjectAttentionSummaries = buildProjectAttentionSummaries(
-  fallbackProjectAttentionItems,
-);
-
-const fallbackStudioOsSource: FallbackStudioOsSource = {
-  studioProfile: fallbackStudioProfile,
-  projects: fallbackProjects,
-  projectFinanceSummaries: fallbackProjectFinanceSummaries,
-  projectAttentionItems: fallbackProjectAttentionItems,
-  projectAttentionSummaries: fallbackProjectAttentionSummaries,
-  financeOverview: buildFinanceOverview(fallbackProjectFinanceSummaries),
-  dashboardSnapshot: buildDashboardSnapshot(),
-  invoices: fallbackInvoices,
-  vendorObligations: fallbackVendorObligations,
-  documents: fallbackDocuments,
-  notes: fallbackNotes,
-  activityEvents: fallbackActivityEvents,
+const fallbackFinanceOverview: FinanceOverviewRow = {
+  contract_value_total: 565000000,
+  total_invoiced: 195000000,
+  total_paid: 40000000,
+  outstanding_receivable: 105000000,
+  outstanding_payable: 37000000,
+  unpaid_tax_total: 15620000,
 };
 
-export function getFallbackViewerProfile() {
+const fallbackDashboardSnapshot: DashboardSnapshotRow = {
+  active_projects: 3,
+  projects_needing_attention: 2,
+};
+
+export function getFallbackViewerProfile(): ProfileRow {
   return fallbackViewerProfile;
 }
 
-export function getFallbackStudioOsSource() {
-  return fallbackStudioOsSource;
+export function getFallbackStudioOsSource(): FallbackStudioOsSource {
+  return {
+    studioProfile: fallbackStudioProfile,
+    projects: fallbackProjects,
+    projectFinanceSummaries: fallbackProjectFinanceSummaries,
+    projectAttentionItems: fallbackProjectAttentionItems,
+    projectAttentionSummaries: fallbackProjectAttentionSummaries,
+    financeOverview: fallbackFinanceOverview,
+    dashboardSnapshot: fallbackDashboardSnapshot,
+    invoices: fallbackInvoices,
+    vendorObligations: fallbackVendorObligations,
+    documents: fallbackDocuments,
+    notes: fallbackNotes,
+    activityEvents: fallbackActivityEvents,
+  };
 }

@@ -1,8 +1,8 @@
-# AIM StudioOS
+# HDA StudioOS
 
-**The operating system and dashboard for AIM.**
+**The operating system and dashboard for HDA.**
 
-AIM StudioOS is an internal web-based operating system for AIM, designed to centralize project visibility, finance summaries, documents, notes, and operational oversight into one calm, structured, low-cognitive-load interface.
+HDA StudioOS is an internal web-based operating system for HDA, designed to centralize project visibility, finance summaries, documents, notes, and operational oversight into one calm, structured, low-cognitive-load interface.
 
 V1 is intentionally designed for the **Principal** as a leadership dashboard and command center.
 
@@ -10,7 +10,7 @@ V1 is intentionally designed for the **Principal** as a leadership dashboard and
 
 ## Overview
 
-AIM StudioOS is being built to reduce fragmentation across:
+HDA StudioOS is being built to reduce fragmentation across:
 - spreadsheets
 - chat history
 - folder structures
@@ -18,7 +18,7 @@ AIM StudioOS is being built to reduce fragmentation across:
 - project notes and decisions
 - scattered project memory
 
-Instead of relying on scattered tools, AIM StudioOS creates a more legible operating picture of the studio.
+Instead of relying on scattered tools, HDA StudioOS creates a more legible operating picture of the studio.
 
 ---
 
@@ -230,7 +230,7 @@ Do not build:
 
 ## Design Direction
 
-AIM StudioOS should feel:
+HDA StudioOS should feel:
 - calm
 - premium
 - modern
@@ -298,7 +298,7 @@ This repo should maintain the following current authority set:
 
 ## Final Statement
 
-AIM StudioOS is not trying to imitate enterprise software.
+HDA StudioOS is not trying to imitate enterprise software.
 
 Its purpose is to make the studio legible.
 

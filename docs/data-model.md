@@ -1,4 +1,4 @@
-# AIM StudioOS V1 Data Model
+# HDA StudioOS V1 Data Model
 
 This file reflects the current migration only:
 

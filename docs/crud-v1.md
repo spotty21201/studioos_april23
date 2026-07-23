@@ -1,4 +1,4 @@
-# AIM StudioOS V1 CRUD Enablement
+# HDA StudioOS V1 CRUD Enablement
 
 This document defines the first editable-record phase for the current read-heavy V1 app.
 

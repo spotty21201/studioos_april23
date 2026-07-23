@@ -1,4 +1,4 @@
-# AIM StudioOS Backend Foundation
+# HDA StudioOS Backend Foundation
 
 This document describes what the current backend foundation actually provides today.
 

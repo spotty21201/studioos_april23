@@ -7,9 +7,10 @@ import { createSupabaseBrowserClient } from "@/lib/supabase/browser";
 
 type LoginFormProps = {
   authEnabled: boolean;
+  allowPreview?: boolean;
 };
 
-export function LoginForm({ authEnabled }: LoginFormProps) {
+export function LoginForm({ authEnabled, allowPreview = false }: LoginFormProps) {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -109,16 +110,24 @@ export function LoginForm({ authEnabled }: LoginFormProps) {
 
       {!authEnabled ? (
         <div className="rounded-[4px] border border-border bg-surface-muted px-4 py-4 text-sm leading-6 text-text-secondary">
-          This environment is currently running without Supabase authentication. You can
-          still review the interface in read-only preview.
-          <div className="mt-3">
-            <Link
-              href="/dashboard"
-              className="inline-flex items-center rounded-[2px] border border-black bg-white px-4 py-2 text-sm font-medium text-black hover:bg-surface-muted"
-            >
-              Open Read-Only Preview
-            </Link>
-          </div>
+          {allowPreview ? (
+            <>
+              This environment is currently running without Supabase authentication. You can
+              still review the interface in read-only preview.
+              <div className="mt-3">
+                <Link
+                  href="/dashboard"
+                  className="inline-flex items-center rounded-[2px] border border-black bg-white px-4 py-2 text-sm font-medium text-black hover:bg-surface-muted"
+                >
+                  Open Read-Only Preview
+                </Link>
+              </div>
+            </>
+          ) : (
+            <span className="text-critical font-medium">
+              Supabase configuration is missing or invalid. Workspace access is disabled in production.
+            </span>
+          )}
         </div>
       ) : null}
     </form>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import {
   createProjectAction,
   updateProjectAction,
@@ -33,10 +33,23 @@ export function ProjectForm({ mode, options, project }: ProjectFormProps) {
     mode === "create" ? createProjectAction : updateProjectAction,
     initialState,
   );
-  const contactOptions =
-    mode === "edit" && project
-      ? options.contacts.filter((contact) => contact.client_id === project.client_id)
-      : options.contacts;
+
+  const [selectedClientId, setSelectedClientId] = useState(project?.client_id ?? "");
+  const [selectedContactId, setSelectedContactId] = useState(project?.primary_contact_id ?? "");
+
+  const contactOptions = selectedClientId
+    ? options.contacts.filter((contact) => contact.client_id === selectedClientId)
+    : options.contacts;
+
+  function handleClientChange(newClientId: string) {
+    setSelectedClientId(newClientId);
+    const isValidContact = options.contacts.some(
+      (c) => c.client_id === newClientId && c.id === selectedContactId,
+    );
+    if (!isValidContact) {
+      setSelectedContactId("");
+    }
+  }
 
   return (
     <form action={formAction} className="space-y-6">
@@ -55,7 +68,7 @@ export function ProjectForm({ mode, options, project }: ProjectFormProps) {
             name="project_code"
             className={inputClass}
             defaultValue={project?.project_code}
-            placeholder="AIM-26018"
+            placeholder="HDA-26018"
             required
           />
         </Field>
@@ -85,7 +98,13 @@ export function ProjectForm({ mode, options, project }: ProjectFormProps) {
             required
             error={state.fieldErrors.client_id}
           >
-            <select id="client-id" name="client_id" className={selectClass}>
+            <select
+              id="client-id"
+              name="client_id"
+              className={selectClass}
+              value={selectedClientId}
+              onChange={(e) => handleClientChange(e.target.value)}
+            >
               <option value="">Select client</option>
               {options.clients.map((client) => (
                 <option key={client.id} value={client.id}>
@@ -118,7 +137,13 @@ export function ProjectForm({ mode, options, project }: ProjectFormProps) {
             htmlFor="primary-contact-id"
             error={state.fieldErrors.primary_contact_id}
           >
-            <select id="primary-contact-id" name="primary_contact_id" className={selectClass}>
+            <select
+              id="primary-contact-id"
+              name="primary_contact_id"
+              className={selectClass}
+              value={selectedContactId}
+              onChange={(e) => setSelectedContactId(e.target.value)}
+            >
               <option value="">Not set</option>
               {contactOptions.map((contact) => (
                 <option key={contact.id} value={contact.id}>
@@ -170,9 +195,11 @@ export function ProjectForm({ mode, options, project }: ProjectFormProps) {
               id="client-id"
               name="client_id"
               className={selectClass}
-              defaultValue={project?.client_id}
+              value={selectedClientId}
+              onChange={(e) => handleClientChange(e.target.value)}
               required
             >
+              <option value="">Select client</option>
               {options.clients.map((client) => (
                 <option key={client.id} value={client.id}>
                   {client.name}
@@ -189,7 +216,8 @@ export function ProjectForm({ mode, options, project }: ProjectFormProps) {
               id="primary-contact-id"
               name="primary_contact_id"
               className={selectClass}
-              defaultValue={project?.primary_contact_id ?? ""}
+              value={selectedContactId}
+              onChange={(e) => setSelectedContactId(e.target.value)}
             >
               <option value="">Not set</option>
               {contactOptions.map((contact) => (

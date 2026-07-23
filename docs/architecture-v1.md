@@ -1,4 +1,4 @@
-# AIM StudioOS V1 Architecture
+# HDA StudioOS V1 Architecture
 
 This document is the reconciled implementation contract for the current codebase.
 

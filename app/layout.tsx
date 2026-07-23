@@ -15,10 +15,10 @@ const plexMono = IBM_Plex_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "AIM-StudioOS",
-    template: "%s · AIM StudioOS",
+    default: "HDA-StudioOS",
+    template: "%s · HDA StudioOS",
   },
-  description: "The operating system and dashboard for AIM.",
+  description: "The operating system and dashboard for HDA.",
 };
 
 export default function RootLayout({

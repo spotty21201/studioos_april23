@@ -21,7 +21,7 @@ export default async function SettingsPage() {
       />
 
       <section className="grid gap-6 xl:grid-cols-2">
-        <SectionPanel title="Studio Profile" description="Single-studio mode for AIM in V1.">
+        <SectionPanel title="Studio Profile" description="Single-studio mode for HDA in V1.">
           <dl className="grid gap-5 sm:grid-cols-2">
             <div>
               <dt className="eyebrow">Studio</dt>

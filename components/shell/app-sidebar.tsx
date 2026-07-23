@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { ChevronRight } from "lucide-react";
 import { navigationItems } from "@/lib/navigation";
 import { Avatar } from "@/components/ui/avatar";
+import { SignOutButton } from "@/components/auth/sign-out-button";
 import type { WorkspaceViewer } from "@/lib/studio-data";
 
 type AppSidebarProps = {
@@ -58,16 +59,21 @@ export function AppSidebar({ studioName, subtitle, viewer }: AppSidebarProps) {
       </nav>
 
       <div className="mt-auto rounded-[4px] border border-border bg-surface-muted px-4 py-4">
-        <div className="flex items-center gap-3">
-          <Avatar name={viewer.name} />
-          <div>
-            <p className="text-sm font-medium text-text-primary">{viewer.name}</p>
-            <p className="text-xs text-text-secondary">{viewer.title}</p>
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <Avatar name={viewer.name} />
+            <div>
+              <p className="text-sm font-medium text-text-primary">{viewer.name}</p>
+              <p className="text-xs text-text-secondary">{viewer.title}</p>
+            </div>
           </div>
         </div>
         <div className="mt-4 rounded-[2px] border border-border-muted bg-white px-3 py-2.5 text-xs leading-5 text-text-secondary">
           Principal overview mode is active. Surfaces prioritize visibility,
           exceptions, and briefing-level clarity.
+        </div>
+        <div className="mt-3 pt-2 border-t border-border-muted">
+          <SignOutButton variant="menu-item" />
         </div>
       </div>
     </aside>

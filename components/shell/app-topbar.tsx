@@ -1,5 +1,6 @@
 import { Bell, Search, SlidersHorizontal } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
+import { SignOutButton } from "@/components/auth/sign-out-button";
 import type { WorkspaceViewer } from "@/lib/studio-data";
 
 type AppTopbarProps = {
@@ -14,22 +15,44 @@ export function AppTopbar({ viewer }: AppTopbarProps) {
           <div className="relative hidden max-w-md flex-1 sm:block">
             <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-text-tertiary" />
             <input
-              aria-label="Search across AIM StudioOS"
-              className="h-11 w-full rounded-[2px] border border-border bg-surface px-11 text-sm text-text-primary outline-none placeholder:text-text-tertiary focus:border-border-strong focus:ring-2 focus:ring-border-muted"
-              placeholder="Search projects, documents, notes, or invoices..."
+              aria-label="Search across HDA StudioOS"
+              aria-disabled="true"
+              disabled
+              className="h-11 w-full rounded-[2px] border border-border bg-surface-muted px-11 text-sm text-text-tertiary outline-none cursor-not-allowed placeholder:text-text-tertiary"
+              placeholder="Global search (coming in future release)..."
               type="search"
             />
           </div>
-          <button className="inline-flex h-11 w-11 items-center justify-center rounded-[2px] border border-border bg-surface text-text-secondary hover:border-border-strong hover:text-text-primary sm:hidden">
+          <button
+            type="button"
+            disabled
+            aria-disabled="true"
+            aria-label="Search across studio (disabled)"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-[2px] border border-border bg-surface-muted text-text-tertiary cursor-not-allowed sm:hidden"
+          >
             <Search className="h-4 w-4" />
           </button>
         </div>
 
         <div className="flex items-center gap-2 sm:gap-3">
-          <button className="inline-flex h-11 w-11 items-center justify-center rounded-[2px] border border-border bg-surface text-text-secondary hover:border-border-strong hover:text-text-primary">
+          <button
+            type="button"
+            disabled
+            aria-disabled="true"
+            aria-label="View filters (disabled)"
+            title="Filters (disabled in V1)"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-[2px] border border-border bg-surface-muted text-text-tertiary cursor-not-allowed"
+          >
             <SlidersHorizontal className="h-4 w-4" />
           </button>
-          <button className="inline-flex h-11 w-11 items-center justify-center rounded-[2px] border border-border bg-surface text-text-secondary hover:border-border-strong hover:text-text-primary">
+          <button
+            type="button"
+            disabled
+            aria-disabled="true"
+            aria-label="Notifications (disabled)"
+            title="Notifications (disabled in V1)"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-[2px] border border-border bg-surface-muted text-text-tertiary cursor-not-allowed"
+          >
             <Bell className="h-4 w-4" />
           </button>
           <div className="hidden items-center gap-3 rounded-[2px] border border-border bg-surface px-2 py-1.5 sm:flex">
@@ -39,6 +62,7 @@ export function AppTopbar({ viewer }: AppTopbarProps) {
               <p className="text-xs text-text-secondary">{viewer.title}</p>
             </div>
           </div>
+          <SignOutButton variant="icon" />
         </div>
       </div>
     </header>
