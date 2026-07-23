@@ -16,6 +16,12 @@ import {
 } from "@/components/forms/form-primitives";
 import type { ProjectRecordRow } from "@/lib/supabase/view-contracts";
 import type { StudioFormOptions } from "@/lib/studio-form-data";
+import {
+  filterContactsForClient,
+  resolveContactIdOnModeChange,
+  resolveNextContactIdOnClientChange,
+  type ClientSelectionMode,
+} from "@/lib/project-form-helpers";
 
 type ProjectFormProps = {
   mode: "create" | "edit";
@@ -34,27 +40,28 @@ export function ProjectForm({ mode, options, project }: ProjectFormProps) {
     initialState,
   );
 
+  const [clientMode, setClientMode] = useState<ClientSelectionMode>("existing");
   const [selectedClientId, setSelectedClientId] = useState(project?.client_id ?? "");
   const [selectedContactId, setSelectedContactId] = useState(project?.primary_contact_id ?? "");
 
-  const contactOptions = selectedClientId
-    ? options.contacts.filter((contact) => contact.client_id === selectedClientId)
-    : options.contacts;
+  const contactOptions = filterContactsForClient(options.contacts, selectedClientId);
 
   function handleClientChange(newClientId: string) {
     setSelectedClientId(newClientId);
-    const isValidContact = options.contacts.some(
-      (c) => c.client_id === newClientId && c.id === selectedContactId,
+    setSelectedContactId(
+      resolveNextContactIdOnClientChange(options.contacts, newClientId, selectedContactId),
     );
-    if (!isValidContact) {
-      setSelectedContactId("");
-    }
+  }
+
+  function handleClientModeChange(newMode: ClientSelectionMode) {
+    setClientMode(newMode);
+    setSelectedContactId(resolveContactIdOnModeChange(newMode, selectedContactId));
   }
 
   return (
-    <form action={formAction} className="space-y-6">
+    <form noValidate action={formAction} className="space-y-6">
       {project ? <input type="hidden" name="project_id" value={project.id} /> : null}
-      <FormError message={state.message} />
+      <FormError message={state.message} fieldErrors={state.fieldErrors} />
 
       <div className="grid gap-4 md:grid-cols-2">
         <Field
@@ -70,119 +77,179 @@ export function ProjectForm({ mode, options, project }: ProjectFormProps) {
             defaultValue={project?.project_code}
             placeholder="HDA-26018"
             required
+            aria-invalid={Boolean(state.fieldErrors.project_code)}
+            aria-describedby={state.fieldErrors.project_code ? "project-code-error" : undefined}
           />
         </Field>
         <Field
           label="Project name"
-          htmlFor="project-name"
+          htmlFor="name"
           required
           error={state.fieldErrors.name}
         >
           <input
-            id="project-name"
+            id="name"
             name="name"
             className={inputClass}
             defaultValue={project?.name}
             placeholder="Project name"
             required
+            aria-invalid={Boolean(state.fieldErrors.name)}
+            aria-describedby={state.fieldErrors.name ? "name-error" : undefined}
           />
         </Field>
       </div>
 
       {mode === "create" ? (
-        <div className="grid gap-4 rounded-[4px] border border-border bg-surface-muted p-4 md:grid-cols-2">
-          <input type="hidden" name="client_mode" value="existing" />
-          <Field
-            label="Existing client"
-            htmlFor="client-id"
-            required
-            error={state.fieldErrors.client_id}
-          >
-            <select
-              id="client-id"
-              name="client_id"
-              className={selectClass}
-              value={selectedClientId}
-              onChange={(e) => handleClientChange(e.target.value)}
-            >
-              <option value="">Select client</option>
-              {options.clients.map((client) => (
-                <option key={client.id} value={client.id}>
-                  {client.name}
-                </option>
-              ))}
-            </select>
-          </Field>
-          <Field
-            label="Or new client"
-            htmlFor="new-client-name"
-            error={state.fieldErrors.new_client_name}
-          >
-            <input
-              id="new-client-name"
-              name="new_client_name"
-              className={inputClass}
-              placeholder="New client name"
-              onChange={(event) => {
-                const form = event.currentTarget.form;
-                const modeInput = form?.elements.namedItem("client_mode");
-                if (modeInput instanceof HTMLInputElement) {
-                  modeInput.value = event.currentTarget.value.trim() ? "new" : "existing";
-                }
-              }}
-            />
-          </Field>
-          <Field
-            label="Existing primary contact"
-            htmlFor="primary-contact-id"
-            error={state.fieldErrors.primary_contact_id}
-          >
-            <select
-              id="primary-contact-id"
-              name="primary_contact_id"
-              className={selectClass}
-              value={selectedContactId}
-              onChange={(e) => setSelectedContactId(e.target.value)}
-            >
-              <option value="">Not set</option>
-              {contactOptions.map((contact) => (
-                <option key={contact.id} value={contact.id}>
-                  {contact.full_name}
-                  {contact.email ? ` / ${contact.email}` : ""}
-                </option>
-              ))}
-            </select>
-          </Field>
-          <Field
-            label="New primary contact"
-            htmlFor="new-contact-name"
-            error={state.fieldErrors.new_contact_name}
-          >
-            <input
-              id="new-contact-name"
-              name="new_contact_name"
-              className={inputClass}
-              placeholder="Contact name"
-            />
-          </Field>
-          <Field label="Contact email" htmlFor="new-contact-email">
-            <input
-              id="new-contact-email"
-              name="new_contact_email"
-              type="email"
-              className={inputClass}
-              placeholder="name@example.com"
-            />
-          </Field>
-          <Field label="Contact role" htmlFor="new-contact-job-title">
-            <input
-              id="new-contact-job-title"
-              name="new_contact_job_title"
-              className={inputClass}
-              placeholder="Program Lead"
-            />
-          </Field>
-        </div>
+        <fieldset className="space-y-4 rounded-[4px] border border-border bg-surface-muted p-4">
+          <legend className="px-1 text-xs font-semibold uppercase tracking-[0.14em] text-text-tertiary">
+            Client Selection
+          </legend>
+
+          <div className="flex flex-wrap items-center gap-6">
+            <label className="flex cursor-pointer items-center gap-2 text-sm font-medium text-text-primary">
+              <input
+                type="radio"
+                name="client_mode"
+                value="existing"
+                checked={clientMode === "existing"}
+                onChange={() => handleClientModeChange("existing")}
+                className="h-4 w-4 accent-accent"
+              />
+              Use existing client
+            </label>
+            <label className="flex cursor-pointer items-center gap-2 text-sm font-medium text-text-primary">
+              <input
+                type="radio"
+                name="client_mode"
+                value="new"
+                checked={clientMode === "new"}
+                onChange={() => handleClientModeChange("new")}
+                className="h-4 w-4 accent-accent"
+              />
+              Create new client
+            </label>
+          </div>
+
+          {clientMode === "existing" ? (
+            <div className="grid gap-4 md:grid-cols-2">
+              <Field
+                label="Existing client"
+                htmlFor="client-id"
+                required
+                error={state.fieldErrors.client_id}
+              >
+                <select
+                  id="client-id"
+                  name="client_id"
+                  className={selectClass}
+                  value={selectedClientId}
+                  onChange={(e) => handleClientChange(e.target.value)}
+                  required
+                  aria-invalid={Boolean(state.fieldErrors.client_id)}
+                  aria-describedby={state.fieldErrors.client_id ? "client-id-error" : undefined}
+                >
+                  <option value="">Select client</option>
+                  {options.clients.map((client) => (
+                    <option key={client.id} value={client.id}>
+                      {client.name}
+                    </option>
+                  ))}
+                </select>
+              </Field>
+              <Field
+                label="Existing primary contact"
+                htmlFor="primary-contact-id"
+                error={state.fieldErrors.primary_contact_id}
+              >
+                <select
+                  id="primary-contact-id"
+                  name="primary_contact_id"
+                  className={selectClass}
+                  value={selectedContactId}
+                  onChange={(e) => setSelectedContactId(e.target.value)}
+                  disabled={!selectedClientId}
+                  aria-invalid={Boolean(state.fieldErrors.primary_contact_id)}
+                  aria-describedby={
+                    state.fieldErrors.primary_contact_id ? "primary-contact-id-error" : undefined
+                  }
+                >
+                  <option value="">
+                    {selectedClientId ? "Not set" : "Select a client first"}
+                  </option>
+                  {contactOptions.map((contact) => (
+                    <option key={contact.id} value={contact.id}>
+                      {contact.full_name}
+                      {contact.email ? ` / ${contact.email}` : ""}
+                    </option>
+                  ))}
+                </select>
+              </Field>
+            </div>
+          ) : (
+            <div className="grid gap-4 md:grid-cols-2">
+              <Field
+                label="New client name"
+                htmlFor="new-client-name"
+                required
+                error={state.fieldErrors.new_client_name}
+              >
+                <input
+                  id="new-client-name"
+                  name="new_client_name"
+                  className={inputClass}
+                  placeholder="New client name"
+                  required
+                  aria-invalid={Boolean(state.fieldErrors.new_client_name)}
+                  aria-describedby={
+                    state.fieldErrors.new_client_name ? "new-client-name-error" : undefined
+                  }
+                />
+              </Field>
+              <Field
+                label="New contact name"
+                htmlFor="new-contact-name"
+                error={state.fieldErrors.new_contact_name}
+              >
+                <input
+                  id="new-contact-name"
+                  name="new_contact_name"
+                  className={inputClass}
+                  placeholder="Contact name (optional)"
+                  aria-invalid={Boolean(state.fieldErrors.new_contact_name)}
+                  aria-describedby={
+                    state.fieldErrors.new_contact_name ? "new-contact-name-error" : undefined
+                  }
+                />
+              </Field>
+              <Field
+                label="Contact email"
+                htmlFor="new-contact-email"
+                error={state.fieldErrors.new_contact_email}
+              >
+                <input
+                  id="new-contact-email"
+                  name="new_contact_email"
+                  type="email"
+                  className={inputClass}
+                  placeholder="name@example.com"
+                  aria-invalid={Boolean(state.fieldErrors.new_contact_email)}
+                  aria-describedby={
+                    state.fieldErrors.new_contact_email ? "new-contact-email-error" : undefined
+                  }
+                />
+              </Field>
+              <Field label="Contact role" htmlFor="new-contact-job-title">
+                <input
+                  id="new-contact-job-title"
+                  name="new_contact_job_title"
+                  className={inputClass}
+                  placeholder="Program Lead"
+                />
+              </Field>
+            </div>
+          )}
+        </fieldset>
       ) : (
         <div className="grid gap-4 md:grid-cols-2">
           <Field
@@ -198,6 +265,8 @@ export function ProjectForm({ mode, options, project }: ProjectFormProps) {
               value={selectedClientId}
               onChange={(e) => handleClientChange(e.target.value)}
               required
+              aria-invalid={Boolean(state.fieldErrors.client_id)}
+              aria-describedby={state.fieldErrors.client_id ? "client-id-error" : undefined}
             >
               <option value="">Select client</option>
               {options.clients.map((client) => (
@@ -218,8 +287,15 @@ export function ProjectForm({ mode, options, project }: ProjectFormProps) {
               className={selectClass}
               value={selectedContactId}
               onChange={(e) => setSelectedContactId(e.target.value)}
+              disabled={!selectedClientId}
+              aria-invalid={Boolean(state.fieldErrors.primary_contact_id)}
+              aria-describedby={
+                state.fieldErrors.primary_contact_id ? "primary-contact-id-error" : undefined
+              }
             >
-              <option value="">Not set</option>
+              <option value="">
+                {selectedClientId ? "Not set" : "Select a client first"}
+              </option>
               {contactOptions.map((contact) => (
                 <option key={contact.id} value={contact.id}>
                   {contact.full_name}
@@ -291,6 +367,8 @@ export function ProjectForm({ mode, options, project }: ProjectFormProps) {
             className={inputClass}
             defaultValue={project?.contract_value ?? 0}
             required
+            aria-invalid={Boolean(state.fieldErrors.contract_value)}
+            aria-describedby={state.fieldErrors.contract_value ? "contract-value-error" : undefined}
           />
         </Field>
         <Field label="Start date" htmlFor="start-date" error={state.fieldErrors.start_date}>
@@ -300,6 +378,8 @@ export function ProjectForm({ mode, options, project }: ProjectFormProps) {
             type="date"
             className={inputClass}
             defaultValue={project?.start_date ?? ""}
+            aria-invalid={Boolean(state.fieldErrors.start_date)}
+            aria-describedby={state.fieldErrors.start_date ? "start-date-error" : undefined}
           />
         </Field>
         <Field
@@ -313,6 +393,10 @@ export function ProjectForm({ mode, options, project }: ProjectFormProps) {
             type="date"
             className={inputClass}
             defaultValue={project?.target_end_date ?? ""}
+            aria-invalid={Boolean(state.fieldErrors.target_end_date)}
+            aria-describedby={
+              state.fieldErrors.target_end_date ? "target-end-date-error" : undefined
+            }
           />
         </Field>
       </div>
@@ -330,6 +414,10 @@ export function ProjectForm({ mode, options, project }: ProjectFormProps) {
               type="date"
               className={inputClass}
               defaultValue={project?.completed_at ?? ""}
+              aria-invalid={Boolean(state.fieldErrors.completed_at)}
+              aria-describedby={
+                state.fieldErrors.completed_at ? "completed-at-error" : undefined
+              }
             />
           </Field>
           <label className="flex h-11 items-center gap-3 rounded-[4px] border border-border bg-white px-4 text-sm font-medium text-text-primary">

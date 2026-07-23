@@ -538,13 +538,13 @@ export async function getDashboardPageData(): Promise<DashboardPageData> {
         key: "active_projects",
         label: "Active Projects",
         value: source.data.dashboardSnapshot?.active_projects ?? 0,
-        note: "Current live projects",
+        note: "Projects with active lifecycle status",
       },
       {
         key: "projects_needing_attention",
         label: "Projects Needing Attention",
         value: source.data.dashboardSnapshot?.projects_needing_attention ?? 0,
-        note: "From the dashboard snapshot view",
+        note: "Distinct projects requiring leadership review",
       },
       {
         key: "overdue_invoices",
@@ -568,10 +568,7 @@ export async function getDashboardPageData(): Promise<DashboardPageData> {
     ],
     attentionItems: attentionItems.slice(0, 6),
     activeProjects: projects
-      .filter(
-        (project) =>
-          project.lifecycleStatus === "active" || project.lifecycleStatus === "on_hold",
-      )
+      .filter((project) => project.lifecycleStatus === "active")
       .sort((left, right) => right.updatedAt.localeCompare(left.updatedAt))
       .slice(0, 6),
     overdueInvoices: overdueInvoices.slice(0, 5),

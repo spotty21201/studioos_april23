@@ -149,7 +149,7 @@ export default async function ProjectDetailPage({
 
         <SectionPanel
           title="Attention"
-          description="Signals from the backend attention read model."
+          description="Current risks and follow-up items for this project."
         >
           <div className="space-y-3">
             {detail.attentionItems.length > 0 ? (
@@ -286,7 +286,7 @@ export default async function ProjectDetailPage({
 
         <SectionPanel
           title="Documents"
-          description="Files and links currently attached to this project record. Missing-document detection is intentionally not part of the live attention read model."
+          description="Documents, briefs, and external links attached to this project."
           action={
             <Link
               href={`/documents/new?projectId=${detail.project.id}`}

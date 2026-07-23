@@ -112,7 +112,7 @@ export default async function FinancePage() {
             ))}
             {overview.overdueInvoices.length === 0 ? (
               <div className="rounded-[4px] border border-border bg-white px-4 py-4 text-sm text-text-secondary">
-                No overdue invoices are currently exposed by the backend data.
+                No overdue invoices.
               </div>
             ) : null}
           </div>
@@ -153,7 +153,7 @@ export default async function FinancePage() {
             ))}
             {overview.unpaidVendorObligations.length === 0 ? (
               <div className="rounded-[4px] border border-border bg-white px-4 py-4 text-sm text-text-secondary">
-                No due or overdue vendor obligations are currently exposed by the backend data.
+                No due or overdue vendor obligations.
               </div>
             ) : null}
           </div>

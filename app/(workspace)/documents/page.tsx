@@ -26,7 +26,7 @@ export default async function DocumentsPage() {
 
       <SectionPanel
         title="Document Index"
-        description={`${documents.totalCount} records currently available from the backend source.`}
+        description={`${documents.totalCount} documents and links attached across studio projects.`}
       >
         <div className="overflow-hidden rounded-[8px] border border-border">
           <table className="min-w-full divide-y divide-border text-left">

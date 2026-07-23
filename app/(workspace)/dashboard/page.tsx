@@ -60,8 +60,8 @@ export default async function DashboardPage() {
 
       <section className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
         <SectionPanel
-          title="Projects Needing Attention"
-          description="Driven by the backend attention read model."
+          title="Attention Signals"
+          description="Open risk, review, receivable, and vendor signals. One project may have more than one signal."
         >
           <div className="space-y-3">
             {snapshot.attentionItems.length > 0 ? (
@@ -93,7 +93,7 @@ export default async function DashboardPage() {
               ))
             ) : (
               <div className="rounded-[4px] border border-border bg-white px-4 py-4 text-sm text-text-secondary">
-                No active attention flags are currently exposed by the backend views.
+                No current project risks or follow-up signals.
               </div>
             )}
           </div>
@@ -132,96 +132,108 @@ export default async function DashboardPage() {
           title="Overdue Invoices"
           description="Open receivable issues that need follow-up."
         >
-          <div className="overflow-hidden rounded-[8px] border border-border">
-            <table className="min-w-full divide-y divide-border text-left">
-              <thead className="bg-surface-muted text-[11px] uppercase tracking-[0.14em] text-text-tertiary">
-                <tr>
-                  <th className="px-5 py-4 font-medium">Invoice</th>
-                  <th className="px-5 py-4 font-medium">Project</th>
-                  <th className="px-5 py-4 font-medium">Status</th>
-                  <th className="px-5 py-4 font-medium text-right">Amount</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border-muted bg-white">
-                {snapshot.overdueInvoices.map((invoice) => (
-                  <tr key={invoice.id}>
-                    <td className="px-5 py-4">
-                      <p className="text-sm font-semibold text-text-primary">
-                        {invoice.invoiceNumber}
-                      </p>
-                      <p className="mt-1 text-sm text-text-secondary">
-                        Due {invoice.dueDate ? formatShortDate(invoice.dueDate) : "TBD"}
-                      </p>
-                    </td>
-                    <td className="px-5 py-4">
-                      <Link
-                        href={`/projects/${invoice.projectId}`}
-                        className="text-sm font-semibold text-text-primary hover:text-accent"
-                      >
-                        {invoice.projectCode}
-                      </Link>
-                      <p className="mt-1 text-sm text-text-secondary">
-                        {invoice.projectName}
-                      </p>
-                    </td>
-                    <td className="px-5 py-4">
-                      <StatusBadge value={invoice.status} />
-                    </td>
-                    <td className="px-5 py-4 text-right text-sm font-medium text-text-primary">
-                      {formatCurrencyIdr(invoice.invoiceAmount.amount)}
-                    </td>
+          {snapshot.overdueInvoices.length > 0 ? (
+            <div className="overflow-hidden rounded-[8px] border border-border">
+              <table className="min-w-full divide-y divide-border text-left">
+                <thead className="bg-surface-muted text-[11px] uppercase tracking-[0.14em] text-text-tertiary">
+                  <tr>
+                    <th className="px-5 py-4 font-medium">Invoice</th>
+                    <th className="px-5 py-4 font-medium">Project</th>
+                    <th className="px-5 py-4 font-medium">Status</th>
+                    <th className="px-5 py-4 font-medium text-right">Amount</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="divide-y divide-border-muted bg-white">
+                  {snapshot.overdueInvoices.map((invoice) => (
+                    <tr key={invoice.id}>
+                      <td className="px-5 py-4">
+                        <p className="text-sm font-semibold text-text-primary">
+                          {invoice.invoiceNumber}
+                        </p>
+                        <p className="mt-1 text-sm text-text-secondary">
+                          Due {invoice.dueDate ? formatShortDate(invoice.dueDate) : "TBD"}
+                        </p>
+                      </td>
+                      <td className="px-5 py-4">
+                        <Link
+                          href={`/projects/${invoice.projectId}`}
+                          className="text-sm font-semibold text-text-primary hover:text-accent"
+                        >
+                          {invoice.projectCode}
+                        </Link>
+                        <p className="mt-1 text-sm text-text-secondary">
+                          {invoice.projectName}
+                        </p>
+                      </td>
+                      <td className="px-5 py-4">
+                        <StatusBadge value={invoice.status} />
+                      </td>
+                      <td className="px-5 py-4 text-right text-sm font-medium text-text-primary">
+                        {formatCurrencyIdr(invoice.invoiceAmount.amount)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <div className="rounded-[4px] border border-border bg-white px-4 py-4 text-sm text-text-secondary">
+              No overdue invoices.
+            </div>
+          )}
         </SectionPanel>
 
         <SectionPanel
           title="Vendor Obligations"
           description="Due and overdue vendor commitments across projects."
         >
-          <div className="overflow-hidden rounded-[8px] border border-border">
-            <table className="min-w-full divide-y divide-border text-left">
-              <thead className="bg-surface-muted text-[11px] uppercase tracking-[0.14em] text-text-tertiary">
-                <tr>
-                  <th className="px-5 py-4 font-medium">Vendor</th>
-                  <th className="px-5 py-4 font-medium">Project</th>
-                  <th className="px-5 py-4 font-medium">Status</th>
-                  <th className="px-5 py-4 font-medium text-right">Amount</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border-muted bg-white">
-                {snapshot.unpaidVendorObligations.map((item) => (
-                  <tr key={item.id}>
-                    <td className="px-5 py-4">
-                      <p className="text-sm font-semibold text-text-primary">
-                        {item.vendorName}
-                      </p>
-                      <p className="mt-1 text-sm text-text-secondary">{item.title}</p>
-                    </td>
-                    <td className="px-5 py-4">
-                      <Link
-                        href={`/projects/${item.projectId}`}
-                        className="text-sm font-semibold text-text-primary hover:text-accent"
-                      >
-                        {item.projectCode}
-                      </Link>
-                      <p className="mt-1 text-sm text-text-secondary">
-                        {item.projectName}
-                      </p>
-                    </td>
-                    <td className="px-5 py-4">
-                      <StatusBadge value={item.status} />
-                    </td>
-                    <td className="px-5 py-4 text-right text-sm font-medium text-text-primary">
-                      {formatCurrencyIdr(item.amount.amount)}
-                    </td>
+          {snapshot.unpaidVendorObligations.length > 0 ? (
+            <div className="overflow-hidden rounded-[8px] border border-border">
+              <table className="min-w-full divide-y divide-border text-left">
+                <thead className="bg-surface-muted text-[11px] uppercase tracking-[0.14em] text-text-tertiary">
+                  <tr>
+                    <th className="px-5 py-4 font-medium">Vendor</th>
+                    <th className="px-5 py-4 font-medium">Project</th>
+                    <th className="px-5 py-4 font-medium">Status</th>
+                    <th className="px-5 py-4 font-medium text-right">Amount</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="divide-y divide-border-muted bg-white">
+                  {snapshot.unpaidVendorObligations.map((item) => (
+                    <tr key={item.id}>
+                      <td className="px-5 py-4">
+                        <p className="text-sm font-semibold text-text-primary">
+                          {item.vendorName}
+                        </p>
+                        <p className="mt-1 text-sm text-text-secondary">{item.title}</p>
+                      </td>
+                      <td className="px-5 py-4">
+                        <Link
+                          href={`/projects/${item.projectId}`}
+                          className="text-sm font-semibold text-text-primary hover:text-accent"
+                        >
+                          {item.projectCode}
+                        </Link>
+                        <p className="mt-1 text-sm text-text-secondary">
+                          {item.projectName}
+                        </p>
+                      </td>
+                      <td className="px-5 py-4">
+                        <StatusBadge value={item.status} />
+                      </td>
+                      <td className="px-5 py-4 text-right text-sm font-medium text-text-primary">
+                        {formatCurrencyIdr(item.amount.amount)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <div className="rounded-[4px] border border-border bg-white px-4 py-4 text-sm text-text-secondary">
+              No due or overdue vendor obligations.
+            </div>
+          )}
         </SectionPanel>
       </section>
 
@@ -230,49 +242,55 @@ export default async function DashboardPage() {
           title="Active Projects"
           description="Current live work sorted by most recently updated record."
         >
-          <div className="overflow-hidden rounded-[8px] border border-border">
-            <table className="min-w-full divide-y divide-border text-left">
-              <thead className="bg-surface-muted text-[11px] uppercase tracking-[0.14em] text-text-tertiary">
-                <tr>
-                  <th className="px-5 py-4 font-medium">Project</th>
-                  <th className="px-5 py-4 font-medium">Status</th>
-                  <th className="px-5 py-4 font-medium">Client</th>
-                  <th className="px-5 py-4 font-medium text-right">Receivable</th>
-                  <th className="px-5 py-4 font-medium text-right">Payable</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border-muted bg-white">
-                {snapshot.activeProjects.map((project) => (
-                  <tr key={project.id}>
-                    <td className="px-5 py-4">
-                      <Link
-                        href={`/projects/${project.id}`}
-                        className="text-sm font-semibold text-text-primary hover:text-accent"
-                      >
-                        {project.projectCode}
-                      </Link>
-                      <p className="mt-1 text-sm text-text-secondary">{project.name}</p>
-                    </td>
-                    <td className="px-5 py-4">
-                      <div className="flex flex-col gap-2">
-                        <StatusBadge value={project.lifecycleStatus} />
-                        <StatusBadge value={project.healthStatus} />
-                      </div>
-                    </td>
-                    <td className="px-5 py-4 text-sm text-text-secondary">
-                      {project.clientName}
-                    </td>
-                    <td className="px-5 py-4 text-right text-sm font-medium text-text-primary">
-                      {formatCurrencyIdr(project.outstandingReceivable.amount)}
-                    </td>
-                    <td className="px-5 py-4 text-right text-sm font-medium text-text-primary">
-                      {formatCurrencyIdr(project.outstandingPayable.amount)}
-                    </td>
+          {snapshot.activeProjects.length > 0 ? (
+            <div className="overflow-hidden rounded-[8px] border border-border">
+              <table className="min-w-full divide-y divide-border text-left">
+                <thead className="bg-surface-muted text-[11px] uppercase tracking-[0.14em] text-text-tertiary">
+                  <tr>
+                    <th className="px-5 py-4 font-medium">Project</th>
+                    <th className="px-5 py-4 font-medium">Status</th>
+                    <th className="px-5 py-4 font-medium">Client</th>
+                    <th className="px-5 py-4 font-medium text-right">Receivable</th>
+                    <th className="px-5 py-4 font-medium text-right">Payable</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="divide-y divide-border-muted bg-white">
+                  {snapshot.activeProjects.map((project) => (
+                    <tr key={project.id}>
+                      <td className="px-5 py-4">
+                        <Link
+                          href={`/projects/${project.id}`}
+                          className="text-sm font-semibold text-text-primary hover:text-accent"
+                        >
+                          {project.projectCode}
+                        </Link>
+                        <p className="mt-1 text-sm text-text-secondary">{project.name}</p>
+                      </td>
+                      <td className="px-5 py-4">
+                        <div className="flex flex-col gap-2">
+                          <StatusBadge value={project.lifecycleStatus} />
+                          <StatusBadge value={project.healthStatus} />
+                        </div>
+                      </td>
+                      <td className="px-5 py-4 text-sm text-text-secondary">
+                        {project.clientName}
+                      </td>
+                      <td className="px-5 py-4 text-right text-sm font-medium text-text-primary">
+                        {formatCurrencyIdr(project.outstandingReceivable.amount)}
+                      </td>
+                      <td className="px-5 py-4 text-right text-sm font-medium text-text-primary">
+                        {formatCurrencyIdr(project.outstandingPayable.amount)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <div className="rounded-[4px] border border-border bg-white px-4 py-4 text-sm text-text-secondary">
+              No active projects.
+            </div>
+          )}
         </SectionPanel>
 
         <SectionPanel

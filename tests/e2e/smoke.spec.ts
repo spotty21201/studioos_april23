@@ -54,6 +54,30 @@ test.describe("Non-Destructive Release Smoke Suite", () => {
     await page.click('button[type="submit"]');
 
     await expect(page).toHaveURL(/\/dashboard/);
-    await expect(page.locator("text=HDA StudioOS")).toBeVisible();
+    await expect(page.getByText("HDA StudioOS").first()).toBeVisible();
+
+    // Verify Sign Out control is visible by accessible name
+    const signOutButton = page.getByRole("button", { name: /sign out/i }).first();
+    await expect(signOutButton).toBeVisible();
+
+    // Verify disabled global search with coming later placeholder
+    const searchInput = page.getByPlaceholder(/global search/i);
+    await expect(searchInput).toBeVisible();
+    await expect(searchInput).toBeDisabled();
+    await expect(searchInput).toHaveAttribute("placeholder", /coming in future release/i);
+
+    // Verify /projects/new displays HDA-26018 placeholder
+    await page.goto("/projects/new");
+    await expect(page.getByPlaceholder("HDA-26018")).toBeVisible();
+
+    // Verify Sign Out redirects to /login
+    await page.goto("/dashboard");
+    const activeSignOut = page.getByRole("button", { name: /sign out/i }).first();
+    await activeSignOut.click();
+    await expect(page).toHaveURL(/\/login/);
+
+    // Verify attempting /dashboard after sign-out redirects to /login
+    await page.goto("/dashboard");
+    await expect(page).toHaveURL(/\/login/);
   });
 });

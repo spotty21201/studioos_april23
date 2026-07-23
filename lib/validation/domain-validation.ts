@@ -174,3 +174,17 @@ export function requireEnumValue<T extends string>(
 
   return trimmed as T;
 }
+
+/**
+ * Validates an email address format. Returns null if valid or empty, or an error message.
+ */
+export function validateEmailAddress(email: string | null | undefined): string | null {
+  if (!email || email.trim().length === 0) {
+    return null;
+  }
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email.trim())) {
+    return "Use a valid email address.";
+  }
+  return null;
+}

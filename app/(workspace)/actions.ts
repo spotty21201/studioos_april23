@@ -8,6 +8,7 @@ import {
   validateCalendarDateString,
   validateCompletedDate,
   validateDateOrdering,
+  validateEmailAddress,
   validateExternalUrl,
   validatePaidStatus,
 } from "@/lib/validation/domain-validation";
@@ -282,6 +283,14 @@ export async function createProjectAction(
 
   if (clientMode === "new" && !newClientName) {
     errors.new_client_name = "New client name is required.";
+  }
+
+  const newContactEmail = nullableValue(formData, "new_contact_email");
+  if (newContactEmail) {
+    const emailErr = validateEmailAddress(newContactEmail);
+    if (emailErr) {
+      errors.new_contact_email = emailErr;
+    }
   }
 
   if (Object.keys(errors).length > 0) {

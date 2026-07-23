@@ -69,8 +69,7 @@ export function AppSidebar({ studioName, subtitle, viewer }: AppSidebarProps) {
           </div>
         </div>
         <div className="mt-4 rounded-[2px] border border-border-muted bg-white px-3 py-2.5 text-xs leading-5 text-text-secondary">
-          Principal overview mode is active. Surfaces prioritize visibility,
-          exceptions, and briefing-level clarity.
+          Focus on active work, risks, and decisions requiring follow-up.
         </div>
         <div className="mt-3 pt-2 border-t border-border-muted">
           <SignOutButton variant="menu-item" />

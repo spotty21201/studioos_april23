@@ -12,7 +12,7 @@ It is authoritative when aligned with:
 ## Current Implementation State
 
 - **Source Code**: Navigation, CRUD forms, server actions, fail-closed auth gating, domain validation, and partial query preservation are implemented.
-- **Verification**: `npm run typecheck`, `npm run lint`, `npm test` (39/39 unit tests passed), `npm run build`, and Playwright smoke tests (unauthenticated: 2 passed, 1 credential-blocked skip; authenticated: 3/3 passed when credentials supplied) are verified locally.
+- **Verification**: `npm run typecheck`, `npm run lint`, `npm test` (54/54 unit tests passed across 9 test files), `npm run build`, and Playwright smoke tests (unauthenticated: 2 passed, 1 credential-blocked skip; authenticated: 3/3 passed when credentials supplied) are verified locally.
 - **Database Migrations**: Foundation migration is defined. Pending release hardening migration [`supabase/migrations/20260423000004_release_hardening.sql`](../supabase/migrations/20260423000004_release_hardening.sql) is present in source, statically reviewed, but **NOT APPLIED** to hosted database.
 - **Hosted Environment**: Pending migrations remain unapplied. Hosted seed data population and authenticated E2E verification were separately verified.
 
