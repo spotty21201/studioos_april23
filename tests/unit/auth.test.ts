@@ -127,4 +127,18 @@ describe("Production Auth & Authorization Evaluation (lib/supabase/auth-evaluato
     expect(state.canAccessWorkspace).toBe(false);
     expect(state.profile).toBeNull();
   });
+
+  it("enables the login form when valid production configuration is present", () => {
+    // With valid env vars, mode is "configured_live" and the login form
+    // must be enabled (authEnabled === true) even before a user signs in.
+    const state = evaluateAuthStateParams({
+      mode: "configured_live",
+      user: null,
+    });
+
+    expect(state.mode).toBe("configured_live");
+    expect(state.authEnabled).toBe(true);
+    expect(state.canAccessWorkspace).toBe(false);
+    expect(state.warning).toBeNull();
+  });
 });

@@ -34,14 +34,59 @@ function isValidHttpUrl(value: string) {
   }
 }
 
+function decodeJwtPayload(value: string): Record<string, unknown> | null {
+  const parts = value.split(".");
+  if (parts.length !== 3) {
+    return null;
+  }
+  try {
+    let b64 = parts[1].replace(/-/g, "+").replace(/_/g, "/");
+    while (b64.length % 4 !== 0) {
+      b64 += "=";
+    }
+    const decoded = atob(b64);
+    return JSON.parse(decoded) as Record<string, unknown>;
+  } catch {
+    return null;
+  }
+}
+
 function isLikelySupabaseAnonKey(value: string) {
   const parts = value.split(".");
 
-  return (
-    parts.length === 3 &&
-    value.startsWith("eyJ") &&
-    parts.every((part) => part.length > 0)
-  );
+  if (
+    parts.length !== 3 ||
+    !value.startsWith("eyJ") ||
+    parts.some((part) => part.length === 0)
+  ) {
+    return false;
+  }
+
+  // Reject service-role keys, personal access tokens, and other non-anon
+  // credentials that must never be used as the public anon key.
+  const payload = decodeJwtPayload(value);
+  if (!payload) {
+    return false;
+  }
+
+  const role = payload.role;
+  if (typeof role === "string" && role !== "anon" && role !== "authenticated") {
+    return false;
+  }
+
+  // Supabase personal access tokens carry a `scope` claim and/or an
+  // access-token issuer; the anon key has neither.
+  if (typeof payload.scope === "string" && payload.scope.length > 0) {
+    return false;
+  }
+  if (
+    typeof payload.iss === "string" &&
+    payload.iss.toLowerCase().includes("access-token")
+  ) {
+    return false;
+  }
+
+  return true;
 }
 
 export function getSupabaseEnv(): SupabaseEnv | null {
