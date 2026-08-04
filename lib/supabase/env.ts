@@ -51,7 +51,29 @@ function decodeJwtPayload(value: string): Record<string, unknown> | null {
   }
 }
 
+// Supabase publishes two generations of client-side ("publishable") keys:
+//   - Legacy JWT anon key: `eyJ...` (three dot-separated segments)
+//   - New publishable key:  `sb_publishable_<token>`
+// The server/secret equivalents are `sb_secret_<token>` and the legacy
+// `service_role` JWT, both of which must never be used as the anon key.
 function isLikelySupabaseAnonKey(value: string) {
+  if (value.startsWith("sb_publishable_")) {
+    // New publishable key format. Reject obvious non-publishable prefixes
+    // that a misconfigured secret/service-role/PAT value could slip in as.
+    const token = value.slice("sb_publishable_".length);
+    if (token.length === 0 || token.includes(" ") || token.includes("=")) {
+      return false;
+    }
+    return true;
+  }
+
+  if (value.startsWith("sb_")) {
+    // Any other `sb_...` key (e.g. `sb_secret_...`) is a secret,
+    // service-role, or admin credential that must never be used as the
+    // public anon key.
+    return false;
+  }
+
   const parts = value.split(".");
 
   if (

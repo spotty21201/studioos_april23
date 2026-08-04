@@ -115,4 +115,51 @@ describe("Environment & Configuration Parsing", () => {
 
     expect(getSupabaseEnv()).toBeNull();
   });
+
+  it("accepts Supabase's newer sb_publishable_ key format", () => {
+    process.env.NEXT_PUBLIC_SUPABASE_URL = "https://example.supabase.co";
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = "sb_publishable_abc123def456";
+
+    const env = getSupabaseEnv();
+    expect(env).not.toBeNull();
+    expect(env?.url).toBe("https://example.supabase.co");
+    expect(getSupabaseEnvMode()).toBe("configured_live");
+  });
+
+  it("rejects a bare sb_secret_ key in the anon slot", () => {
+    process.env.NEXT_PUBLIC_SUPABASE_URL = "https://example.supabase.co";
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = "sb_secret_xyz789";
+
+    expect(getSupabaseEnv()).toBeNull();
+    expect(getSupabaseEnvMode()).toBe("production_config_error");
+  });
+
+  it("rejects other sb_ prefixed keys (service/admin credentials)", () => {
+    process.env.NEXT_PUBLIC_SUPABASE_URL = "https://example.supabase.co";
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = "sb_publishable_token sb_secret_xyz";
+    expect(getSupabaseEnv()).toBeNull();
+  });
+
+  it("rejects sb_publishable_ keys that contain whitespace", () => {
+    process.env.NEXT_PUBLIC_SUPABASE_URL = "https://example.supabase.co";
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = "sb_publishable_ abc123";
+    expect(getSupabaseEnv()).toBeNull();
+  });
+
+  it("strips KEY= prefix from sb_publishable_ keys like other values", () => {
+    process.env.NEXT_PUBLIC_SUPABASE_URL = "https://example.supabase.co";
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = "NEXT_PUBLIC_SUPABASE_ANON_KEY=sb_publishable_abc123";
+
+    const env = getSupabaseEnv();
+    expect(env).not.toBeNull();
+    expect(env?.anonKey).toBe("sb_publishable_abc123");
+  });
+
+  it("accepts sb_publishable_ keys when cleanEnvValue strips quotes/whitespace", () => {
+    process.env.NEXT_PUBLIC_SUPABASE_URL = "https://example.supabase.co";
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = "  sb_publishable_abc123def456  ";
+
+    const env = getSupabaseEnv();
+    expect(env).not.toBeNull();
+  });
 });
