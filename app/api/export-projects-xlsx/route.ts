@@ -6,8 +6,7 @@ export async function GET(): Promise<Response> {
   try {
     const projects = await loadProjectExportRows();
     const rows = projects.map(mapProjectExportRow);
-    const workbook = buildProjectsWorkbook(rows);
-    const buf = await workbook.xlsx.writeBuffer();
+    const buf = await buildProjectsWorkbook(rows);
 
     return new Response(new Uint8Array(buf), {
       status: 200,

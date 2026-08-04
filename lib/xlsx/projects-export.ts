@@ -1,4 +1,5 @@
-import ExcelJS from "exceljs";
+import writeXlsxFile from "write-excel-file/node";
+import type { SheetData, SheetOptions } from "write-excel-file/node";
 import {
   mapProjectExportRow,
   PROJECT_EXPORT_HEADERS,
@@ -29,47 +30,51 @@ export function isProjectActive(project: unknown): boolean {
   return val === undefined || val === null || !Boolean(val);
 }
 
-function applyHeaderStyle(cell: ExcelJS.Cell) {
-  cell.font = { bold: true };
-  cell.fill = {
-    type: "pattern",
-    pattern: "solid",
-    fgColor: { argb: "FFF3F4F6" },
-  };
-}
+// Builds an `.xlsx` workbook Buffer with a styled header row, wrapped data
+// rows, and auto-sized column widths. Uses `write-excel-file`, which pulls
+// in no deprecated transitive dependencies (unlike `exceljs`).
+export async function buildProjectsWorkbook(rows: string[][]): Promise<Buffer> {
+  const sheetData: SheetData = [];
 
-export function buildProjectsWorkbook(rows: string[][]): ExcelJS.Workbook {
-  const workbook = new ExcelJS.Workbook();
-  const worksheet = workbook.addWorksheet("Projects");
+  // Header row
+  sheetData.push(
+    PROJECT_HEADERS.map((header) => ({
+      value: header,
+      fontWeight: "bold" as const,
+      backgroundColor: "#F3F4F6",
+      height: 36,
+    })),
+  );
 
-  const headerRow = worksheet.getRow(1);
-  PROJECT_HEADERS.forEach((header, index) => {
-    const cell = headerRow.getCell(index + 1);
-    cell.value = header;
-    applyHeaderStyle(cell);
-  });
-  headerRow.height = 36;
-
-  for (let i = 0; i < rows.length; i++) {
-    const row = rows[i];
-    const worksheetRow = worksheet.addRow(row);
-    worksheetRow.height = 72;
-
-    for (let colIndex = 1; colIndex <= row.length; colIndex++) {
-      worksheetRow.getCell(colIndex).alignment = { vertical: "top", wrapText: true };
-    }
+  // Data rows
+  for (const row of rows) {
+    sheetData.push(
+      row.map((cell) => ({
+        value: cell,
+        wrap: true,
+        alignVertical: "top" as const,
+        height: 72,
+      })),
+    );
   }
 
-  for (let colIndex = 1; colIndex <= PROJECT_HEADERS.length; colIndex++) {
-    let maxWidth = PROJECT_HEADERS[colIndex - 1].length + 4;
-    for (let rowIndex = 2; rowIndex <= worksheet.rowCount; rowIndex++) {
-      const cell = worksheet.getCell(rowIndex, colIndex);
-      if (cell.value != null && String(cell.value).length > maxWidth - 2) {
-        maxWidth = String(cell.value).length + 2;
+  // Auto-width columns
+  const columns: NonNullable<SheetOptions<unknown>["columns"]> = PROJECT_HEADERS.map(
+    (header, index) => {
+      let maxWidth = header.length + 4;
+      for (const row of rows) {
+        const cell = row[index];
+        if (cell != null && cell.length > maxWidth - 2) {
+          maxWidth = cell.length + 2;
+        }
       }
-    }
-    worksheet.getColumn(colIndex).width = Math.min(maxWidth, 50);
-  }
+      return { width: Math.min(maxWidth, 50) };
+    },
+  );
 
-  return workbook;
+  const file = writeXlsxFile(sheetData, {
+    sheet: "Projects",
+    columns,
+  });
+  return file.toBuffer();
 }

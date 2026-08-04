@@ -6,8 +6,7 @@ export async function GET() {
   try {
     const invoices = await loadInvoiceExportRows();
     const rows = invoices.map(mapInvoiceExportRow);
-    const workbook = buildFinanceWorkbook(rows);
-    const buffer = await workbook.xlsx.writeBuffer();
+    const buffer = await buildFinanceWorkbook(rows);
 
     return new Response(new Uint8Array(buffer), {
       headers: {
