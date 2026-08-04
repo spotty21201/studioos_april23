@@ -108,8 +108,8 @@ export function DocumentForm({
             className={selectClass}
             defaultValue={document?.source_type ?? "external_link"}
           >
-            <option value="external_link">External link</option>
-            <option value="file">Stored file reference</option>
+            <option value="external_link">Web link</option>
+            <option value="file">File path</option>
           </select>
         </Field>
         <Field
@@ -143,7 +143,7 @@ export function DocumentForm({
           />
         </Field>
         <Field
-          label="Stored file reference"
+          label="File path"
           htmlFor="file-path"
           error={state.fieldErrors.file_path}
         >
@@ -168,7 +168,7 @@ export function DocumentForm({
       </Field>
 
       <div className="flex justify-end">
-        <SubmitButton>{mode === "edit" ? "Save Document" : "Add Document"}</SubmitButton>
+        <SubmitButton>{mode === "edit" ? "Save Document" : "Add Linked Document"}</SubmitButton>
       </div>
     </form>
   );

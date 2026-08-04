@@ -23,7 +23,7 @@ export default async function EditInvoicePage({ params }: EditInvoicePageProps) 
       <PageHeader
         eyebrow={data.invoice.invoice_number}
         title="Edit Invoice"
-        description="Update an operational receivable record without changing the project workflow model."
+        description="Update the invoice details, dates, amount, and tax information."
         actions={
           <Link
             href={`/projects/${data.invoice.project_id}`}
@@ -40,7 +40,7 @@ export default async function EditInvoicePage({ params }: EditInvoicePageProps) 
 
       <SectionPanel
         title="Invoice Record"
-        description="Status, dates, amount, tax, and notes remain the editable V1 fields."
+        description="You can change the status, dates, amount, tax, and notes for this invoice."
       >
         <InvoiceForm mode="edit" options={data.options} invoice={data.invoice} />
       </SectionPanel>

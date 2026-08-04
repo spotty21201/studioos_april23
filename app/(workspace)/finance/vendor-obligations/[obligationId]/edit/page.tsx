@@ -25,7 +25,7 @@ export default async function EditVendorObligationPage({
       <PageHeader
         eyebrow={data.obligation.vendor?.name ?? "Vendor obligation"}
         title="Edit Vendor Obligation"
-        description="Update a project vendor commitment or payable record."
+        description="Update the vendor, amount, status, dates, and payment information."
         actions={
           <Link
             href={`/projects/${data.obligation.project_id}`}
@@ -41,8 +41,8 @@ export default async function EditVendorObligationPage({
       ) : null}
 
       <SectionPanel
-        title="Vendor Obligation"
-        description="V1 edits stay limited to vendor, amount, status, dates, tax, and notes."
+        title="Vendor Payment"
+        description="You can change the vendor, amount, status, dates, tax, and notes for this payment."
       >
         <VendorObligationForm
           mode="edit"

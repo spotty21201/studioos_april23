@@ -38,7 +38,7 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
         title="Project List"
         description={`${projects.filteredCount} of ${projects.totalCount} project records shown.`}
         action={
-          <form className="grid gap-3 md:grid-cols-[minmax(260px,1fr)_180px_180px_auto]">
+          <div className="flex items-center gap-3"><form className="grid gap-3 md:grid-cols-[minmax(260px,1fr)_180px_180px_auto]">
             <label className="relative block">
               <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-text-tertiary" />
               <input
@@ -78,6 +78,11 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
               Apply
             </button>
           </form>
+          <div className="flex items-center gap-2">
+          <a href="/api/export-projects" className="inline-flex h-10 items-center justify-center rounded-[2px] border border-border bg-white px-4 text-sm font-medium text-text-secondary hover:bg-surface-muted">Export Projects</a>
+          <a href="/api/export-projects-xlsx" className="inline-flex h-10 items-center justify-center rounded-[2px] border border-border bg-white px-4 text-sm font-medium text-text-secondary hover:bg-surface-muted">Export XLSX</a>
+          </div>
+          </div>
         }
       >
         <div className="overflow-hidden rounded-[8px] border border-border">

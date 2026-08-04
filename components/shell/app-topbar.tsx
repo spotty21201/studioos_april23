@@ -1,4 +1,3 @@
-import { Bell, Search, SlidersHorizontal } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { SignOutButton } from "@/components/auth/sign-out-button";
 import type { WorkspaceViewer } from "@/lib/studio-data";
@@ -11,50 +10,9 @@ export function AppTopbar({ viewer }: AppTopbarProps) {
   return (
     <header className="sticky top-0 z-40 border-b border-border-strong bg-white">
       <div className="flex h-[4.5rem] items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-        <div className="flex min-w-0 flex-1 items-center gap-3">
-          <div className="relative hidden max-w-md flex-1 sm:block">
-            <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-text-tertiary" />
-            <input
-              aria-label="Search across HDA StudioOS"
-              aria-disabled="true"
-              disabled
-              className="h-11 w-full rounded-[2px] border border-border bg-surface-muted px-11 text-sm text-text-tertiary outline-none cursor-not-allowed placeholder:text-text-tertiary"
-              placeholder="Global search (coming in future release)..."
-              type="search"
-            />
-          </div>
-          <button
-            type="button"
-            disabled
-            aria-disabled="true"
-            aria-label="Search across studio (disabled)"
-            className="inline-flex h-11 w-11 items-center justify-center rounded-[2px] border border-border bg-surface-muted text-text-tertiary cursor-not-allowed sm:hidden"
-          >
-            <Search className="h-4 w-4" />
-          </button>
-        </div>
+        <div />
 
-        <div className="flex items-center gap-2 sm:gap-3">
-          <button
-            type="button"
-            disabled
-            aria-disabled="true"
-            aria-label="View filters (disabled)"
-            title="Filters (disabled in V1)"
-            className="inline-flex h-11 w-11 items-center justify-center rounded-[2px] border border-border bg-surface-muted text-text-tertiary cursor-not-allowed"
-          >
-            <SlidersHorizontal className="h-4 w-4" />
-          </button>
-          <button
-            type="button"
-            disabled
-            aria-disabled="true"
-            aria-label="Notifications (disabled)"
-            title="Notifications (disabled in V1)"
-            className="inline-flex h-11 w-11 items-center justify-center rounded-[2px] border border-border bg-surface-muted text-text-tertiary cursor-not-allowed"
-          >
-            <Bell className="h-4 w-4" />
-          </button>
+        <div className="flex items-center gap-3">
           <div className="hidden items-center gap-3 rounded-[2px] border border-border bg-surface px-2 py-1.5 sm:flex">
             <Avatar name={viewer.name} size="sm" />
             <div className="pr-2">

@@ -27,7 +27,7 @@ export default async function EditProjectNotePage({
       <PageHeader
         eyebrow={data.project.project_code}
         title="Edit Note"
-        description="Update project-attached institutional memory."
+        description="Update the note details, type, and timestamp."
         actions={
           <Link
             href={`/projects/${data.project.id}`}
@@ -40,7 +40,7 @@ export default async function EditProjectNotePage({
 
       <SectionPanel
         title="Project Note"
-        description="Note title, type, body, and noted timestamp are editable in V1."
+        description="You can change the title, type, body text, and timestamp for this note."
       >
         <ProjectNoteForm mode="edit" projectId={data.project.id} note={data.note} />
       </SectionPanel>

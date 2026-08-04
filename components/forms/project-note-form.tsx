@@ -58,7 +58,7 @@ export function ProjectNoteForm({
             name="title"
             className={inputClass}
             defaultValue={note?.title ?? ""}
-            placeholder="Leadership check-in"
+            placeholder="e.g. Client confirmed revised timeline"
           />
         </Field>
         <Field label="Type" htmlFor="note-type">
@@ -84,13 +84,13 @@ export function ProjectNoteForm({
           name="body"
           className={textareaClass}
           defaultValue={note?.body ?? ""}
-          placeholder="Project note..."
+          placeholder="What happened, what was decided, or what needs to happen next?"
           required
         />
       </Field>
 
       <div className="grid gap-4 md:grid-cols-[1fr_auto] md:items-end">
-        <Field label="Noted at" htmlFor="noted-at" error={state.fieldErrors.noted_at}>
+        <Field label="Date and time of note" htmlFor="noted-at" error={state.fieldErrors.noted_at}>
           <input
             id="noted-at"
             name="noted_at"

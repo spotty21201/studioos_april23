@@ -69,7 +69,7 @@ export function AppSidebar({ studioName, subtitle, viewer }: AppSidebarProps) {
           </div>
         </div>
         <div className="mt-4 rounded-[2px] border border-border-muted bg-white px-3 py-2.5 text-xs leading-5 text-text-secondary">
-          Focus on active work, risks, and decisions requiring follow-up.
+          Focus on what your projects need today — risks, decisions, and follow-ups.
         </div>
         <div className="mt-3 pt-2 border-t border-border-muted">
           <SignOutButton variant="menu-item" />

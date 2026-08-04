@@ -278,11 +278,11 @@ export async function createProjectAction(
   }
 
   if (clientMode === "existing" && !existingClientId) {
-    errors.client_id = "Select an existing client or add a new one.";
+    errors.client_id = "Choose an existing client from the list.";
   }
 
   if (clientMode === "new" && !newClientName) {
-    errors.new_client_name = "New client name is required.";
+    errors.new_client_name = "Enter a name for the new client.";
   }
 
   const newContactEmail = nullableValue(formData, "new_contact_email");
@@ -388,8 +388,8 @@ export async function createProjectAction(
       p_completed_at: null,
       p_contract_value: contractValue ?? 0,
       p_currency: "IDR",
-      p_project_owner_id: optionalId(formData, "project_owner_id"),
-      p_last_reviewed_at: new Date().toISOString(),
+      p_project_owner_name: nullableValue(formData, "client_manager_name"),
+      p_project_lead_name: nullableValue(formData, "project_lead_name"),
     },
   );
 
@@ -489,12 +489,9 @@ export async function updateProjectAction(
     completed_at: completedAt,
     contract_value: contractValue ?? 0,
     currency: "IDR",
-    project_owner_id: optionalId(formData, "project_owner_id"),
+    project_owner_name: nullableValue(formData, "client_manager_name"),
+    project_lead_name: nullableValue(formData, "project_lead_name"),
   };
-
-  if (value(formData, "mark_reviewed") === "on") {
-    patch.last_reviewed_at = new Date().toISOString();
-  }
 
   const { error } = await supabase.rpc("update_project_with_activity", {
     p_project_id: projectId,
@@ -507,6 +504,58 @@ export async function updateProjectAction(
 
   revalidateWorkspace(projectId);
   redirect(`/projects/${projectId}`);
+}
+
+export async function archiveProjectAction(
+  _prevState: FormActionState,
+  formData: FormData,
+): Promise<FormActionState> {
+  const errors: FieldErrors = {};
+  const projectId = requireText(formData, "project_id", "Project", errors);
+  const projectName = requireText(formData, "confirm_project_name", "Project name", errors);
+
+  if (Object.keys(errors).length > 0) {
+    return fail("Review the highlighted fields below.", errors);
+  }
+
+  const supabase = await createSupabaseServerClient();
+  const auth = await requireAuthenticatedUser(supabase);
+
+  if (!auth.userId) {
+    return fail(auth.error ?? "Sign in is required.");
+  }
+
+  // Verify the project exists and user-entered name matches
+  const { data: project, error: fetchError } = await supabase
+    .from("projects")
+    .select("id, name, is_archived")
+    .eq("id", projectId)
+    .maybeSingle();
+
+  if (fetchError || !project) {
+    return fail("Project not found or access denied.", {});
+  }
+
+  if (project.is_archived) {
+    return fail("This project has already been archived.", {});
+  }
+
+  if (project.name.toLowerCase() !== projectName.toLowerCase()) {
+    errors.confirm_project_name = "The project name does not match.";
+    return fail("Review the highlighted fields below.", errors);
+  }
+
+  const { error } = await supabase
+    .from("projects")
+    .update({ is_archived: true })
+    .eq("id", projectId);
+
+  if (error) {
+    return fail(error.message, {});
+  }
+
+  revalidateWorkspace(projectId);
+  redirect(`/projects`);
 }
 
 export async function createInvoiceAction(
@@ -737,7 +786,7 @@ export async function createVendorObligationAction(
   const status = requireEnumValue(
     value(formData, "status"),
     "status",
-    "Obligation status",
+    "Payment status",
     vendorObligationStatuses,
     errors,
     { default: "planned" },
@@ -762,7 +811,7 @@ export async function createVendorObligationAction(
   }
 
   if (vendorMode === "existing" && !existingVendorId) {
-    errors.vendor_id = "Select an existing vendor or add a new one.";
+    errors.vendor_id = "Select a vendor from the list, or enter a new name below.";
   }
 
   if (vendorMode === "new" && !newVendorName) {
@@ -864,7 +913,7 @@ export async function updateVendorObligationAction(
   const status = requireEnumValue(
     value(formData, "status"),
     "status",
-    "Obligation status",
+    "Payment status",
     vendorObligationStatuses,
     errors,
     { default: "planned" },
@@ -979,11 +1028,11 @@ export async function createDocumentAction(
   const documentDate = optionalDate(formData, "document_date", errors);
 
   if (sourceType === "file" && !filePath) {
-    errors.file_path = "Stored file reference is required.";
+    errors.file_path = "File path is required.";
   }
 
   if (sourceType === "external_link" && !externalUrl) {
-    errors.external_url = "External URL is required.";
+    errors.external_url = "Web link is required.";
   }
 
   if (externalUrl) {
@@ -1071,11 +1120,11 @@ export async function updateDocumentAction(
   const documentDate = optionalDate(formData, "document_date", errors);
 
   if (sourceType === "file" && !filePath) {
-    errors.file_path = "Stored file reference is required.";
+    errors.file_path = "File path is required.";
   }
 
   if (sourceType === "external_link" && !externalUrl) {
-    errors.external_url = "External URL is required.";
+    errors.external_url = "Web link is required.";
   }
 
   if (externalUrl) {

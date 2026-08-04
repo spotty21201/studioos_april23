@@ -45,7 +45,7 @@ export type DashboardMetric = {
   key:
     | "active_projects"
     | "projects_needing_attention"
-    | "overdue_invoices"
+    | "invoice_age"
     | "unpaid_vendor_obligations"
     | "outstanding_receivables";
   label: string;
@@ -114,6 +114,7 @@ export type ProjectHeader = {
   primaryContactName: string | null;
   primaryContactEmail: string | null;
   projectOwnerName: string | null;
+  projectLeadName: string | null;
   lifecycleStatus: ProjectLifecycleStatus;
   healthStatus: ProjectHealthStatus;
   summary: string | null;
@@ -121,7 +122,6 @@ export type ProjectHeader = {
   startDate: string | null;
   targetEndDate: string | null;
   completedAt: string | null;
-  lastReviewedAt: string | null;
   contractValue: Money;
 };
 
@@ -292,6 +292,30 @@ function sortAttentionItems(left: AttentionItem, right: AttentionItem) {
   return right.createdAt.localeCompare(left.createdAt);
 }
 
+const attentionLabelDescriptions: Record<string, string> = {
+  watch: "This project needs a closer look. Check the reason, owner, and next step.",
+  at_risk: "This project is at risk. Review the reason, owner, and next action.",
+  overdue_invoice: "This invoice has not been paid by the client. Follow up with the client.",
+  unpaid_vendor: "The studio has an outstanding payment to a vendor. Make sure it gets paid.",
+  stale_review: "This project has not been reviewed recently. Confirm whether the status and next steps are still correct.",
+};
+
+function humanizeAttentionSummary(attentionLabel: string, rawSummary: string): string {
+  const description = attentionLabelDescriptions[attentionLabel];
+  if (!description) return rawSummary;
+  // If raw summary already looks human-readable, keep it appended
+  // Otherwise just return the plain description
+  const lowerRaw = rawSummary.toLowerCase();
+  if (
+    lowerRaw.includes("project health status") ||
+    lowerRaw.includes("health is ") ||
+    lowerRaw.includes("review is stale")
+  ) {
+    return description + " " + (rawSummary.split(":").pop()?.trim() ?? "");
+  }
+  return description;
+}
+
 function mapAttentionItem(item: ProjectAttentionItemRow): AttentionItem {
   return {
     id: item.attention_item_id,
@@ -300,7 +324,7 @@ function mapAttentionItem(item: ProjectAttentionItemRow): AttentionItem {
     projectName: item.project_name,
     clientName: item.client_name,
     label: item.attention_label,
-    summary: item.attention_summary,
+    summary: humanizeAttentionSummary(item.attention_label, item.attention_summary),
     createdAt: item.created_at,
   };
 }
@@ -538,32 +562,32 @@ export async function getDashboardPageData(): Promise<DashboardPageData> {
         key: "active_projects",
         label: "Active Projects",
         value: source.data.dashboardSnapshot?.active_projects ?? 0,
-        note: "Projects with active lifecycle status",
+        note: "Projects currently in progress",
       },
       {
         key: "projects_needing_attention",
-        label: "Projects Needing Attention",
+        label: "Needs Your Attention",
         value: source.data.dashboardSnapshot?.projects_needing_attention ?? 0,
-        note: "Distinct projects requiring leadership review",
+        note: "Projects with a risk, overdue task, or follow-up needed",
       },
       {
-        key: "overdue_invoices",
+        key: "invoice_age",
         label: "Overdue Invoices",
         value: overdueInvoices.length,
-        note: "Client billing requiring follow-up",
+        note: "Invoices that need follow-up",
       },
       {
         key: "unpaid_vendor_obligations",
-        label: "Open Vendor Obligations",
+        label: "Money Owed to Vendors",
         value: unpaidVendorObligations.length,
-        note: "Due or overdue vendor commitments",
+        note: "Bills and commitments that still need to be paid",
       },
       {
         key: "outstanding_receivables",
-        label: "Outstanding Receivables",
+        label: "Money to Collect",
         value: source.data.financeOverview?.outstanding_receivable ?? 0,
         currency,
-        note: "Current receivable exposure",
+        note: "Unpaid client invoices",
       },
     ],
     attentionItems: attentionItems.slice(0, 6),
@@ -618,11 +642,14 @@ export async function getProjectsPageData(input?: {
 
   const query = filters.q.toLowerCase();
   const items = allItems.filter((item) => {
+    const code = String(item.projectCode ?? "");
+    const name = String(item.name ?? "");
+    const client = String(item.clientName ?? "");
     const matchesQuery =
       query.length === 0 ||
-      item.projectCode.toLowerCase().includes(query) ||
-      item.name.toLowerCase().includes(query) ||
-      item.clientName.toLowerCase().includes(query);
+      code.toLowerCase().includes(query) ||
+      name.toLowerCase().includes(query) ||
+      client.toLowerCase().includes(query);
     const matchesLifecycle =
       filters.lifecycle === "all" || item.lifecycleStatus === filters.lifecycle;
     const matchesHealth =
@@ -688,7 +715,8 @@ export async function getProjectDetailPageData(
       clientName: project.client?.name ?? "Unknown client",
       primaryContactName: project.primary_contact?.full_name ?? null,
       primaryContactEmail: project.primary_contact?.email ?? null,
-      projectOwnerName: project.project_owner?.full_name ?? null,
+      projectOwnerName: project.project_owner_name ?? null,
+      projectLeadName: project.project_lead_name ?? null,
       lifecycleStatus: project.lifecycle_status,
       healthStatus: project.health_status,
       summary: project.summary,
@@ -696,7 +724,6 @@ export async function getProjectDetailPageData(
       startDate: project.start_date,
       targetEndDate: project.target_end_date,
       completedAt: project.completed_at,
-      lastReviewedAt: project.last_reviewed_at,
       contractValue: money(project.contract_value, project.currency),
     },
     financeSummary: mapFinanceSummary(

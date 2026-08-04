@@ -66,15 +66,12 @@ export const getStudioOsSource = cache(async (): Promise<DataEnvelope<StudioOsSo
         completed_at,
         contract_value,
         currency,
-        project_owner_id,
-        last_reviewed_at,
         created_at,
         updated_at,
         created_by,
         updated_by,
         client:clients!projects_client_id_fkey(id, name),
-        primary_contact:client_contacts!projects_primary_contact_id_fkey(id, full_name, email, job_title),
-        project_owner:profiles!projects_project_owner_id_fkey(id, full_name, email, role)
+        primary_contact:client_contacts!projects_primary_contact_id_fkey(id, full_name, email, job_title)
       `),
       supabase.from("project_finance_summary_v").select(`
         project_id,

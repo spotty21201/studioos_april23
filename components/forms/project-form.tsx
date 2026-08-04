@@ -103,7 +103,7 @@ export function ProjectForm({ mode, options, project }: ProjectFormProps) {
       {mode === "create" ? (
         <fieldset className="space-y-4 rounded-[4px] border border-border bg-surface-muted p-4">
           <legend className="px-1 text-xs font-semibold uppercase tracking-[0.14em] text-text-tertiary">
-            Client Selection
+            About the Client
           </legend>
 
           <div className="flex flex-wrap items-center gap-6">
@@ -158,7 +158,7 @@ export function ProjectForm({ mode, options, project }: ProjectFormProps) {
                 </select>
               </Field>
               <Field
-                label="Existing primary contact"
+                label="Primary contact"
                 htmlFor="primary-contact-id"
                 error={state.fieldErrors.primary_contact_id}
               >
@@ -189,7 +189,7 @@ export function ProjectForm({ mode, options, project }: ProjectFormProps) {
           ) : (
             <div className="grid gap-4 md:grid-cols-2">
               <Field
-                label="New client name"
+                label="Client name"
                 htmlFor="new-client-name"
                 required
                 error={state.fieldErrors.new_client_name}
@@ -198,7 +198,7 @@ export function ProjectForm({ mode, options, project }: ProjectFormProps) {
                   id="new-client-name"
                   name="new_client_name"
                   className={inputClass}
-                  placeholder="New client name"
+                  placeholder="Enter client name"
                   required
                   aria-invalid={Boolean(state.fieldErrors.new_client_name)}
                   aria-describedby={
@@ -207,7 +207,7 @@ export function ProjectForm({ mode, options, project }: ProjectFormProps) {
                 />
               </Field>
               <Field
-                label="New contact name"
+                label="Contact name (optional)"
                 htmlFor="new-contact-name"
                 error={state.fieldErrors.new_contact_name}
               >
@@ -308,7 +308,7 @@ export function ProjectForm({ mode, options, project }: ProjectFormProps) {
       )}
 
       <div className="grid gap-4 md:grid-cols-3">
-        <Field label="Lifecycle" htmlFor="lifecycle-status">
+        <Field label="Stage" htmlFor="lifecycle-status">
           <select
             id="lifecycle-status"
             name="lifecycle_status"
@@ -322,7 +322,7 @@ export function ProjectForm({ mode, options, project }: ProjectFormProps) {
             <option value="cancelled">Cancelled</option>
           </select>
         </Field>
-        <Field label="Health" htmlFor="health-status">
+        <Field label="Project health" htmlFor="health-status">
           <select
             id="health-status"
             name="health_status"
@@ -330,24 +330,46 @@ export function ProjectForm({ mode, options, project }: ProjectFormProps) {
             defaultValue={project?.health_status ?? "on_track"}
           >
             <option value="on_track">On track</option>
-            <option value="watch">Watch</option>
-            <option value="at_risk">At risk</option>
+            <option value="watch">Needs a closer look</option>
+            <option value="at_risk">Action needed</option>
           </select>
         </Field>
-        <Field label="Project owner" htmlFor="project-owner-id">
-          <select
-            id="project-owner-id"
-            name="project_owner_id"
-            className={selectClass}
-            defaultValue={project?.project_owner_id ?? ""}
-          >
-            <option value="">Not assigned</option>
-            {options.profiles.map((profile) => (
-              <option key={profile.id} value={profile.id}>
-                {profile.full_name}
-              </option>
-            ))}
-          </select>
+        <Field
+          label="Client manager (optional)"
+          htmlFor="client-manager-name"
+          error={state.fieldErrors.client_manager_name}
+        >
+          <input
+            id="client-manager-name"
+            name="client_manager_name"
+            className={inputClass}
+            defaultValue={project?.project_owner_name ?? ""}
+            placeholder="e.g. Doddy Samiaji — person managing the client relationship"
+            aria-invalid={Boolean(state.fieldErrors.client_manager_name)}
+            aria-describedby={
+              state.fieldErrors.client_manager_name ? "manager-error" : undefined
+            }
+          />
+        </Field>
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-2">
+        <Field
+          label="Project Lead"
+          htmlFor="project-lead-name"
+          error={state.fieldErrors.project_lead_name}
+        >
+          <input
+            id="project-lead-name"
+            name="project_lead_name"
+            className={inputClass}
+            defaultValue={project?.project_lead_name ?? ""}
+            placeholder="e.g. Maya Puspa"
+            aria-invalid={Boolean(state.fieldErrors.project_lead_name)}
+            aria-describedby={
+              state.fieldErrors.project_lead_name ? "lead-error" : undefined
+            }
+          />
         </Field>
       </div>
 
@@ -383,7 +405,7 @@ export function ProjectForm({ mode, options, project }: ProjectFormProps) {
           />
         </Field>
         <Field
-          label="Target end"
+          label="End date"
           htmlFor="target-end-date"
           error={state.fieldErrors.target_end_date}
         >
@@ -393,6 +415,7 @@ export function ProjectForm({ mode, options, project }: ProjectFormProps) {
             type="date"
             className={inputClass}
             defaultValue={project?.target_end_date ?? ""}
+            placeholder="2026-12-01"
             aria-invalid={Boolean(state.fieldErrors.target_end_date)}
             aria-describedby={
               state.fieldErrors.target_end_date ? "target-end-date-error" : undefined
@@ -402,7 +425,7 @@ export function ProjectForm({ mode, options, project }: ProjectFormProps) {
       </div>
 
       {mode === "edit" ? (
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="grid gap-4 md:grid-cols-1">
           <Field
             label="Completed date"
             htmlFor="completed-at"
@@ -420,10 +443,6 @@ export function ProjectForm({ mode, options, project }: ProjectFormProps) {
               }
             />
           </Field>
-          <label className="flex h-11 items-center gap-3 rounded-[4px] border border-border bg-white px-4 text-sm font-medium text-text-primary">
-            <input name="mark_reviewed" type="checkbox" className="h-4 w-4 accent-accent" />
-            Mark reviewed now
-          </label>
         </div>
       ) : null}
 
@@ -433,7 +452,7 @@ export function ProjectForm({ mode, options, project }: ProjectFormProps) {
           name="location"
           className={inputClass}
           defaultValue={project?.location ?? ""}
-          placeholder="Bandung, Indonesia"
+          placeholder="e.g. Bandung, Indonesia"
         />
       </Field>
 
@@ -443,7 +462,7 @@ export function ProjectForm({ mode, options, project }: ProjectFormProps) {
           name="summary"
           className={textareaClass}
           defaultValue={project?.summary ?? ""}
-          placeholder="Current project context for leadership."
+          placeholder="What is this project about and what are the key goals?"
         />
       </Field>
 

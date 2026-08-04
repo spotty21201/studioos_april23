@@ -64,15 +64,15 @@ export default async function LoginPage() {
             </p>
 
             <div className="mt-8 rounded-[4px] border border-border bg-surface-muted px-5 py-5">
-              <p className="text-sm font-semibold text-text-primary">
-                Connection status
-              </p>
-              <p className="mt-2 text-sm leading-6 text-text-secondary">
-                {authState.mode === "configured_live"
-                  ? "Authentication is configured and ready for sign-in."
-                  : authState.mode === "allowed_local_preview"
-                    ? "Local Preview Mode: Supabase auth is not configured. Local read-only preview is enabled."
-                    : "Production Configuration Error: Supabase configuration is missing or invalid. Access is disabled."}
+                <p className="text-sm font-semibold text-text-primary">
+                  Connection status
+                </p>
+                <p className="mt-2 text-sm leading-6 text-text-secondary">
+                  {authState.mode === "configured_live"
+                    ? "Your studio workspace is connected and ready to use."
+                    : authState.mode === "allowed_local_preview"
+                      ? "You are in preview mode. Your studio data source is not connected right now, but you can still look around."
+                      : "Access is unavailable. Please try again later or contact your studio administrator."}
               </p>
             </div>
 
@@ -86,7 +86,7 @@ export default async function LoginPage() {
                     </h3>
                     <p className="mt-1 text-sm leading-6 text-text-primary">
                       {authState.warning ??
-                        "Your user account is authenticated, but no active workspace profile was found for your account."}
+                        "You are signed in, but we could not find an active workspace for your account."}
                     </p>
                     <div className="mt-4">
                       <SignOutButton />

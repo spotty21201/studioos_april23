@@ -1,9 +1,10 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
+import Link from "next/link";
 import { PageHeader } from "@/components/ui/page-header";
 import { SectionPanel } from "@/components/ui/section-panel";
 import { DataSourceNotice } from "@/components/ui/data-source-notice";
 import { ProjectForm } from "@/components/forms/project-form";
+import { ArchiveProjectSection } from "@/components/ui/archive-project-section";
 import { getProjectEditFormData } from "@/lib/studio-form-data";
 
 type EditProjectPageProps = {
@@ -23,7 +24,7 @@ export default async function EditProjectPage({ params }: EditProjectPageProps) 
       <PageHeader
         eyebrow={data.project.project_code}
         title="Edit Project"
-        description="Update the leadership-facing project record without changing linked finance, documents, or notes."
+        description="Update the project details, client information, dates, and responsibilities."
         actions={
           <Link
             href={`/projects/${data.project.id}`}
@@ -35,15 +36,20 @@ export default async function EditProjectPage({ params }: EditProjectPageProps) 
       />
 
       {data.options.warning ? (
-        <DataSourceNotice title="Form data notice" message={data.options.warning} />
+        <DataSourceNotice title="Form notice" message={data.options.warning} />
       ) : null}
 
       <SectionPanel
         title="Project Record"
-        description="Primary edits stay focused on project status, dates, ownership, and current context."
+        description="Update the project status, dates, ownership, and current context."
       >
         <ProjectForm mode="edit" options={data.options} project={data.project} />
       </SectionPanel>
+
+      <ArchiveProjectSection
+        projectId={data.project.id}
+        projectName={data.project.name}
+      />
     </div>
   );
 }

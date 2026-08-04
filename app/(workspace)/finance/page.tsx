@@ -30,6 +30,8 @@ export default async function FinancePage() {
             >
               Add Vendor Obligation
             </Link>
+            <a href="/api/export-finance" className="inline-flex h-10 items-center justify-center rounded-[2px] border border-border bg-white px-4 text-sm font-medium text-text-secondary hover:bg-surface-muted">Export Finance</a>
+            <a href="/api/export-finance-xlsx" className="inline-flex h-10 items-center justify-center rounded-[2px] border border-border bg-white px-4 text-sm font-medium text-text-secondary hover:bg-surface-muted">Export XLSX</a>
           </>
         }
       />
@@ -80,7 +82,7 @@ export default async function FinancePage() {
       </section>
 
       <section className="grid gap-6 xl:grid-cols-2">
-        <SectionPanel title="Overdue Invoices" description="Receivables needing follow-up.">
+        <SectionPanel title="Invoices Needing Follow-up" description="These client invoices are late or still waiting for payment.">
           <div className="space-y-3">
             {overview.overdueInvoices.map((invoice) => (
               <div
@@ -112,7 +114,7 @@ export default async function FinancePage() {
             ))}
             {overview.overdueInvoices.length === 0 ? (
               <div className="rounded-[4px] border border-border bg-white px-4 py-4 text-sm text-text-secondary">
-                No overdue invoices.
+                No client invoices need follow-up right now.
               </div>
             ) : null}
           </div>

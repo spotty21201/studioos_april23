@@ -60,12 +60,6 @@ test.describe("Non-Destructive Release Smoke Suite", () => {
     const signOutButton = page.getByRole("button", { name: /sign out/i }).first();
     await expect(signOutButton).toBeVisible();
 
-    // Verify disabled global search with coming later placeholder
-    const searchInput = page.getByPlaceholder(/global search/i);
-    await expect(searchInput).toBeVisible();
-    await expect(searchInput).toBeDisabled();
-    await expect(searchInput).toHaveAttribute("placeholder", /coming in future release/i);
-
     // Verify /projects/new displays HDA-26018 placeholder
     await page.goto("/projects/new");
     await expect(page.getByPlaceholder("HDA-26018")).toBeVisible();

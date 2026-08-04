@@ -101,8 +101,8 @@ export async function getStudioFormOptions(): Promise<StudioFormOptions> {
       vendors: [],
       profiles: [],
       projects: baseProjects,
-      warning:
-        "Supabase is not configured in this environment, so write forms cannot load live selector records.",
+        warning:
+          "Some form data may not load correctly right now.",
     };
   }
 

@@ -121,7 +121,7 @@ describe("Dashboard Data Reconciled Semantics (lib/studio-data.ts)", () => {
     const activeProjectsMetric = dashboardData.metrics.find((m) => m.key === "active_projects");
     const attentionMetric = dashboardData.metrics.find((m) => m.key === "projects_needing_attention");
 
-    expect(activeProjectsMetric?.note).toBe("Projects with active lifecycle status");
-    expect(attentionMetric?.note).toBe("Distinct projects requiring leadership review");
+    expect(activeProjectsMetric?.note).toBe("Projects currently in progress");
+    expect(attentionMetric?.note).toBe("Projects with a risk, overdue task, or follow-up needed");
   });
 });

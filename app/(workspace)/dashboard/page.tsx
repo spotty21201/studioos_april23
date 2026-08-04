@@ -16,7 +16,7 @@ import { getDashboardPageData } from "@/lib/studio-data";
 const metricIconMap = {
   active_projects: BriefcaseBusiness,
   projects_needing_attention: AlertTriangle,
-  overdue_invoices: Receipt,
+  invoice_age: Receipt,
   unpaid_vendor_obligations: WalletCards,
   outstanding_receivables: ArrowUpRight,
 } as const;
@@ -24,10 +24,12 @@ const metricIconMap = {
 const metricToneMap = {
   active_projects: "default",
   projects_needing_attention: "critical",
-  overdue_invoices: "warning",
+  invoice_age: "warning",
   unpaid_vendor_obligations: "warning",
   outstanding_receivables: "accent",
 } as const;
+
+import { ProjectStatusBadge } from "@/components/ui/project-status-badge";
 
 export default async function DashboardPage() {
   const snapshot = await getDashboardPageData();
@@ -35,9 +37,9 @@ export default async function DashboardPage() {
   return (
     <div className="space-y-8">
       <PageHeader
-        eyebrow="Principal Workspace"
+        eyebrow="Studio Overview"
         title="Dashboard"
-        description="Scan active work, identify issues, open a project, and leave with clarity. The surface stays table-first and exception-oriented."
+        description="See what is happening across your projects and focus on the work that needs attention."
       />
 
       <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
@@ -50,7 +52,7 @@ export default async function DashboardPage() {
                   ? formatCurrencyIdr(metric.value, { compact: true })
                   : metric.value.toLocaleString("en-US")
               }
-              supportingText={metric.note ?? "Operational overview"}
+              supportingText={metric.note ?? ""}
               icon={metricIconMap[metric.key]}
               tone={metricToneMap[metric.key]}
             />
@@ -58,10 +60,10 @@ export default async function DashboardPage() {
         ))}
       </section>
 
-      <section className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
+      <section className="xl:grid-cols-2">
         <SectionPanel
-          title="Attention Signals"
-          description="Open risk, review, receivable, and vendor signals. One project may have more than one signal."
+          title="Projects Needing Attention"
+          description="These projects have something that needs checking. A project may appear more than once if it has several issues."
         >
           <div className="space-y-3">
             {snapshot.attentionItems.length > 0 ? (
@@ -93,44 +95,15 @@ export default async function DashboardPage() {
               ))
             ) : (
               <div className="rounded-[4px] border border-border bg-white px-4 py-4 text-sm text-text-secondary">
-                No current project risks or follow-up signals.
+                No current project issues to report. Everything looks clear.
               </div>
             )}
           </div>
         </SectionPanel>
 
         <SectionPanel
-          title="Recent Notes"
-          description="Latest project memory for quick leadership context."
-        >
-          <div className="space-y-4">
-            {snapshot.recentNotes.map((note) => (
-              <div
-                key={note.id}
-                className="rounded-[4px] border border-border bg-white px-4 py-4"
-              >
-                <div className="flex items-center justify-between gap-4">
-                  <p className="text-sm font-semibold text-text-primary">
-                    {note.title ?? "Untitled note"}
-                  </p>
-                  <StatusBadge value={note.noteType} />
-                </div>
-                <p className="mt-2 text-sm leading-6 text-text-secondary">
-                  {note.bodyPreview}
-                </p>
-                <p className="mt-3 text-xs uppercase tracking-[0.14em] text-text-tertiary">
-                  {note.projectCode} / {note.authorName} / {formatDateTime(note.notedAt)}
-                </p>
-              </div>
-            ))}
-          </div>
-        </SectionPanel>
-      </section>
-
-      <section className="grid gap-6 xl:grid-cols-2">
-        <SectionPanel
-          title="Overdue Invoices"
-          description="Open receivable issues that need follow-up."
+          title="Invoices Needing Follow-up"
+          description="These client invoices are late or still waiting for payment."
         >
           {snapshot.overdueInvoices.length > 0 ? (
             <div className="overflow-hidden rounded-[8px] border border-border">
@@ -178,14 +151,14 @@ export default async function DashboardPage() {
             </div>
           ) : (
             <div className="rounded-[4px] border border-border bg-white px-4 py-4 text-sm text-text-secondary">
-              No overdue invoices.
+              No client invoices need follow-up right now.
             </div>
           )}
         </SectionPanel>
 
         <SectionPanel
-          title="Vendor Obligations"
-          description="Due and overdue vendor commitments across projects."
+          title="Money Owed to Vendors"
+          description="Bills and commitments that still need to be paid."
         >
           {snapshot.unpaidVendorObligations.length > 0 ? (
             <div className="overflow-hidden rounded-[8px] border border-border">
@@ -240,7 +213,7 @@ export default async function DashboardPage() {
       <section className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
         <SectionPanel
           title="Active Projects"
-          description="Current live work sorted by most recently updated record."
+          description="Projects currently in progress"
         >
           {snapshot.activeProjects.length > 0 ? (
             <div className="overflow-hidden rounded-[8px] border border-border">
@@ -250,8 +223,8 @@ export default async function DashboardPage() {
                     <th className="px-5 py-4 font-medium">Project</th>
                     <th className="px-5 py-4 font-medium">Status</th>
                     <th className="px-5 py-4 font-medium">Client</th>
-                    <th className="px-5 py-4 font-medium text-right">Receivable</th>
-                    <th className="px-5 py-4 font-medium text-right">Payable</th>
+                    <th className="px-5 py-4 font-medium text-right">Money Owed by Clients</th>
+                    <th className="px-5 py-4 font-medium text-right">Money Owed to Vendors</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border-muted bg-white">
@@ -267,10 +240,10 @@ export default async function DashboardPage() {
                         <p className="mt-1 text-sm text-text-secondary">{project.name}</p>
                       </td>
                       <td className="px-5 py-4">
-                        <div className="flex flex-col gap-2">
-                          <StatusBadge value={project.lifecycleStatus} />
-                          <StatusBadge value={project.healthStatus} />
-                        </div>
+                        <ProjectStatusBadge
+                          lifecycleValue={project.lifecycleStatus}
+                          healthValue={project.healthStatus}
+                        />
                       </td>
                       <td className="px-5 py-4 text-sm text-text-secondary">
                         {project.clientName}
@@ -294,8 +267,8 @@ export default async function DashboardPage() {
         </SectionPanel>
 
         <SectionPanel
-          title="Recent Activity"
-          description="Latest cross-project changes from the current activity stream."
+          title="Recent Updates"
+          description="The latest changes across your projects."
         >
           <div className="space-y-4">
             {snapshot.recentActivity.map((item) => (

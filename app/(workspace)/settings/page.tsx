@@ -15,13 +15,13 @@ export default async function SettingsPage() {
   return (
     <div className="space-y-8">
       <PageHeader
-        eyebrow="System Foundation"
+        eyebrow="Settings"
         title="Settings"
-        description="Settings stays intentionally narrow in V1: studio defaults, integration readiness, and platform foundations."
+        description="Manage your studio details and workspace connection."
       />
 
       <section className="grid gap-6 xl:grid-cols-2">
-        <SectionPanel title="Studio Profile" description="Single-studio mode for HDA in V1.">
+        <SectionPanel title="Your Studio" description="This workspace is set up for one studio.">
           <dl className="grid gap-5 sm:grid-cols-2">
             <div>
               <dt className="eyebrow">Studio</dt>
@@ -57,8 +57,8 @@ export default async function SettingsPage() {
         </SectionPanel>
 
         <SectionPanel
-          title="Integration Readiness"
-          description="Current auth and data connectivity state."
+          title="Workspace Connection"
+          description="Connection status for your studio workspace."
         >
           <div className="space-y-4">
             <div className="flex items-start gap-4 rounded-[4px] border border-border bg-white px-4 py-4">
@@ -70,16 +70,16 @@ export default async function SettingsPage() {
               <div className="space-y-2">
                 <div className="flex items-center gap-3">
                   <p className="text-sm font-semibold text-text-primary">
-                    Supabase Environment
+                    Studio Workspace
                   </p>
                   <StatusBadge
                     value={authState.authEnabled ? "connected" : "not_configured"}
                   />
                 </div>
                 <p className="text-sm leading-6 text-text-secondary">
-                  Requires <code>NEXT_PUBLIC_SUPABASE_URL</code> and{" "}
-                  <code>NEXT_PUBLIC_SUPABASE_ANON_KEY</code>. When available, the
-                  workspace shell enforces Supabase session gating.
+                  {authState.authEnabled
+                    ? "This workspace is connected to your studio data source."
+                    : "The workspace is in preview mode. Connect a data source to unlock full functionality."}
                 </p>
               </div>
             </div>

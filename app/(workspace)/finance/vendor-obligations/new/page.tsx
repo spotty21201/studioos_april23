@@ -20,9 +20,9 @@ export default async function NewVendorObligationPage({
   return (
     <div className="space-y-8">
       <PageHeader
-        eyebrow="Payables"
-        title="Create Vendor Obligation"
-        description="Create a vendor payable or commitment tied to one project."
+        eyebrow="Payments"
+        title="Record Vendor Payment"
+        description="Record a bill or payment that the studio owes to a vendor."
         actions={
           <Link
             href="/finance"
@@ -38,8 +38,8 @@ export default async function NewVendorObligationPage({
       ) : null}
 
       <SectionPanel
-        title="Vendor Obligation"
-        description="Use an existing vendor or add the vendor name inline for first-pass tracking."
+        title="Vendor Payment"
+        description="Choose a vendor, or enter a new vendor if they are not listed yet."
       >
         <VendorObligationForm options={options} defaultProjectId={projectId} />
       </SectionPanel>

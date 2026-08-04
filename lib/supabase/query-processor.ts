@@ -128,16 +128,12 @@ export function processStudioOsQueryResults(
       primary_contact:
         | ProjectRecordRow["primary_contact"]
         | ProjectRecordRow["primary_contact"][];
-      project_owner:
-        | ProjectRecordRow["project_owner"]
-        | ProjectRecordRow["project_owner"][];
     };
 
     return {
       ...record,
       client: firstRelation(record.client),
       primary_contact: firstRelation(record.primary_contact),
-      project_owner: firstRelation(record.project_owner),
     };
   });
 

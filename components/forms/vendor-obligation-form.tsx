@@ -84,12 +84,11 @@ export function VendorObligationForm({
         </Field>
       </div>
 
-      <div className="grid gap-4 rounded-[4px] border border-border bg-surface-muted p-4 md:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-2 rounded-[4px] border border-border bg-surface-muted p-4">
         <input type="hidden" name="vendor_mode" value="existing" />
         <Field
-          label="Existing vendor"
+          label="Existing vendor or new vendor name"
           htmlFor="vendor-id"
-          required
           error={state.fieldErrors.vendor_id}
         >
           <select
@@ -98,7 +97,7 @@ export function VendorObligationForm({
             className={selectClass}
             defaultValue={obligation?.vendor_id ?? ""}
           >
-            <option value="">Select vendor</option>
+            <option value="">Select a vendor first, or enter a new name below</option>
             {options.vendors.map((vendor) => (
               <option key={vendor.id} value={vendor.id}>
                 {vendor.name}
@@ -109,7 +108,7 @@ export function VendorObligationForm({
         {mode === "create" ? (
           <>
             <Field
-              label="Or new vendor"
+              label="New vendor name"
               htmlFor="new-vendor-name"
               error={state.fieldErrors.new_vendor_name}
             >
@@ -117,7 +116,7 @@ export function VendorObligationForm({
                 id="new-vendor-name"
                 name="new_vendor_name"
                 className={inputClass}
-                placeholder="New vendor name"
+                placeholder="Type a vendor name to create them here"
                 onChange={(event) => {
                   const form = event.currentTarget.form;
                   const modeInput = form?.elements.namedItem("vendor_mode");
@@ -129,14 +128,17 @@ export function VendorObligationForm({
                 }}
               />
             </Field>
-            <Field label="New vendor service" htmlFor="new-vendor-service">
-              <input
-                id="new-vendor-service"
-                name="new_vendor_service_type"
-                className={inputClass}
-                placeholder="Engineering, rendering, survey"
-              />
-            </Field>
+        <Field
+          label="Vendor service type (optional)"
+          htmlFor="new-vendor-service"
+        >
+          <input
+            id="new-vendor-service"
+            name="new_vendor_service_type"
+            className={inputClass}
+            placeholder="e.g. Engineering, rendering, survey"
+          />
+        </Field>
           </>
         ) : null}
       </div>
@@ -190,7 +192,7 @@ export function VendorObligationForm({
 
       <div className="grid gap-4 md:grid-cols-2">
         <Field
-          label="Tax percentage"
+          label="Tax % (optional)"
           htmlFor="obligation-tax-percentage"
           error={state.fieldErrors.tax_percentage}
         >
@@ -202,7 +204,7 @@ export function VendorObligationForm({
             step="0.01"
             className={inputClass}
             defaultValue={obligation?.tax_percentage ?? ""}
-            placeholder="11"
+            placeholder="e.g. 11"
           />
         </Field>
         <Field label="Tax status" htmlFor="obligation-tax-status">
@@ -241,7 +243,7 @@ export function VendorObligationForm({
 
       <div className="flex justify-end">
         <SubmitButton>
-          {mode === "edit" ? "Save Vendor Obligation" : "Create Vendor Obligation"}
+          {mode === "edit" ? "Save Vendor Payment" : "Record Vendor Obligation"}
         </SubmitButton>
       </div>
     </form>

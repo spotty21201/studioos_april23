@@ -84,7 +84,7 @@ export type AttentionLabel =
   | "at_risk"
   | "overdue_invoice"
   | "unpaid_vendor"
-  | "stale_review";
+  | "stale_activity";
 
 export type ProfileRow = {
   id: string;
@@ -150,8 +150,9 @@ export type ProjectRow = {
   completed_at: string | null;
   contract_value: number;
   currency: CurrencyCode;
-  project_owner_id: string | null;
-  last_reviewed_at: string | null;
+  project_owner_name: string | null;
+  project_lead_name: string | null;
+  is_archived: boolean;
   created_at: string;
   updated_at: string;
   created_by: string | null;
@@ -326,7 +327,6 @@ export type VendorRelationRow = Pick<VendorRow, "id" | "name">;
 export type ProjectRecordRow = ProjectRow & {
   client: ClientRelationRow | null;
   primary_contact: ClientContactRelationRow | null;
-  project_owner: ProfileRelationRow | null;
 };
 
 export type InvoiceRecordRow = InvoiceRow & {
@@ -368,8 +368,8 @@ export type CreateProjectWithActivityArgs = {
   p_start_date?: string | null;
   p_target_end_date?: string | null;
   p_completed_at?: string | null;
-  p_project_owner_id?: string | null;
-  p_last_reviewed_at?: string | null;
+  p_project_owner_name?: string | null;
+  p_project_lead_name?: string | null;
 };
 
 export type UpdateProjectWithActivityPatch = Partial<{
@@ -387,8 +387,9 @@ export type UpdateProjectWithActivityPatch = Partial<{
   completed_at: string | null;
   contract_value: number;
   currency: CurrencyCode;
-  project_owner_id: string | null;
-  last_reviewed_at: string | null;
+  project_owner_name: string | null;
+  project_lead_name: string | null;
+  is_archived: boolean;
 }>;
 
 export type UpdateProjectWithActivityArgs = {

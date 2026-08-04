@@ -30,7 +30,7 @@ export default async function NewProjectPage() {
 
       <SectionPanel
         title="Project Record"
-        description="Required fields are limited to project identity, client, status, and contract value."
+        description="Start with the basic project information on the next page. Additional details can be added later."
       >
         <ProjectForm mode="create" options={options} />
       </SectionPanel>

@@ -25,7 +25,7 @@ describe("Project Form Server Action Validation & Mode Handling", () => {
 
     const result = await createProjectAction({ message: null, fieldErrors: {} }, formData);
 
-    expect(result.fieldErrors.client_id).toBe("Select an existing client or add a new one.");
+    expect(result.fieldErrors.client_id).toBe("Choose an existing client from the list.");
   });
 
   it("rejects new-client mode when new_client_name is missing", async () => {
@@ -38,7 +38,7 @@ describe("Project Form Server Action Validation & Mode Handling", () => {
 
     const result = await createProjectAction({ message: null, fieldErrors: {} }, formData);
 
-    expect(result.fieldErrors.new_client_name).toBe("New client name is required.");
+    expect(result.fieldErrors.new_client_name).toBe("Enter a name for the new client.");
   });
 
   it("rejects invalid contact email format for new contact", async () => {

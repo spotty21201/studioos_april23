@@ -134,6 +134,7 @@ export function InvoiceForm({
             type="date"
             className={inputClass}
             defaultValue={invoice?.issued_date ?? ""}
+            placeholder="2026-01-01"
           />
         </Field>
         <Field label="Due date" htmlFor="due-date" error={state.fieldErrors.due_date}>
@@ -158,7 +159,7 @@ export function InvoiceForm({
           />
         </Field>
         <Field
-          label="Tax percentage"
+          label="Tax % (optional)"
           htmlFor="invoice-tax-percentage"
           error={state.fieldErrors.tax_percentage}
         >
@@ -170,7 +171,7 @@ export function InvoiceForm({
             step="0.01"
             className={inputClass}
             defaultValue={invoice?.tax_percentage ?? ""}
-            placeholder="11"
+            placeholder="e.g. 11"
           />
         </Field>
         <Field label="Tax status" htmlFor="invoice-tax-status">
@@ -193,12 +194,12 @@ export function InvoiceForm({
           name="notes"
           className={textareaClass}
           defaultValue={invoice?.notes ?? ""}
-          placeholder="Collection context or billing notes."
+          placeholder="Payment terms, billing timeline, or who to follow up with."
         />
       </Field>
 
       <div className="flex justify-end">
-        <SubmitButton>{mode === "edit" ? "Save Invoice" : "Create Invoice"}</SubmitButton>
+        <SubmitButton>{mode === "edit" ? "Save Invoice" : "Create Invoice and Connect to Project"}</SubmitButton>
       </div>
     </form>
   );

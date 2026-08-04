@@ -20,7 +20,7 @@ export default async function NewInvoicePage({ searchParams }: NewInvoicePagePro
       <PageHeader
         eyebrow="Receivables"
         title="Create Invoice"
-        description="Create an operational invoice record linked to one project and its client."
+        description="Add an invoice and connect it to the right project."
         actions={
           <Link
             href="/finance"
@@ -37,7 +37,7 @@ export default async function NewInvoicePage({ searchParams }: NewInvoicePagePro
 
       <SectionPanel
         title="Invoice Record"
-        description="Tax amount is calculated from amount and tax percentage when provided."
+        description="Add a tax percentage if tax applies. The tax amount will be calculated automatically."
       >
         <InvoiceForm options={options} defaultProjectId={projectId} />
       </SectionPanel>
