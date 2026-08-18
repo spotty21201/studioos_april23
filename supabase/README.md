@@ -11,6 +11,7 @@ Current migration sequence:
 - `migrations/20260423000005_hda_rebranding.sql` (Canonical studio-name rebranding)
 - `migrations/20260803_000001_project_owner_refactor.sql` (Owner-name fields, archive support, and archive-aware attention views)
 - `migrations/20260818000001_fix_create_project_rpc.sql` (Current project-creation RPC signature and PostgREST schema-cache reload)
+- `migrations/20260818000002_fix_update_project_rpc.sql` (Current project-update RPC body and removed-column cleanup)
 
 Implementation rules:
 
