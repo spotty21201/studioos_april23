@@ -20,6 +20,17 @@ export async function POST(request: Request) {
     }
 
     const supabase = await createSupabaseServerClient();
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
+
+    if (userError || !user) {
+      return NextResponse.json(
+        { ok: false, error: "Sign in is required to archive a project." },
+        { status: 401 },
+      );
+    }
 
     // Fetch the project. The `is_archived` column may not exist in every
     // environment (it is added by a later migration), so tolerate that case.
@@ -46,9 +57,10 @@ export async function POST(request: Request) {
       if (!retry.error && retry.data) {
         project = retry.data as { id: string; name: string; is_archived?: boolean };
       } else {
-        // Live data is unavailable (permission denied / missing schema).
-        // Fall back to simulated archiving so preview environments stay usable.
-        return NextResponse.json({ ok: true });
+        return NextResponse.json(
+          { ok: false, error: "Project not found or access denied." },
+          { status: 404 },
+        );
       }
     }
 
@@ -75,7 +87,7 @@ export async function POST(request: Request) {
 
     const { error: updateErr } = await supabase
       .from("projects")
-      .update({ is_archived: true })
+      .update({ is_archived: true, updated_by: user.id })
       .eq("id", project_id);
 
     if (updateErr) {

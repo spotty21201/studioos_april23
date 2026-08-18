@@ -4,6 +4,13 @@
 
 BEGIN;
 
+-- Drop dependent views before altering project columns. These views are
+-- recreated later in this migration with the new archive-aware definitions.
+DROP VIEW IF EXISTS public.project_attention_v CASCADE;
+DROP VIEW IF EXISTS public.project_attention_items_v CASCADE;
+DROP VIEW IF EXISTS public.project_attention_summary_v CASCADE;
+DROP VIEW IF EXISTS public.dashboard_snapshot_v CASCADE;
+
 -- ============================================
 -- 1. RENAME PROJECT OWNER ID to two text fields
 -- ============================================

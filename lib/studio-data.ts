@@ -526,13 +526,15 @@ export async function getDashboardPageData(): Promise<DashboardPageData> {
   const attentionSummaryMap = buildProjectAttentionSummaryMap(
     source.data.projectAttentionSummaries,
   );
-  const projects = source.data.projects.map((project) =>
-    mapProjectListItem(
-      project,
-      financeMap.get(project.id),
-      attentionSummaryMap.get(project.id),
-    ),
-  );
+  const projects = source.data.projects
+    .filter((project) => project.is_archived !== true)
+    .map((project) =>
+      mapProjectListItem(
+        project,
+        financeMap.get(project.id),
+        attentionSummaryMap.get(project.id),
+      ),
+    );
   const attentionItems = source.data.projectAttentionItems
     .map(mapAttentionItem)
     .sort(sortAttentionItems);
@@ -631,6 +633,7 @@ export async function getProjectsPageData(input?: {
   };
 
   const allItems = source.data.projects
+    .filter((project) => project.is_archived !== true)
     .map((project) =>
       mapProjectListItem(
         project,
