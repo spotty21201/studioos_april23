@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Landmark, WalletCards, Waypoints } from "lucide-react";
+import { Landmark, Search, WalletCards, Waypoints } from "lucide-react";
 import { MetricCard } from "@/components/ui/metric-card";
 import { PageHeader } from "@/components/ui/page-header";
 import { SectionPanel } from "@/components/ui/section-panel";
@@ -7,8 +7,13 @@ import { StatusBadge } from "@/components/ui/status-badge";
 import { formatCurrencyIdr, formatShortDate } from "@/lib/format";
 import { getFinancePageData } from "@/lib/studio-data";
 
-export default async function FinancePage() {
-  const overview = await getFinancePageData();
+type FinancePageProps = {
+  searchParams: Promise<{ q?: string; status?: string }>;
+};
+
+export default async function FinancePage({ searchParams }: FinancePageProps) {
+  const params = await searchParams;
+  const overview = await getFinancePageData(params);
 
   return (
     <div className="space-y-8">
@@ -83,7 +88,41 @@ export default async function FinancePage() {
 
       <SectionPanel
         title="All Client Invoices"
-        description="Every saved invoice appears here, including drafts. Draft invoices are not included in issued or outstanding totals until their status is changed."
+        description={`${overview.filteredInvoiceCount} of ${overview.totalInvoiceCount} saved invoices shown. Draft invoices are not included in issued or outstanding totals until their status is changed.`}
+        action={
+          <form className="grid gap-3 sm:grid-cols-[minmax(240px,1fr)_170px_auto]">
+            <label className="relative block">
+              <span className="sr-only">Search invoices</span>
+              <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-text-tertiary" />
+              <input
+                type="search"
+                name="q"
+                defaultValue={overview.filters.q}
+                placeholder="Invoice, project, or client..."
+                className="h-11 w-full rounded-[2px] border border-border bg-white pl-11 pr-4 text-sm text-text-primary outline-none placeholder:text-text-tertiary focus:border-border-strong focus:ring-2 focus:ring-border-muted"
+              />
+            </label>
+            <select
+              name="status"
+              aria-label="Filter invoices by status"
+              defaultValue={overview.filters.status}
+              className="h-11 rounded-[2px] border border-border bg-white px-4 text-sm text-text-primary outline-none focus:border-border-strong focus:ring-2 focus:ring-border-muted"
+            >
+              <option value="all">All statuses</option>
+              <option value="draft">Draft</option>
+              <option value="issued">Issued</option>
+              <option value="overdue">Overdue</option>
+              <option value="paid">Paid</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+            <button
+              type="submit"
+              className="inline-flex h-11 items-center justify-center rounded-[2px] border border-black bg-black px-5 text-sm font-medium text-white hover:bg-accent-strong"
+            >
+              Apply
+            </button>
+          </form>
+        }
       >
         {overview.invoices.length > 0 ? (
           <div className="overflow-x-auto rounded-[8px] border border-border">
@@ -92,9 +131,12 @@ export default async function FinancePage() {
                 <tr>
                   <th className="px-5 py-4 font-medium">Invoice</th>
                   <th className="px-5 py-4 font-medium">Project / Client</th>
+                  <th className="px-5 py-4 font-medium text-right">Base</th>
+                  <th className="px-5 py-4 font-medium text-right">VAT</th>
+                  <th className="px-5 py-4 font-medium text-right">Total</th>
                   <th className="px-5 py-4 font-medium">Status</th>
-                  <th className="px-5 py-4 font-medium">Issued</th>
-                  <th className="px-5 py-4 font-medium text-right">Amount</th>
+                  <th className="px-5 py-4 font-medium">Dates</th>
+                  <th className="px-5 py-4 font-medium text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border-muted bg-white">
@@ -115,14 +157,45 @@ export default async function FinancePage() {
                       </p>
                       <p className="mt-1 text-sm text-text-secondary">{invoice.clientName}</p>
                     </td>
+                    <td className="px-5 py-4 text-right text-sm font-medium text-text-primary">
+                      {formatCurrencyIdr(invoice.invoiceAmount.amount)}
+                    </td>
+                    <td className="px-5 py-4 text-right">
+                      <p className="text-sm font-medium text-text-primary">
+                        {formatCurrencyIdr(invoice.taxAmount.amount)}
+                      </p>
+                      <p className="mt-1 text-xs text-text-tertiary">
+                        {invoice.taxPercentage ?? 0}%
+                      </p>
+                    </td>
+                    <td className="px-5 py-4 text-right text-sm font-semibold text-text-primary">
+                      {formatCurrencyIdr(
+                        invoice.invoiceAmount.amount + invoice.taxAmount.amount,
+                      )}
+                    </td>
                     <td className="px-5 py-4">
                       <StatusBadge value={invoice.status} />
                     </td>
-                    <td className="px-5 py-4 text-sm text-text-secondary">
-                      {invoice.issuedDate ? formatShortDate(invoice.issuedDate) : "Not issued"}
+                    <td className="px-5 py-4 text-xs leading-5 text-text-secondary">
+                      <p>Issued: {invoice.issuedDate ? formatShortDate(invoice.issuedDate) : "Not issued"}</p>
+                      <p>Due: {invoice.dueDate ? formatShortDate(invoice.dueDate) : "Not set"}</p>
+                      <p>Paid: {invoice.paidAt ? formatShortDate(invoice.paidAt) : "Not paid"}</p>
                     </td>
-                    <td className="px-5 py-4 text-right text-sm font-semibold text-text-primary">
-                      {formatCurrencyIdr(invoice.invoiceAmount.amount)}
+                    <td className="px-5 py-4 text-right">
+                      <div className="flex justify-end gap-3 text-sm font-medium">
+                        <Link
+                          href={`/projects/${invoice.projectId}?tab=finance`}
+                          className="text-text-secondary underline-offset-4 hover:text-accent hover:underline"
+                        >
+                          View
+                        </Link>
+                        <Link
+                          href={`/finance/invoices/${invoice.id}/edit`}
+                          className="text-text-primary underline-offset-4 hover:text-accent hover:underline"
+                        >
+                          Edit
+                        </Link>
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -130,8 +203,17 @@ export default async function FinancePage() {
             </table>
           </div>
         ) : (
-          <div className="rounded-[4px] border border-border bg-white px-4 py-4 text-sm text-text-secondary">
-            No client invoices have been saved yet.
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-[4px] border border-border bg-white px-4 py-4 text-sm text-text-secondary">
+            <span>
+              {overview.totalInvoiceCount === 0
+                ? "No client invoices have been saved yet."
+                : "No invoices match the current search and status filters."}
+            </span>
+            {overview.totalInvoiceCount > 0 ? (
+              <Link href="/finance" className="font-medium text-text-primary underline">
+                Clear filters
+              </Link>
+            ) : null}
           </div>
         )}
       </SectionPanel>

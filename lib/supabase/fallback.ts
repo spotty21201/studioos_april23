@@ -182,7 +182,7 @@ const fallbackProjects: ProjectRecordRow[] = [
       id: "40000000-0000-4000-8000-000000000002",
       full_name: "Budi Santoso",
       email: "budi@klh.co.id",
-      job_title: "Project Lead",
+      job_title: "Project Manager",
     },
   },
   {

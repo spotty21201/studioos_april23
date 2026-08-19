@@ -30,6 +30,13 @@ vi.mock("@/lib/supabase/queries", () => ({
     source: "configured_live" as const,
     warning: null,
     data: {
+      projects: [
+        {
+          id: "project-1",
+          contract_value: 100_000_000,
+          is_archived: false,
+        },
+      ],
       invoices: [
         {
           ...invoiceBase,
@@ -85,5 +92,24 @@ describe("Finance page invoice visibility", () => {
 
     expect(data.overdueInvoices).toHaveLength(1);
     expect(data.overdueInvoices[0].invoiceNumber).toBe("INV-OVERDUE");
+  });
+
+  it("filters the invoice register by status", async () => {
+    const data = await getFinancePageData({ status: "draft" });
+
+    expect(data.filters.status).toBe("draft");
+    expect(data.totalInvoiceCount).toBe(3);
+    expect(data.filteredInvoiceCount).toBe(1);
+    expect(data.invoices[0].invoiceNumber).toBe("DRAFT-001");
+  });
+
+  it("searches invoice, project, and client labels case-insensitively", async () => {
+    const byProject = await getFinancePageData({ q: "mira test" });
+    const byInvoice = await getFinancePageData({ q: "inv-overdue" });
+
+    expect(byProject.filteredInvoiceCount).toBe(3);
+    expect(byInvoice.invoices.map((invoice) => invoice.invoiceNumber)).toEqual([
+      "INV-OVERDUE",
+    ]);
   });
 });

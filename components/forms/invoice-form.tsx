@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import {
   createInvoiceAction,
   updateInvoiceAction,
@@ -16,6 +16,8 @@ import {
 } from "@/components/forms/form-primitives";
 import type { StudioFormOptions } from "@/lib/studio-form-data";
 import type { InvoiceRecordRow } from "@/lib/supabase/view-contracts";
+import { formatCurrencyIdr } from "@/lib/format";
+import { calculateInvoiceTotals } from "@/lib/finance/invoice-calculation";
 
 type InvoiceFormProps = {
   mode?: "create" | "edit";
@@ -39,6 +41,14 @@ export function InvoiceForm({
     mode === "edit" ? updateInvoiceAction : createInvoiceAction,
     initialState,
   );
+  const [amountPreview, setAmountPreview] = useState(
+    String(invoice?.invoice_amount ?? ""),
+  );
+  const [taxPercentagePreview, setTaxPercentagePreview] = useState(
+    String(invoice?.tax_percentage ?? ""),
+  );
+  const { baseAmount, taxPercentage, taxAmount, totalIncludingTax } =
+    calculateInvoiceTotals(amountPreview, taxPercentagePreview);
 
   return (
     <form action={formAction} className="space-y-6">
@@ -110,6 +120,8 @@ export function InvoiceForm({
             step="1"
             className={inputClass}
             defaultValue={invoice?.invoice_amount ?? ""}
+            onChange={(event) => setAmountPreview(event.target.value)}
+            aria-describedby="invoice-calculation-preview"
             required
           />
         </Field>
@@ -171,6 +183,7 @@ export function InvoiceForm({
             step="0.01"
             className={inputClass}
             defaultValue={invoice?.tax_percentage ?? ""}
+            onChange={(event) => setTaxPercentagePreview(event.target.value)}
             placeholder="e.g. 11"
           />
         </Field>
@@ -186,6 +199,31 @@ export function InvoiceForm({
             <option value="paid">Paid</option>
           </select>
         </Field>
+      </div>
+
+      <div
+        id="invoice-calculation-preview"
+        aria-live="polite"
+        className="grid gap-4 rounded-[4px] border border-border bg-surface-muted p-4 sm:grid-cols-3"
+      >
+        <div>
+          <p className="eyebrow">Base amount</p>
+          <p className="mt-2 text-sm font-semibold text-text-primary">
+            {formatCurrencyIdr(baseAmount)}
+          </p>
+        </div>
+        <div>
+          <p className="eyebrow">VAT ({taxPercentage}%)</p>
+          <p className="mt-2 text-sm font-semibold text-text-primary">
+            {formatCurrencyIdr(taxAmount)}
+          </p>
+        </div>
+        <div>
+          <p className="eyebrow">Total including VAT</p>
+          <p className="mt-2 text-sm font-semibold text-text-primary">
+            {formatCurrencyIdr(totalIncludingTax)}
+          </p>
+        </div>
       </div>
 
       <Field label="Notes" htmlFor="invoice-notes">

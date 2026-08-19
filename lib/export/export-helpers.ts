@@ -12,8 +12,8 @@ export const PROJECT_EXPORT_HEADERS = [
   "Start Date",
   "Target End",
   "Contract Value (IDR)",
-  "Project Owner",
-  "Project Lead",
+  "Client Manager",
+  "Project Manager",
   "Last Updated",
 ];
 

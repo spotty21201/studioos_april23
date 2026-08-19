@@ -143,7 +143,7 @@ export default async function ProjectDetailPage({
                   </dd>
                 </div>
                 <div>
-                  <dt className="eyebrow">Primary Contact</dt>
+                  <dt className="eyebrow">Primary Contact at Client</dt>
                   <dd className="mt-2 text-sm font-medium text-text-primary">
                     {detail.project.primaryContactName ?? "Not set"}
                   </dd>
@@ -166,7 +166,7 @@ export default async function ProjectDetailPage({
                   </dd>
                 </div>
                 <div>
-                  <dt className="eyebrow">Project Lead</dt>
+                  <dt className="eyebrow">Project Manager</dt>
                   <dd className="mt-2 text-sm font-medium text-text-primary">
                     {detail.project.projectLeadName ?? (
                       <>

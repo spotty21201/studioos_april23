@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { navigationItems } from "@/lib/navigation";
 import { SignOutButton } from "@/components/auth/sign-out-button";
+import { NavigationPendingIndicator } from "@/components/shell/navigation-pending-indicator";
 
 export function MobileNav() {
   const pathname = usePathname();
@@ -25,7 +26,10 @@ export function MobileNav() {
                   : "border-border-muted bg-surface-muted text-text-secondary"
               }`}
             >
-              {label}
+              <span className="inline-flex items-center gap-2">
+                {label}
+                <NavigationPendingIndicator label={label} />
+              </span>
             </Link>
           );
         })}

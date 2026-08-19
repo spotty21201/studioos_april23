@@ -16,7 +16,11 @@ import type {
   TaxStatus,
   VendorObligationStatus,
 } from "@/lib/supabase/view-contracts";
-import type { DataSource } from "@/lib/supabase/queries";
+import type { DataSource, StudioOsSource } from "@/lib/supabase/queries";
+import {
+  reconcileProjectFinance,
+  summarizeCurrentFinance,
+} from "@/lib/finance/reconciliation";
 
 export type DataMeta = {
   source: DataSource;
@@ -145,10 +149,19 @@ export type InvoiceListItem = {
   title: string;
   issuedDate: string | null;
   dueDate: string | null;
+  paidAt: string | null;
   invoiceAmount: Money;
   status: InvoiceStatus;
+  taxPercentage: number | null;
   taxAmount: Money;
   taxStatus: TaxStatus;
+};
+
+export type InvoiceRegisterStatus = InvoiceStatus | "all";
+
+export type FinanceFilterState = {
+  q: string;
+  status: InvoiceRegisterStatus;
 };
 
 export type VendorObligationListItem = {
@@ -218,7 +231,10 @@ export type ProjectDetailPageData = {
 export type FinancePageData = {
   meta: DataMeta;
   summary: FinanceSummary;
+  filters: FinanceFilterState;
   invoices: InvoiceListItem[];
+  totalInvoiceCount: number;
+  filteredInvoiceCount: number;
   overdueInvoices: InvoiceListItem[];
   unpaidVendorObligations: VendorObligationListItem[];
 };
@@ -283,6 +299,22 @@ function previewText(body: string) {
 
 function buildProjectFinanceMap(rows: ProjectFinanceSummaryRow[]) {
   return new Map(rows.map((row) => [row.project_id, row]));
+}
+
+function resolveProjectFinanceRows(
+  data: StudioOsSource,
+  warning: string | null,
+): ProjectFinanceSummaryRow[] {
+  const detailedFinanceUnavailable =
+    warning?.includes("invoices") ||
+    warning?.includes("vendor_obligations") ||
+    warning?.includes("projects");
+
+  if (detailedFinanceUnavailable) {
+    return data.projectFinanceSummaries;
+  }
+
+  return reconcileProjectFinance(data.projects, data.invoices, data.vendorObligations);
 }
 
 function buildProjectAttentionSummaryMap(rows: ProjectAttentionSummaryRow[]) {
@@ -373,8 +405,10 @@ function mapInvoiceItem(invoice: {
   title: string;
   issued_date: string | null;
   due_date: string | null;
+  paid_at: string | null;
   invoice_amount: number;
   status: InvoiceStatus;
+  tax_percentage: number | null;
   tax_amount: number;
   tax_status: TaxStatus;
   project: { project_code: string; name: string } | null;
@@ -390,8 +424,10 @@ function mapInvoiceItem(invoice: {
     title: invoice.title,
     issuedDate: invoice.issued_date,
     dueDate: invoice.due_date,
+    paidAt: invoice.paid_at,
     invoiceAmount: money(invoice.invoice_amount),
     status: invoice.status,
+    taxPercentage: invoice.tax_percentage,
     taxAmount: money(invoice.tax_amount),
     taxStatus: invoice.tax_status,
   };
@@ -523,7 +559,9 @@ export async function getWorkspaceShellData(
 
 export async function getDashboardPageData(): Promise<DashboardPageData> {
   const source = await getStudioOsSource();
-  const financeMap = buildProjectFinanceMap(source.data.projectFinanceSummaries);
+  const financeRows = resolveProjectFinanceRows(source.data, source.warning);
+  const financeMap = buildProjectFinanceMap(financeRows);
+  const financeOverview = summarizeCurrentFinance(source.data.projects, financeRows);
   const attentionSummaryMap = buildProjectAttentionSummaryMap(
     source.data.projectAttentionSummaries,
   );
@@ -588,7 +626,7 @@ export async function getDashboardPageData(): Promise<DashboardPageData> {
       {
         key: "outstanding_receivables",
         label: "Money to Collect",
-        value: source.data.financeOverview?.outstanding_receivable ?? 0,
+        value: financeOverview.outstandingReceivable,
         currency,
         note: "Unpaid client invoices",
       },
@@ -611,7 +649,9 @@ export async function getProjectsPageData(input?: {
   health?: string;
 }): Promise<ProjectsPageData> {
   const source = await getStudioOsSource();
-  const financeMap = buildProjectFinanceMap(source.data.projectFinanceSummaries);
+  const financeMap = buildProjectFinanceMap(
+    resolveProjectFinanceRows(source.data, source.warning),
+  );
   const attentionSummaryMap = buildProjectAttentionSummaryMap(
     source.data.projectAttentionSummaries,
   );
@@ -683,7 +723,9 @@ export async function getProjectDetailPageData(
     return null;
   }
 
-  const financeMap = buildProjectFinanceMap(source.data.projectFinanceSummaries);
+  const financeMap = buildProjectFinanceMap(
+    resolveProjectFinanceRows(source.data, source.warning),
+  );
   const attentionItems = source.data.projectAttentionItems
     .filter((item) => item.project_id === project.id)
     .map(mapAttentionItem)
@@ -743,16 +785,54 @@ export async function getProjectDetailPageData(
   };
 }
 
-export async function getFinancePageData(): Promise<FinancePageData> {
+export function filterInvoiceRegister(
+  invoices: InvoiceListItem[],
+  input?: { q?: string; status?: string },
+): { filters: FinanceFilterState; invoices: InvoiceListItem[] } {
+  const q = input?.q?.trim() ?? "";
+  const status: InvoiceRegisterStatus =
+    input?.status === "draft" ||
+    input?.status === "issued" ||
+    input?.status === "paid" ||
+    input?.status === "overdue" ||
+    input?.status === "cancelled"
+      ? input.status
+      : "all";
+  const normalizedQuery = q.toLowerCase();
+
+  return {
+    filters: { q, status },
+    invoices: invoices.filter((invoice) => {
+      const matchesStatus = status === "all" || invoice.status === status;
+      const matchesQuery =
+        normalizedQuery.length === 0 ||
+        invoice.invoiceNumber.toLowerCase().includes(normalizedQuery) ||
+        invoice.title.toLowerCase().includes(normalizedQuery) ||
+        invoice.projectCode.toLowerCase().includes(normalizedQuery) ||
+        invoice.projectName.toLowerCase().includes(normalizedQuery) ||
+        invoice.clientName.toLowerCase().includes(normalizedQuery);
+
+      return matchesStatus && matchesQuery;
+    }),
+  };
+}
+
+export async function getFinancePageData(input?: {
+  q?: string;
+  status?: string;
+}): Promise<FinancePageData> {
   const source = await getStudioOsSource();
-  const invoices = source.data.invoices
+  const financeRows = resolveProjectFinanceRows(source.data, source.warning);
+  const financeOverview = summarizeCurrentFinance(source.data.projects, financeRows);
+  const allInvoices = source.data.invoices
     .map(mapInvoiceItem)
     .sort((left, right) =>
       (right.issuedDate ?? right.dueDate ?? "").localeCompare(
         left.issuedDate ?? left.dueDate ?? "",
       ),
     );
-  const overdueInvoices = invoices
+  const { filters, invoices } = filterInvoiceRegister(allInvoices, input);
+  const overdueInvoices = allInvoices
     .filter((invoice) => invoice.status === "overdue")
     .sort((left, right) => (right.dueDate ?? "").localeCompare(left.dueDate ?? ""));
   const unpaidVendorObligations = source.data.vendorObligations
@@ -763,24 +843,18 @@ export async function getFinancePageData(): Promise<FinancePageData> {
   return {
     meta: toMeta(source.source, source.warning),
     summary: {
-      contractValue: money(source.data.financeOverview?.contract_value_total ?? 0),
-      totalInvoiced: money(source.data.financeOverview?.total_invoiced ?? 0),
-      totalPaid: money(source.data.financeOverview?.total_paid ?? 0),
-      outstandingReceivable: money(
-        source.data.financeOverview?.outstanding_receivable ?? 0,
-      ),
-      totalVendorValue: money(
-        source.data.projectFinanceSummaries.reduce(
-          (sum, row) => sum + row.total_vendor_value,
-          0,
-        ),
-      ),
-      outstandingPayable: money(
-        source.data.financeOverview?.outstanding_payable ?? 0,
-      ),
-      unpaidTax: money(source.data.financeOverview?.unpaid_tax_total ?? 0),
+      contractValue: money(financeOverview.contractValue),
+      totalInvoiced: money(financeOverview.totalInvoiced),
+      totalPaid: money(financeOverview.totalPaid),
+      outstandingReceivable: money(financeOverview.outstandingReceivable),
+      totalVendorValue: money(financeOverview.totalVendorValue),
+      outstandingPayable: money(financeOverview.outstandingPayable),
+      unpaidTax: money(financeOverview.unpaidTax),
     },
+    filters,
     invoices,
+    totalInvoiceCount: allInvoices.length,
+    filteredInvoiceCount: invoices.length,
     overdueInvoices,
     unpaidVendorObligations,
   };

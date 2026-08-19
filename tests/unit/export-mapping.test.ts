@@ -84,8 +84,8 @@ describe("Export data mapping", () => {
 
   it("CSV and XLSX share identical headers", () => {
     expect(PROJECT_EXPORT_HEADERS).toContain("Client");
-    expect(PROJECT_EXPORT_HEADERS).toContain("Project Owner");
-    expect(PROJECT_EXPORT_HEADERS).toContain("Project Lead");
+    expect(PROJECT_EXPORT_HEADERS).toContain("Client Manager");
+    expect(PROJECT_EXPORT_HEADERS).toContain("Project Manager");
     expect(PROJECT_EXPORT_HEADERS).toContain("Last Updated");
     expect(FINANCE_EXPORT_HEADERS).toContain("Tax %");
     expect(FINANCE_EXPORT_HEADERS).toContain("Status");

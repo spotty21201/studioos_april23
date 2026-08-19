@@ -52,7 +52,7 @@ describe("CSV Export route headers", () => {
   const projectCsvHeader = [
     "Project Code","Name","Client","Stage","Health",
     "Location","Start Date","Target End","Contract Value (IDR)",
-    "Project Owner","Project Lead","Last Updated"
+    "Client Manager","Project Manager","Last Updated"
   ];
   const financeCsvHeader = [
     "Project","Invoice Number","Title","Issued Date","Due Date",

@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { calculateInvoiceTotals } from "@/lib/finance/invoice-calculation";
 import {
   requireEnumValue,
   validateCalendarDateString,
@@ -625,7 +626,7 @@ export async function createInvoiceAction(
     });
   }
 
-  const taxAmount = taxPercentage && amount ? (amount * taxPercentage) / 100 : 0;
+  const taxAmount = calculateInvoiceTotals(amount, taxPercentage).taxAmount;
   const { data: invoice, error } = await supabase
     .from("invoices")
     .insert({
@@ -735,7 +736,7 @@ export async function updateInvoiceAction(
     });
   }
 
-  const taxAmount = taxPercentage && amount ? (amount * taxPercentage) / 100 : 0;
+  const taxAmount = calculateInvoiceTotals(amount, taxPercentage).taxAmount;
   const { data: updatedRows, error } = await supabase
     .from("invoices")
     .update({
@@ -864,7 +865,7 @@ export async function createVendorObligationAction(
     return fail("Select a valid vendor.", { vendor_id: "Vendor is required." });
   }
 
-  const taxAmount = taxPercentage && amount ? (amount * taxPercentage) / 100 : 0;
+  const taxAmount = calculateInvoiceTotals(amount, taxPercentage).taxAmount;
   const { data: obligation, error } = await supabase
     .from("vendor_obligations")
     .insert({
@@ -967,7 +968,7 @@ export async function updateVendorObligationAction(
     });
   }
 
-  const taxAmount = taxPercentage && amount ? (amount * taxPercentage) / 100 : 0;
+  const taxAmount = calculateInvoiceTotals(amount, taxPercentage).taxAmount;
   const { data: updatedRows, error } = await supabase
     .from("vendor_obligations")
     .update({

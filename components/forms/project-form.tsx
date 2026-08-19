@@ -158,7 +158,7 @@ export function ProjectForm({ mode, options, project }: ProjectFormProps) {
                 </select>
               </Field>
               <Field
-                label="Primary contact"
+                label="Primary contact at client (optional)"
                 htmlFor="primary-contact-id"
                 error={state.fieldErrors.primary_contact_id}
               >
@@ -355,7 +355,7 @@ export function ProjectForm({ mode, options, project }: ProjectFormProps) {
 
       <div className="grid gap-4 md:grid-cols-2">
         <Field
-          label="Project Lead"
+          label="Project Manager"
           htmlFor="project-lead-name"
           error={state.fieldErrors.project_lead_name}
         >
@@ -364,7 +364,7 @@ export function ProjectForm({ mode, options, project }: ProjectFormProps) {
             name="project_lead_name"
             className={inputClass}
             defaultValue={project?.project_lead_name ?? ""}
-            placeholder="e.g. Maya Puspa"
+            placeholder="e.g. Anjani — person managing day-to-day project delivery"
             aria-invalid={Boolean(state.fieldErrors.project_lead_name)}
             aria-describedby={
               state.fieldErrors.project_lead_name ? "project-lead-name-error" : undefined

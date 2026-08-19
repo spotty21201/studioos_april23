@@ -30,8 +30,8 @@ test.describe("Export & Archive Regression Suite", () => {
     expect(content).toContain("Client");
     expect(content).toContain("Stage");
     expect(content).toContain("Health");
-    expect(content).toContain("Project Owner");
-    expect(content).toContain("Project Lead");
+    expect(content).toContain("Client Manager");
+    expect(content).toContain("Project Manager");
     expect(content.trim().length).toBeGreaterThan(0);
 
     // Human-readable statuses must appear instead of raw enum values.

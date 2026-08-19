@@ -6,6 +6,7 @@ import { ChevronRight } from "lucide-react";
 import { navigationItems } from "@/lib/navigation";
 import { Avatar } from "@/components/ui/avatar";
 import { SignOutButton } from "@/components/auth/sign-out-button";
+import { NavigationPendingIndicator } from "@/components/shell/navigation-pending-indicator";
 import type { WorkspaceViewer } from "@/lib/studio-data";
 
 type AppSidebarProps = {
@@ -47,12 +48,15 @@ export function AppSidebar({ studioName, subtitle, viewer }: AppSidebarProps) {
                 <Icon className="h-4 w-4" strokeWidth={1.9} />
                 <span className="text-sm font-medium">{label}</span>
               </div>
-              <ChevronRight
-                className={`h-4 w-4 transition-transform ${
-                  active ? "translate-x-0 opacity-100" : "opacity-0 group-hover:opacity-60"
-                }`}
-                strokeWidth={1.9}
-              />
+              <div className="flex items-center gap-2">
+                <NavigationPendingIndicator label={label} />
+                <ChevronRight
+                  className={`h-4 w-4 transition-transform ${
+                    active ? "translate-x-0 opacity-100" : "opacity-0 group-hover:opacity-60"
+                  }`}
+                  strokeWidth={1.9}
+                />
+              </div>
             </Link>
           );
         })}
