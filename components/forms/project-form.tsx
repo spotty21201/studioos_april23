@@ -347,7 +347,7 @@ export function ProjectForm({ mode, options, project }: ProjectFormProps) {
             placeholder="e.g. Doddy Samiaji — person managing the client relationship"
             aria-invalid={Boolean(state.fieldErrors.client_manager_name)}
             aria-describedby={
-              state.fieldErrors.client_manager_name ? "manager-error" : undefined
+              state.fieldErrors.client_manager_name ? "client-manager-name-error" : undefined
             }
           />
         </Field>
@@ -367,7 +367,7 @@ export function ProjectForm({ mode, options, project }: ProjectFormProps) {
             placeholder="e.g. Maya Puspa"
             aria-invalid={Boolean(state.fieldErrors.project_lead_name)}
             aria-describedby={
-              state.fieldErrors.project_lead_name ? "lead-error" : undefined
+              state.fieldErrors.project_lead_name ? "project-lead-name-error" : undefined
             }
           />
         </Field>

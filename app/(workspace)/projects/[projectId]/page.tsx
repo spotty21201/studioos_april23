@@ -302,7 +302,7 @@ export default async function ProjectDetailPage({
       )}
 
       {/* Finance Tab */}
-      {tabQuery === "finance" && showOverview && (
+      {tabQuery === "finance" && (
         <SectionPanel
           title="Project Finance"
           description="Invoices and vendor obligations tied directly to this project."

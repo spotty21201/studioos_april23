@@ -81,6 +81,61 @@ export default async function FinancePage() {
         />
       </section>
 
+      <SectionPanel
+        title="All Client Invoices"
+        description="Every saved invoice appears here, including drafts. Draft invoices are not included in issued or outstanding totals until their status is changed."
+      >
+        {overview.invoices.length > 0 ? (
+          <div className="overflow-x-auto rounded-[8px] border border-border">
+            <table className="min-w-full divide-y divide-border text-left">
+              <thead className="bg-surface-muted text-[11px] uppercase tracking-[0.14em] text-text-tertiary">
+                <tr>
+                  <th className="px-5 py-4 font-medium">Invoice</th>
+                  <th className="px-5 py-4 font-medium">Project / Client</th>
+                  <th className="px-5 py-4 font-medium">Status</th>
+                  <th className="px-5 py-4 font-medium">Issued</th>
+                  <th className="px-5 py-4 font-medium text-right">Amount</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border-muted bg-white">
+                {overview.invoices.map((invoice) => (
+                  <tr key={invoice.id}>
+                    <td className="px-5 py-4">
+                      <Link
+                        href={`/finance/invoices/${invoice.id}/edit`}
+                        className="text-sm font-semibold text-text-primary hover:text-accent"
+                      >
+                        {invoice.invoiceNumber}
+                      </Link>
+                      <p className="mt-1 text-sm text-text-secondary">{invoice.title}</p>
+                    </td>
+                    <td className="px-5 py-4">
+                      <p className="text-sm font-medium text-text-primary">
+                        {invoice.projectCode} / {invoice.projectName}
+                      </p>
+                      <p className="mt-1 text-sm text-text-secondary">{invoice.clientName}</p>
+                    </td>
+                    <td className="px-5 py-4">
+                      <StatusBadge value={invoice.status} />
+                    </td>
+                    <td className="px-5 py-4 text-sm text-text-secondary">
+                      {invoice.issuedDate ? formatShortDate(invoice.issuedDate) : "Not issued"}
+                    </td>
+                    <td className="px-5 py-4 text-right text-sm font-semibold text-text-primary">
+                      {formatCurrencyIdr(invoice.invoiceAmount.amount)}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <div className="rounded-[4px] border border-border bg-white px-4 py-4 text-sm text-text-secondary">
+            No client invoices have been saved yet.
+          </div>
+        )}
+      </SectionPanel>
+
       <section className="grid gap-6 xl:grid-cols-2">
         <SectionPanel title="Invoices Needing Follow-up" description="These client invoices are late or still waiting for payment.">
           <div className="space-y-3">

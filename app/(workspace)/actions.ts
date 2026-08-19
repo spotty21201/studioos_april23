@@ -653,7 +653,7 @@ export async function createInvoiceAction(
   }
 
   revalidateWorkspace(projectId);
-  redirect(`/projects/${projectId}`);
+  redirect(`/projects/${projectId}?tab=finance`);
 }
 
 export async function updateInvoiceAction(
@@ -763,7 +763,7 @@ export async function updateInvoiceAction(
 
   revalidateWorkspace(originalProjectId);
   revalidateWorkspace(projectId);
-  redirect(`/projects/${projectId}`);
+  redirect(`/projects/${projectId}?tab=finance`);
 }
 
 export async function createVendorObligationAction(

@@ -218,6 +218,7 @@ export type ProjectDetailPageData = {
 export type FinancePageData = {
   meta: DataMeta;
   summary: FinanceSummary;
+  invoices: InvoiceListItem[];
   overdueInvoices: InvoiceListItem[];
   unpaidVendorObligations: VendorObligationListItem[];
 };
@@ -744,9 +745,15 @@ export async function getProjectDetailPageData(
 
 export async function getFinancePageData(): Promise<FinancePageData> {
   const source = await getStudioOsSource();
-  const overdueInvoices = source.data.invoices
-    .filter((invoice) => invoice.status === "overdue")
+  const invoices = source.data.invoices
     .map(mapInvoiceItem)
+    .sort((left, right) =>
+      (right.issuedDate ?? right.dueDate ?? "").localeCompare(
+        left.issuedDate ?? left.dueDate ?? "",
+      ),
+    );
+  const overdueInvoices = invoices
+    .filter((invoice) => invoice.status === "overdue")
     .sort((left, right) => (right.dueDate ?? "").localeCompare(left.dueDate ?? ""));
   const unpaidVendorObligations = source.data.vendorObligations
     .filter((item) => item.status === "due" || item.status === "overdue")
@@ -773,6 +780,7 @@ export async function getFinancePageData(): Promise<FinancePageData> {
       ),
       unpaidTax: money(source.data.financeOverview?.unpaid_tax_total ?? 0),
     },
+    invoices,
     overdueInvoices,
     unpaidVendorObligations,
   };
