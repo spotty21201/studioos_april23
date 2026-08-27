@@ -30,11 +30,11 @@ export default async function ProjectDetailPage({
     notFound();
   }
 
-  const tabs: Array<{ key: string; label: string }> = [
-    { key: "overview", label: "Overview" },
-    { key: "finance", label: "Finance" },
-    { key: "notes", label: "Notes" },
-    { key: "activity", label: "Activity" },
+  const tabs: Array<{ key: string; label: string; ariaLabel: string }> = [
+    { key: "overview", label: "Overview", ariaLabel: "Project overview tab" },
+    { key: "finance", label: "Finance", ariaLabel: "Project finance tab" },
+    { key: "notes", label: "Notes", ariaLabel: "Project notes tab" },
+    { key: "activity", label: "Activity", ariaLabel: "Project activity tab" },
   ];
 
   const showOverview =
@@ -75,6 +75,8 @@ export default async function ProjectDetailPage({
             <Link
               key={t.key}
               href={`/projects/${detail.project.id}?tab=${t.key}`}
+              aria-label={t.ariaLabel}
+              aria-current={isActive ? "page" : undefined}
               className={`relative px-4 py-3 text-sm font-medium transition-colors ${
                 isActive
                   ? "text-accent"
@@ -93,42 +95,55 @@ export default async function ProjectDetailPage({
       {/* Overview + Attention */}
       {showOverview && (
         <>
-          <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          <MetricCard
-            label="Total Contract Value"
-              value={formatCurrencyIdr(detail.financeSummary.contractValue.amount, {
-                compact: true,
-              })}
-              supportingText={detail.project.clientName}
-              icon={Waypoints}
-            />
-          <MetricCard
-            label="Unpaid by Client"
-            value={formatCurrencyIdr(
-              detail.financeSummary.outstandingReceivable.amount,
-              { compact: true },
-            )}
-            supportingText="Open client invoices"
-              icon={Landmark}
-              tone="accent"
-            />
-          <MetricCard
-            label="Unpaid to Vendors"
-            value={formatCurrencyIdr(detail.financeSummary.outstandingPayable.amount, {
-              compact: true,
-            })}
-            supportingText="Open vendor obligations"
-              icon={WalletCards}
-              tone="warning"
-            />
-          <MetricCard
-            label="Tax Still to Be Paid"
-            value={formatCurrencyIdr(detail.financeSummary.unpaidTax.amount, {
-              compact: true,
-            })}
-            supportingText="Combined tax across invoices and vendor obligations"
-              icon={Receipt}
-            />
+          <section
+            aria-label="Project finance summary"
+            className="overflow-hidden rounded-[4px] border border-border bg-surface"
+          >
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
+              <div className="border-b border-border p-5 md:border-b-0 md:border-r xl:border-b-0">
+                <MetricCard
+                  label="Total Contract Value"
+                  value={formatCurrencyIdr(detail.financeSummary.contractValue.amount, {
+                    compact: true,
+                  })}
+                  supportingText={detail.project.clientName}
+                  icon={Waypoints}
+                />
+              </div>
+              <div className="border-b border-border p-5 md:border-b-0 md:border-r xl:border-b-0">
+                <MetricCard
+                  label="Unpaid by Client"
+                  value={formatCurrencyIdr(
+                    detail.financeSummary.outstandingReceivable.amount,
+                    { compact: true },
+                  )}
+                  supportingText="Open client invoices"
+                  icon={Landmark}
+                  tone="accent"
+                />
+              </div>
+              <div className="border-b border-border p-5 md:border-b-0 md:border-r xl:border-b-0">
+                <MetricCard
+                  label="Unpaid to Vendors"
+                  value={formatCurrencyIdr(detail.financeSummary.outstandingPayable.amount, {
+                    compact: true,
+                  })}
+                  supportingText="Open vendor obligations"
+                  icon={WalletCards}
+                  tone="warning"
+                />
+              </div>
+              <div className="p-5">
+                <MetricCard
+                  label="Tax Still to Be Paid"
+                  value={formatCurrencyIdr(detail.financeSummary.unpaidTax.amount, {
+                    compact: true,
+                  })}
+                  supportingText="Combined tax across invoices and vendor obligations"
+                  icon={Receipt}
+                />
+              </div>
+            </div>
           </section>
 
           <section className="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">

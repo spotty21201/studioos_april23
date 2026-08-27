@@ -210,7 +210,7 @@ export default async function DashboardPage() {
         </SectionPanel>
       </section>
 
-      <section className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
+      <section className="grid gap-6 xl:grid-cols-[minmax(0,1.4fr)_minmax(280px,0.6fr)]">
         <SectionPanel
           title="Active Projects"
           description="Projects currently in progress"
@@ -266,10 +266,11 @@ export default async function DashboardPage() {
           )}
         </SectionPanel>
 
-        <SectionPanel
-          title="Recent Updates"
-          description="The latest changes across your projects."
-        >
+        <div className="xl:sticky xl:top-6 xl:self-start">
+          <SectionPanel
+            title="Recent Updates"
+            description="The latest changes across your projects."
+          >
           <div className="space-y-4">
             {snapshot.recentActivity.map((item) => (
               <div
@@ -291,7 +292,8 @@ export default async function DashboardPage() {
               </div>
             ))}
           </div>
-        </SectionPanel>
+          </SectionPanel>
+        </div>
       </section>
     </div>
   );

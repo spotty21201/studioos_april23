@@ -45,8 +45,8 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
             : `${projects.filteredCount} of ${projects.totalCount} project records shown.`
         }
         action={
-          <div className="flex w-full flex-col gap-4 md:flex-row md:items-center md:justify-between md:gap-6">
-            <form className="grid flex-1 gap-3 md:grid-cols-[minmax(220px,1fr)_170px_170px_auto]">
+          <div className="flex w-full flex-col gap-4 xl:flex-row xl:items-center xl:justify-between xl:gap-6">
+            <form className="grid w-full flex-1 grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-[minmax(0,1fr)_170px_170px_auto]">
               <label className="relative block">
                 <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-text-tertiary" />
                 <input
@@ -87,7 +87,7 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
                 Apply
               </button>
             </form>
-            <div className="flex flex-wrap items-center justify-end gap-2">
+            <div className="flex flex-wrap items-center gap-2 xl:justify-end">
               {showArchived ? (
                 <Link
                   href="/projects"
