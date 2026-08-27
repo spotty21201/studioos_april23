@@ -5,11 +5,14 @@ import { ProjectsPdfDocument } from "@/lib/pdf/build-projects-pdf";
 import { formatProjectsPdfFilename } from "@/lib/pdf/format";
 import { loadProjectExportRows } from "@/lib/export/export-data";
 import { mapProjectExportRow } from "@/lib/export/export-helpers";
+import { getExportDenialResponse } from "@/lib/export/export-auth";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
 export async function GET(): Promise<NextResponse> {
+  const denied = await getExportDenialResponse();
+  if (denied) return denied as NextResponse;
   try {
     const projects = await loadProjectExportRows();
     const rows = projects.map(mapProjectExportRow);

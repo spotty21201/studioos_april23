@@ -1,5 +1,6 @@
 import { loadProjectExportRows } from "@/lib/export/export-data";
 import { mapProjectExportRow, PROJECT_EXPORT_HEADERS } from "@/lib/export/export-helpers";
+import { getExportDenialResponse } from "@/lib/export/export-auth";
 import { getGeneratedAt } from "@/lib/xlsx/projects-export";
 
 function escapeCsv(value: string): string {
@@ -10,6 +11,8 @@ function escapeCsv(value: string): string {
 }
 
 export async function GET() {
+  const denied = await getExportDenialResponse();
+  if (denied) return denied;
   try {
     const projects = await loadProjectExportRows();
     const rows = projects.map(mapProjectExportRow);

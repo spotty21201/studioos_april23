@@ -1,8 +1,11 @@
 import { loadProjectExportRows } from "@/lib/export/export-data";
 import { mapProjectExportRow } from "@/lib/export/export-helpers";
+import { getExportDenialResponse } from "@/lib/export/export-auth";
 import { buildProjectsWorkbook, formatProjectsFilename } from "@/lib/xlsx/projects-export";
 
 export async function GET(): Promise<Response> {
+  const denied = await getExportDenialResponse();
+  if (denied) return denied;
   try {
     const projects = await loadProjectExportRows();
     const rows = projects.map(mapProjectExportRow);

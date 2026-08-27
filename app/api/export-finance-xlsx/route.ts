@@ -1,8 +1,11 @@
 import { loadInvoiceExportRows } from "@/lib/export/export-data";
 import { mapInvoiceExportRow } from "@/lib/export/export-helpers";
+import { getExportDenialResponse } from "@/lib/export/export-auth";
 import { buildFinanceWorkbook, formatFinanceFilename } from "@/lib/xlsx/finance-export";
 
 export async function GET() {
+  const denied = await getExportDenialResponse();
+  if (denied) return denied;
   try {
     const invoices = await loadInvoiceExportRows();
     const rows = invoices.map(mapInvoiceExportRow);
