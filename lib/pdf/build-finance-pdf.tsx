@@ -18,10 +18,26 @@ registerPdfFonts();
 //   Tax Amount (IDR)  index 8
 const RIGHT_ALIGNED_COLUMNS = new Set<number>([6, 7, 8]);
 
+// Per-column flex weights. Higher = wider. Text-heavy columns (Project,
+// Title) get more room than codes/dates so that data never has to wrap
+// aggressively.
+const COLUMN_WEIGHTS = [
+  1.8, // Project
+  1.2, // Invoice Number
+  2.2, // Title
+  1.0, // Issued Date
+  1.0, // Due Date
+  1.0, // Paid Date
+  1.3, // Amount (IDR)
+  0.7, // Tax %
+  1.2, // Tax Amount (IDR)
+  1.0, // Status
+];
+
 const styles = StyleSheet.create({
   page: {
     fontFamily: PDF_FONT_FAMILY,
-    fontSize: 9,
+    fontSize: 8,
     padding: 36,
     color: "#1F2428",
     backgroundColor: "#FFFFFF",
@@ -59,10 +75,11 @@ const styles = StyleSheet.create({
   },
   tableHeaderCell: {
     fontWeight: "bold",
-    fontSize: 11,
+    fontSize: 9,
     color: "#FFFFFF",
-    padding: 6,
-    flexGrow: 1,
+    paddingVertical: 4,
+    paddingHorizontal: 5,
+    flexGrow: 0,
     flexBasis: 0,
   },
   tableRow: {
@@ -74,10 +91,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#F7F6F3",
   },
   tableCell: {
-    fontSize: 9,
+    fontSize: 8,
     color: "#1F2428",
-    padding: 6,
-    flexGrow: 1,
+    paddingVertical: 4,
+    paddingHorizontal: 5,
+    flexGrow: 0,
     flexBasis: 0,
   },
   tableCellRight: {
@@ -89,13 +107,25 @@ interface FinancePdfDocumentProps {
   rows: string[][];
 }
 
+function cellStyleFor(colIdx: number, header: boolean) {
+  const base = header ? styles.tableHeaderCell : styles.tableCell;
+  const align = (header || RIGHT_ALIGNED_COLUMNS.has(colIdx))
+    ? styles.tableCellRight
+    : undefined;
+  return [
+    base,
+    { flexGrow: COLUMN_WEIGHTS[colIdx] },
+    ...(align ? [align] : []),
+  ];
+}
+
 export function FinancePdfDocument({ rows }: FinancePdfDocumentProps) {
   return (
     <Document
       title="StudioOS — Finance Report"
       author="HDA StudioOS"
     >
-      <Page size="A4" orientation="portrait" style={styles.page} wrap>
+      <Page size="A4" orientation="landscape" style={styles.page} wrap>
         <View style={styles.header}>
           <Text style={styles.title}>StudioOS — Finance Report</Text>
           <Text style={styles.generated}>{getGeneratedAt()}</Text>
@@ -108,10 +138,7 @@ export function FinancePdfDocument({ rows }: FinancePdfDocumentProps) {
             {FINANCE_EXPORT_HEADERS.map((header, i) => (
               <Text
                 key={`h-${i}`}
-                style={[
-                  styles.tableHeaderCell,
-                  RIGHT_ALIGNED_COLUMNS.has(i) ? styles.tableCellRight : undefined,
-                ]}
+                style={cellStyleFor(i, true)}
               >
                 {header}
               </Text>
@@ -133,10 +160,7 @@ export function FinancePdfDocument({ rows }: FinancePdfDocumentProps) {
                 return (
                   <Text
                     key={`c-${rowIdx}-${colIdx}`}
-                    style={[
-                      styles.tableCell,
-                      RIGHT_ALIGNED_COLUMNS.has(colIdx) ? styles.tableCellRight : undefined,
-                    ]}
+                    style={cellStyleFor(colIdx, false)}
                   >
                     {cell}
                   </Text>

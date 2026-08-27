@@ -13,15 +13,30 @@ import { PDF_FONT_FAMILY, registerPdfFonts } from "@/lib/pdf/font-loader";
 registerPdfFonts();
 
 // Columns that should be right-aligned in the body of the table.
-// Numeric / monetary columns: Contract Value (8) + Owner/Lead not numeric —
-// We right-align the single Contract Value column for Projects per
-// Design.md ("right-aligned numeric columns").
+//   Contract Value (IDR) — index 8
 const RIGHT_ALIGNED_COLUMNS = new Set<number>([8]);
+
+// Per-column flex weights. Higher = wider. Text-heavy columns get more room
+// than short codes/dates so that data never has to wrap aggressively.
+const COLUMN_WEIGHTS = [
+  1.3, // Project Code
+  2.2, // Name
+  1.5, // Client
+  0.9, // Stage
+  1.4, // Health
+  1.6, // Location
+  1.0, // Start Date
+  1.0, // Target End
+  1.4, // Contract Value (IDR)
+  1.3, // Client Manager
+  1.3, // Project Manager
+  1.6, // Last Updated
+];
 
 const styles = StyleSheet.create({
   page: {
     fontFamily: PDF_FONT_FAMILY,
-    fontSize: 9,
+    fontSize: 8,
     padding: 36,
     color: "#1F2428",
     backgroundColor: "#FFFFFF",
@@ -59,10 +74,11 @@ const styles = StyleSheet.create({
   },
   tableHeaderCell: {
     fontWeight: "bold",
-    fontSize: 11,
+    fontSize: 9,
     color: "#FFFFFF",
-    padding: 6,
-    flexGrow: 1,
+    paddingVertical: 4,
+    paddingHorizontal: 5,
+    flexGrow: 0,
     flexBasis: 0,
   },
   tableRow: {
@@ -74,10 +90,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#F7F6F3",
   },
   tableCell: {
-    fontSize: 9,
+    fontSize: 8,
     color: "#1F2428",
-    padding: 6,
-    flexGrow: 1,
+    paddingVertical: 4,
+    paddingHorizontal: 5,
+    flexGrow: 0,
     flexBasis: 0,
   },
   tableCellRight: {
@@ -89,13 +106,34 @@ interface ProjectsPdfDocumentProps {
   rows: string[][];
 }
 
+// Compact an ISO-8601 datetime ("2026-04-22T02:10:00.000Z") to a
+// shorter human form ("2026-04-22 02:10") for the narrow "Last Updated"
+// cell. Anything else passes through unchanged.
+function compactDateTime(value: string): string {
+  const match = /^(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2})/.exec(value);
+  if (!match) return value;
+  return `${match[1]} ${match[2]}`;
+}
+
+function cellStyleFor(colIdx: number, header: boolean) {
+  const base = header ? styles.tableHeaderCell : styles.tableCell;
+  const align = (header || RIGHT_ALIGNED_COLUMNS.has(colIdx))
+    ? styles.tableCellRight
+    : undefined;
+  return [
+    base,
+    { flexGrow: COLUMN_WEIGHTS[colIdx] },
+    ...(align ? [align] : []),
+  ];
+}
+
 export function ProjectsPdfDocument({ rows }: ProjectsPdfDocumentProps) {
   return (
     <Document
       title="StudioOS — Projects Report"
       author="HDA StudioOS"
     >
-      <Page size="A4" orientation="portrait" style={styles.page} wrap>
+      <Page size="A4" orientation="landscape" style={styles.page} wrap>
         <View style={styles.header}>
           <Text style={styles.title}>StudioOS — Projects Report</Text>
           <Text style={styles.generated}>{getGeneratedAt()}</Text>
@@ -108,10 +146,7 @@ export function ProjectsPdfDocument({ rows }: ProjectsPdfDocumentProps) {
             {PROJECT_EXPORT_HEADERS.map((header, i) => (
               <Text
                 key={`h-${i}`}
-                style={[
-                  styles.tableHeaderCell,
-                  RIGHT_ALIGNED_COLUMNS.has(i) ? styles.tableCellRight : undefined,
-                ]}
+                style={cellStyleFor(i, true)}
               >
                 {header}
               </Text>
@@ -128,15 +163,15 @@ export function ProjectsPdfDocument({ rows }: ProjectsPdfDocumentProps) {
               ]}
               wrap={false}
             >
-              {PROJECT_EXPORT_HEADERS.map((_, colIdx) => {
-                const cell = row[colIdx] ?? "";
+              {PROJECT_EXPORT_HEADERS.map((header, colIdx) => {
+                let cell = row[colIdx] ?? "";
+                if (colIdx === 11 /* Last Updated */) {
+                  cell = compactDateTime(cell);
+                }
                 return (
                   <Text
                     key={`c-${rowIdx}-${colIdx}`}
-                    style={[
-                      styles.tableCell,
-                      RIGHT_ALIGNED_COLUMNS.has(colIdx) ? styles.tableCellRight : undefined,
-                    ]}
+                    style={cellStyleFor(colIdx, false)}
                   >
                     {cell}
                   </Text>
