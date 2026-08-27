@@ -82,6 +82,7 @@ export type ProjectListItem = {
   outstandingPayable: Money;
   attentionCount: number;
   updatedAt: string;
+  isArchived: boolean;
 };
 
 export type DashboardPageData = {
@@ -99,6 +100,7 @@ export type ProjectsFilterState = {
   q: string;
   lifecycle: ProjectLifecycleStatus | "all";
   health: ProjectHealthStatus | "all";
+  showArchived: boolean;
 };
 
 export type ProjectsPageData = {
@@ -380,6 +382,7 @@ function mapProjectListItem(
     outstandingPayable: money(finance?.outstanding_payable ?? 0, project.currency),
     attentionCount: attentionSummary?.attention_count ?? 0,
     updatedAt: project.updated_at,
+    isArchived: project.is_archived === true,
   };
 }
 
@@ -647,6 +650,7 @@ export async function getProjectsPageData(input?: {
   q?: string;
   lifecycle?: string;
   health?: string;
+  showArchived?: boolean;
 }): Promise<ProjectsPageData> {
   const source = await getStudioOsSource();
   const financeMap = buildProjectFinanceMap(
@@ -671,10 +675,17 @@ export async function getProjectsPageData(input?: {
       input?.health === "at_risk"
         ? input.health
         : "all",
+    showArchived: input?.showArchived === true,
   };
 
-  const allItems = source.data.projects
-    .filter((project) => project.is_archived !== true)
+  // showArchived=true => dedicated archived view (only archived rows).
+  // showArchived=false/undefined => default active view (skip archived).
+  const baseItems = source.data.projects
+    .filter((project) =>
+      filters.showArchived
+        ? project.is_archived === true
+        : project.is_archived !== true,
+    )
     .map((project) =>
       mapProjectListItem(
         project,
@@ -685,7 +696,7 @@ export async function getProjectsPageData(input?: {
     .sort((left, right) => right.updatedAt.localeCompare(left.updatedAt));
 
   const query = filters.q.toLowerCase();
-  const items = allItems.filter((item) => {
+  const items = baseItems.filter((item) => {
     const code = String(item.projectCode ?? "");
     const name = String(item.name ?? "");
     const client = String(item.clientName ?? "");
@@ -706,7 +717,7 @@ export async function getProjectsPageData(input?: {
     meta: toMeta(source.source, source.warning),
     filters,
     items,
-    totalCount: allItems.length,
+    totalCount: baseItems.length,
     filteredCount: items.length,
   };
 }

@@ -559,6 +559,51 @@ export async function archiveProjectAction(
   redirect(`/projects`);
 }
 
+export async function restoreProjectAction(
+  _prevState: FormActionState,
+  formData: FormData,
+): Promise<FormActionState> {
+  const errors: FieldErrors = {};
+  const projectId = requireText(formData, "project_id", "Project", errors);
+
+  if (Object.keys(errors).length > 0) {
+    return fail("Review the highlighted fields below.", errors);
+  }
+
+  const supabase = await createSupabaseServerClient();
+  const auth = await requireAuthenticatedUser(supabase);
+
+  if (!auth.userId) {
+    return fail(auth.error ?? "Sign in is required.");
+  }
+
+  const { data: project, error: fetchError } = await supabase
+    .from("projects")
+    .select("id, name, is_archived")
+    .eq("id", projectId)
+    .maybeSingle();
+
+  if (fetchError || !project) {
+    return fail("Project not found or access denied.", {});
+  }
+
+  if (!project.is_archived) {
+    return fail("This project is not archived.", {});
+  }
+
+  const { error } = await supabase
+    .from("projects")
+    .update({ is_archived: false })
+    .eq("id", projectId);
+
+  if (error) {
+    return fail(error.message, {});
+  }
+
+  revalidateWorkspace(projectId);
+  redirect(`/projects`);
+}
+
 export async function createInvoiceAction(
   _prevState: FormActionState,
   formData: FormData,

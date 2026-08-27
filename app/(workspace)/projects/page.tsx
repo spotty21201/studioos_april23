@@ -3,6 +3,7 @@ import { Search } from "lucide-react";
 import { PageHeader } from "@/components/ui/page-header";
 import { SectionPanel } from "@/components/ui/section-panel";
 import { StatusBadge } from "@/components/ui/status-badge";
+import { RestoreProjectButton } from "@/components/forms/restore-project-button";
 import { formatCurrencyIdr, formatShortDate } from "@/lib/format";
 import { getProjectsPageData } from "@/lib/studio-data";
 
@@ -11,12 +12,14 @@ type ProjectsPageProps = {
     q?: string;
     lifecycle?: string;
     health?: string;
+    show_archived?: string;
   }>;
 };
 
 export default async function ProjectsPage({ searchParams }: ProjectsPageProps) {
   const params = await searchParams;
-  const projects = await getProjectsPageData(params);
+  const showArchived = params.show_archived === "1";
+  const projects = await getProjectsPageData({ ...params, showArchived });
 
   return (
     <div className="space-y-8">
@@ -35,8 +38,12 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
       />
 
       <SectionPanel
-        title="Project List"
-        description={`${projects.filteredCount} of ${projects.totalCount} project records shown.`}
+        title={showArchived ? "Archived Projects" : "Project List"}
+        description={
+          showArchived
+            ? `Viewing ${projects.filteredCount} archived project${projects.filteredCount === 1 ? "" : "s"}. Restore to return them to active work.`
+            : `${projects.filteredCount} of ${projects.totalCount} project records shown.`
+        }
         action={
           <div className="flex w-full flex-col gap-4 md:flex-row md:items-center md:justify-between md:gap-6">
             <form className="grid flex-1 gap-3 md:grid-cols-[minmax(220px,1fr)_170px_170px_auto]">
@@ -72,6 +79,7 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
                 <option value="watch">Watch</option>
                 <option value="at_risk">At risk</option>
               </select>
+              {showArchived ? <input type="hidden" name="show_archived" value="1" /> : null}
               <button
                 type="submit"
                 className="inline-flex h-11 items-center justify-center rounded-[2px] border border-black bg-black px-5 text-sm font-medium text-white hover:bg-accent-strong"
@@ -80,6 +88,21 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
               </button>
             </form>
             <div className="flex flex-wrap items-center justify-end gap-2">
+              {showArchived ? (
+                <Link
+                  href="/projects"
+                  className="inline-flex h-11 items-center justify-center rounded-[2px] border border-border bg-white px-4 text-sm font-medium text-text-secondary hover:bg-surface-muted"
+                >
+                  Hide archived
+                </Link>
+              ) : (
+                <Link
+                  href="/projects?show_archived=1"
+                  className="inline-flex h-11 items-center justify-center rounded-[2px] border border-border bg-white px-4 text-sm font-medium text-text-secondary hover:bg-surface-muted"
+                >
+                  Show archived
+                </Link>
+              )}
               <a
                 href="/api/export-projects-xlsx"
                 className="inline-flex h-11 items-center justify-center rounded-[2px] border border-black bg-black px-5 text-sm font-medium text-white hover:bg-accent-strong"
@@ -114,6 +137,7 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
                 <th className="px-5 py-4 font-medium text-right">Payable</th>
                 <th className="px-5 py-4 font-medium text-right">Attention</th>
                 <th className="px-5 py-4 font-medium">Updated</th>
+                {showArchived ? <th className="px-5 py-4 font-medium text-right">Actions</th> : null}
               </tr>
             </thead>
             <tbody className="divide-y divide-border-muted bg-white">
@@ -132,6 +156,11 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
                     <div className="flex flex-col gap-2">
                       <StatusBadge value={project.lifecycleStatus} />
                       <StatusBadge value={project.healthStatus} />
+                      {project.isArchived ? (
+                        <span className="inline-flex h-6 items-center rounded-[2px] border border-text-tertiary/40 bg-surface-muted px-2 text-[11px] font-medium uppercase tracking-[0.14em] text-text-secondary">
+                          Archived
+                        </span>
+                      ) : null}
                     </div>
                   </td>
                   <td className="px-5 py-4 text-sm text-text-secondary">
@@ -152,15 +181,22 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
                   <td className="px-5 py-4 text-sm text-text-secondary">
                     {formatShortDate(project.updatedAt)}
                   </td>
+                  {showArchived ? (
+                    <td className="px-5 py-4 text-right">
+                      <RestoreProjectButton projectId={project.id} />
+                    </td>
+                  ) : null}
                 </tr>
               ))}
               {projects.items.length === 0 ? (
                 <tr>
                   <td
-                    colSpan={8}
+                    colSpan={showArchived ? 9 : 8}
                     className="px-5 py-8 text-center text-sm text-text-secondary"
                   >
-                    No projects match the current filter set.
+                    {showArchived
+                      ? "No archived projects found."
+                      : "No projects match the current filter set."}
                   </td>
                 </tr>
               ) : null}
