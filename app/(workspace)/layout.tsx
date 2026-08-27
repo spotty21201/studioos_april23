@@ -30,7 +30,7 @@ export default async function WorkspaceLayout({
       <div className="min-w-0 flex-1">
         <AppTopbar viewer={shell.viewer} />
         <MobileNav />
-        <main className="mx-auto w-full max-w-[1440px] px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
+        <main className="mx-auto w-full max-w-[1440px] px-4 py-6 sm:px-6 lg:px-8 lg:py-7">
           {noticeMessage ? (
             <div className="mb-6">
               <DataSourceNotice

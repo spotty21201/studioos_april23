@@ -19,8 +19,8 @@ export function AppSidebar({ studioName, subtitle, viewer }: AppSidebarProps) {
   const pathname = usePathname();
 
   return (
-    <aside className="hidden w-72 shrink-0 border-r border-border-strong bg-white px-5 py-6 lg:flex lg:flex-col">
-      <div className="mb-10 px-2">
+    <aside className="hidden w-64 shrink-0 border-r border-border-strong bg-white px-4 py-6 lg:flex lg:flex-col">
+      <div className="mb-6 px-2">
         <div className="text-[1.2rem] font-semibold tracking-[-0.05em] text-accent">
           {studioName} StudioOS
         </div>
@@ -38,7 +38,7 @@ export function AppSidebar({ studioName, subtitle, viewer }: AppSidebarProps) {
             <Link
               key={href}
               href={href}
-              className={`group flex items-center justify-between rounded-[2px] px-4 py-3 ${
+              className={`group flex items-center justify-between rounded-[2px] px-4 py-2.5 ${
                 active
                   ? "bg-black text-white"
                   : "text-text-secondary hover:bg-surface-muted hover:text-text-primary"
@@ -62,7 +62,7 @@ export function AppSidebar({ studioName, subtitle, viewer }: AppSidebarProps) {
         })}
       </nav>
 
-      <div className="mt-auto rounded-[4px] border border-border bg-surface-muted px-4 py-4">
+      <div className="mt-auto rounded-[4px] border border-border bg-surface-muted px-4 py-3">
         <div className="flex items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             <Avatar name={viewer.name} />
