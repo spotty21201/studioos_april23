@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Landmark, Receipt, WalletCards, Waypoints } from "lucide-react";
 import { ProjectNoteForm } from "@/components/forms/project-note-form";
+import { DeleteProjectNoteButton } from "@/components/forms/delete-project-note-button";
 import { ArchiveProjectSection } from "@/components/ui/archive-project-section";
 import { MetricCard } from "@/components/ui/metric-card";
 import { PageHeader } from "@/components/ui/page-header";
@@ -258,7 +259,13 @@ export default async function ProjectDetailPage({
                             {note.title ?? "Untitled note"}
                           </Link>
                         </p>
-                        <StatusBadge value={note.noteType} />
+                        <div className="flex items-center gap-3">
+                          <StatusBadge value={note.noteType} />
+                          <DeleteProjectNoteButton
+                            projectId={detail.project.id}
+                            noteId={note.id}
+                          />
+                        </div>
                       </div>
                       <p className="mt-2 text-sm leading-6 text-text-secondary">
                         {note.bodyPreview}
@@ -434,7 +441,14 @@ export default async function ProjectDetailPage({
                       {note.title ?? "Untitled note"}
                     </Link>
                   </p>
-                  <StatusBadge value={note.noteType} />
+                  <div className="flex items-center gap-3">
+                    <StatusBadge value={note.noteType} />
+                    <DeleteProjectNoteButton
+                      projectId={detail.project.id}
+                      noteId={note.id}
+                      returnTab="notes"
+                    />
+                  </div>
                 </div>
                 <p className="mt-2 text-sm leading-6 text-text-secondary">
                   {note.bodyPreview}

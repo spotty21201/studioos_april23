@@ -1317,3 +1317,50 @@ export async function updateProjectNoteAction(
   revalidateWorkspace(projectId);
   redirect(`/projects/${projectId}`);
 }
+
+export async function deleteProjectNoteAction(
+  _prevState: FormActionState,
+  formData: FormData,
+): Promise<FormActionState> {
+  const errors: FieldErrors = {};
+  const projectId = requireText(formData, "project_id", "Project", errors);
+  const noteId = requireText(formData, "note_id", "Note", errors);
+  const returnTab = (formData.get("return_tab") ?? "").toString();
+
+  if (Object.keys(errors).length > 0) {
+    return fail("Review the highlighted fields below.", errors);
+  }
+
+  const supabase = await createSupabaseServerClient();
+  const auth = await requireAuthenticatedUser(supabase);
+
+  if (!auth.userId) {
+    return fail(auth.error ?? "Sign in is required.");
+  }
+
+  const { data: existingNote, error: fetchError } = await supabase
+    .from("notes")
+    .select("id, project_id")
+    .eq("id", noteId)
+    .eq("project_id", projectId)
+    .maybeSingle();
+
+  if (fetchError || !existingNote) {
+    return fail("Project note not found or access denied.");
+  }
+
+  const { data: deletedRows, error } = await supabase
+    .from("notes")
+    .delete()
+    .eq("id", noteId)
+    .eq("project_id", projectId)
+    .select("id");
+
+  if (error || !deletedRows || deletedRows.length === 0) {
+    return fail(error?.message ?? "Unable to delete project note.");
+  }
+
+  revalidateWorkspace(projectId);
+  const tabSuffix = returnTab ? `?tab=${encodeURIComponent(returnTab)}` : "";
+  redirect(`/projects/${projectId}${tabSuffix}`);
+}
