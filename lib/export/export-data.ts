@@ -86,6 +86,7 @@ export async function loadProjectExportRows(): Promise<
         `project_code, name, client_id, lifecycle_status, health_status,
          start_date, target_end_date, contract_value, currency,
          location, updated_at,
+         project_owner_name, project_lead_name,
          client:clients!projects_client_id_fkey(id, name)`,
       )
       .order("updated_at", { ascending: false });
@@ -94,38 +95,7 @@ export async function loadProjectExportRows(): Promise<
       return fallbackRows();
     }
 
-    const rows = (base.data as RawRecord[]).map(toProjectExportRow);
-
-    // Owner/lead names only exist in newer migrations; merge them in when
-    // available, otherwise leave them blank (matches what the UI can show).
-    const owner = await supabase
-      .from("projects")
-      .select("id, project_owner_name, project_lead_name");
-
-    if (!owner.error && owner.data) {
-      const byId = new Map<string, RawRecord>();
-      for (const rec of owner.data as RawRecord[]) {
-        byId.set(String(rec.id), rec);
-      }
-      for (const row of base.data as RawRecord[]) {
-        const extra = byId.get(String(row.id));
-        if (!extra) continue;
-        const match = rows.find(
-          (r) => r.project_code === String(row.project_code),
-        );
-        if (!match) continue;
-        match.project_owner_name =
-          typeof extra.project_owner_name === "string"
-            ? extra.project_owner_name
-            : "";
-        match.project_lead_name =
-          typeof extra.project_lead_name === "string"
-            ? extra.project_lead_name
-            : "";
-      }
-    }
-
-    return rows;
+    return (base.data as RawRecord[]).map(toProjectExportRow);
   } catch {
     return fallbackRows();
   }
