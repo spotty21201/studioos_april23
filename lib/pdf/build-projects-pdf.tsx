@@ -12,8 +12,11 @@ import { PDF_FONT_FAMILY, registerPdfFonts } from "@/lib/pdf/font-loader";
 // Registers PT Sans on first import so the font travels with the bundle.
 registerPdfFonts();
 
-// Columns that should be right-aligned in the body of the table.
-//   Contract Value (IDR) — index 8
+// Body-cell alignment by column type.
+// Center: short codes, statuses and dates. Right: money. Left: long text.
+//   0 Project Code, 3 Stage, 6 Start Date, 7 Target End, 11 Last Updated
+const CENTER_ALIGNED_COLUMNS = new Set<number>([0, 3, 6, 7, 11]);
+//   8 Contract Value (IDR)
 const RIGHT_ALIGNED_COLUMNS = new Set<number>([8]);
 
 // Per-column flex weights. Higher = wider. Text-heavy columns get more room
@@ -37,7 +40,7 @@ const styles = StyleSheet.create({
   page: {
     fontFamily: PDF_FONT_FAMILY,
     fontSize: 8,
-    padding: 36,
+    padding: 24,
     color: "#1F2428",
     backgroundColor: "#FFFFFF",
   },
@@ -52,6 +55,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#1F2428",
     marginBottom: 4,
+    textAlign: "center",
   },
   generated: {
     fontSize: 9,
@@ -100,6 +104,9 @@ const styles = StyleSheet.create({
   tableCellRight: {
     textAlign: "right",
   },
+  tableCellCenter: {
+    textAlign: "center",
+  },
 });
 
 interface ProjectsPdfDocumentProps {
@@ -117,9 +124,13 @@ function compactDateTime(value: string): string {
 
 function cellStyleFor(colIdx: number, header: boolean) {
   const base = header ? styles.tableHeaderCell : styles.tableCell;
-  const align = (header || RIGHT_ALIGNED_COLUMNS.has(colIdx))
-    ? styles.tableCellRight
-    : undefined;
+  const align = header
+    ? styles.tableCellCenter
+    : RIGHT_ALIGNED_COLUMNS.has(colIdx)
+      ? styles.tableCellRight
+      : CENTER_ALIGNED_COLUMNS.has(colIdx)
+        ? styles.tableCellCenter
+        : undefined;
   return [
     base,
     { flexGrow: COLUMN_WEIGHTS[colIdx] },

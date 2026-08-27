@@ -12,11 +12,12 @@ import { PDF_FONT_FAMILY, registerPdfFonts } from "@/lib/pdf/font-loader";
 // Registers PT Sans on first import so the font travels with the bundle.
 registerPdfFonts();
 
-// Right-align the three monetary columns:
-//   Amount (IDR)      index 6
-//   Tax %             index 7
-//   Tax Amount (IDR)  index 8
-const RIGHT_ALIGNED_COLUMNS = new Set<number>([6, 7, 8]);
+// Body-cell alignment by column type.
+// Center: short codes, dates, small numbers and statuses. Right: money.
+//   1 Invoice Number, 3 Issued Date, 4 Due Date, 5 Paid Date, 7 Tax %, 9 Status
+const CENTER_ALIGNED_COLUMNS = new Set<number>([1, 3, 4, 5, 7, 9]);
+//   6 Amount (IDR), 8 Tax Amount (IDR)
+const RIGHT_ALIGNED_COLUMNS = new Set<number>([6, 8]);
 
 // Per-column flex weights. Higher = wider. Text-heavy columns (Project,
 // Title) get more room than codes/dates so that data never has to wrap
@@ -38,7 +39,7 @@ const styles = StyleSheet.create({
   page: {
     fontFamily: PDF_FONT_FAMILY,
     fontSize: 8,
-    padding: 36,
+    padding: 24,
     color: "#1F2428",
     backgroundColor: "#FFFFFF",
   },
@@ -53,6 +54,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#1F2428",
     marginBottom: 4,
+    textAlign: "center",
   },
   generated: {
     fontSize: 9,
@@ -101,6 +103,9 @@ const styles = StyleSheet.create({
   tableCellRight: {
     textAlign: "right",
   },
+  tableCellCenter: {
+    textAlign: "center",
+  },
 });
 
 interface FinancePdfDocumentProps {
@@ -109,9 +114,13 @@ interface FinancePdfDocumentProps {
 
 function cellStyleFor(colIdx: number, header: boolean) {
   const base = header ? styles.tableHeaderCell : styles.tableCell;
-  const align = (header || RIGHT_ALIGNED_COLUMNS.has(colIdx))
-    ? styles.tableCellRight
-    : undefined;
+  const align = header
+    ? styles.tableCellCenter
+    : RIGHT_ALIGNED_COLUMNS.has(colIdx)
+      ? styles.tableCellRight
+      : CENTER_ALIGNED_COLUMNS.has(colIdx)
+        ? styles.tableCellCenter
+        : undefined;
   return [
     base,
     { flexGrow: COLUMN_WEIGHTS[colIdx] },
