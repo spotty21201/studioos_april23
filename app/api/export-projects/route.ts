@@ -1,5 +1,6 @@
 import { loadProjectExportRows } from "@/lib/export/export-data";
 import { mapProjectExportRow, PROJECT_EXPORT_HEADERS } from "@/lib/export/export-helpers";
+import { getGeneratedAt } from "@/lib/xlsx/projects-export";
 
 function escapeCsv(value: string): string {
   if (value.includes(",") || value.includes('"') || value.includes("\n")) {
@@ -12,7 +13,13 @@ export async function GET() {
   try {
     const projects = await loadProjectExportRows();
     const rows = projects.map(mapProjectExportRow);
-    const content = [PROJECT_EXPORT_HEADERS, ...rows]
+    // Prepend a "Generated: <ISO+07:00>" metadata row for parity with the
+    // XLSX and PDF exports. Padded to the header column count.
+    const meta = [
+      getGeneratedAt(),
+      ...Array(PROJECT_EXPORT_HEADERS.length - 1).fill(""),
+    ];
+    const content = [meta, PROJECT_EXPORT_HEADERS, ...rows]
       .map((row) => row.map(escapeCsv).join(","))
       .join("\n");
     const timestamp = new Date().toISOString().slice(0, 10);
