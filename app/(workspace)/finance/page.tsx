@@ -35,9 +35,6 @@ export default async function FinancePage({ searchParams }: FinancePageProps) {
             >
               Add Vendor Obligation
             </Link>
-            <a href="/api/export-finance" className="inline-flex h-10 items-center justify-center rounded-[2px] border border-border bg-white px-4 text-sm font-medium text-text-secondary hover:bg-surface-muted">Export Finance</a>
-            <a href="/api/export-finance-xlsx" className="inline-flex h-10 items-center justify-center rounded-[2px] border border-border bg-white px-4 text-sm font-medium text-text-secondary hover:bg-surface-muted">Export XLSX</a>
-            <a href="/api/export-finance-pdf" className="inline-flex h-10 items-center justify-center rounded-[2px] border border-border bg-white px-4 text-sm font-medium text-text-secondary hover:bg-surface-muted">Export PDF</a>
           </>
         }
       />
@@ -91,38 +88,60 @@ export default async function FinancePage({ searchParams }: FinancePageProps) {
         title="All Client Invoices"
         description={`${overview.filteredInvoiceCount} of ${overview.totalInvoiceCount} saved invoices shown. Draft invoices are not included in issued or outstanding totals until their status is changed.`}
         action={
-          <form className="grid gap-3 sm:grid-cols-[minmax(240px,1fr)_170px_auto]">
-            <label className="relative block">
-              <span className="sr-only">Search invoices</span>
-              <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-text-tertiary" />
-              <input
-                type="search"
-                name="q"
-                defaultValue={overview.filters.q}
-                placeholder="Invoice, project, or client..."
-                className="h-11 w-full rounded-[2px] border border-border bg-white pl-11 pr-4 text-sm text-text-primary outline-none placeholder:text-text-tertiary focus:border-border-strong focus:ring-2 focus:ring-border-muted"
-              />
-            </label>
-            <select
-              name="status"
-              aria-label="Filter invoices by status"
-              defaultValue={overview.filters.status}
-              className="h-11 rounded-[2px] border border-border bg-white px-4 text-sm text-text-primary outline-none focus:border-border-strong focus:ring-2 focus:ring-border-muted"
-            >
-              <option value="all">All statuses</option>
-              <option value="draft">Draft</option>
-              <option value="issued">Issued</option>
-              <option value="overdue">Overdue</option>
-              <option value="paid">Paid</option>
-              <option value="cancelled">Cancelled</option>
-            </select>
-            <button
-              type="submit"
-              className="inline-flex h-11 items-center justify-center rounded-[2px] border border-black bg-black px-5 text-sm font-medium text-white hover:bg-accent-strong"
-            >
-              Apply
-            </button>
-          </form>
+          <div className="flex w-full flex-col gap-4 md:flex-row md:items-center md:justify-between md:gap-6">
+            <form className="grid flex-1 gap-3 sm:grid-cols-[minmax(220px,1fr)_170px_auto]">
+              <label className="relative block">
+                <span className="sr-only">Search invoices</span>
+                <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-text-tertiary" />
+                <input
+                  type="search"
+                  name="q"
+                  defaultValue={overview.filters.q}
+                  placeholder="Invoice, project, or client..."
+                  className="h-11 w-full rounded-[2px] border border-border bg-white pl-11 pr-4 text-sm text-text-primary outline-none placeholder:text-text-tertiary focus:border-border-strong focus:ring-2 focus:ring-border-muted"
+                />
+              </label>
+              <select
+                name="status"
+                aria-label="Filter invoices by status"
+                defaultValue={overview.filters.status}
+                className="h-11 rounded-[2px] border border-border bg-white px-4 text-sm text-text-primary outline-none focus:border-border-strong focus:ring-2 focus:ring-border-muted"
+              >
+                <option value="all">All statuses</option>
+                <option value="draft">Draft</option>
+                <option value="issued">Issued</option>
+                <option value="overdue">Overdue</option>
+                <option value="paid">Paid</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
+              <button
+                type="submit"
+                className="inline-flex h-11 items-center justify-center rounded-[2px] border border-black bg-black px-5 text-sm font-medium text-white hover:bg-accent-strong"
+              >
+                Apply
+              </button>
+            </form>
+            <div className="flex flex-wrap items-center justify-end gap-2">
+              <a
+                href="/api/export-finance-xlsx"
+                className="inline-flex h-11 items-center justify-center rounded-[2px] border border-black bg-black px-5 text-sm font-medium text-white hover:bg-accent-strong"
+              >
+                Export XLSX
+              </a>
+              <a
+                href="/api/export-finance-pdf"
+                className="inline-flex h-11 items-center justify-center rounded-[2px] border border-black bg-white px-5 text-sm font-medium text-black hover:bg-surface-muted"
+              >
+                Export PDF
+              </a>
+              <a
+                href="/api/export-finance"
+                className="inline-flex h-11 items-center px-2 text-sm font-medium text-text-secondary underline-offset-4 hover:text-accent hover:underline"
+              >
+                Export · CSV
+              </a>
+            </div>
+          </div>
         }
       >
         {overview.invoices.length > 0 ? (

@@ -38,51 +38,67 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
         title="Project List"
         description={`${projects.filteredCount} of ${projects.totalCount} project records shown.`}
         action={
-          <div className="flex items-center gap-3"><form className="grid gap-3 md:grid-cols-[minmax(260px,1fr)_180px_180px_auto]">
-            <label className="relative block">
-              <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-text-tertiary" />
-              <input
-                type="search"
-                name="q"
-                defaultValue={projects.filters.q}
-                placeholder="Search code, project, or client..."
-                className="h-11 w-full rounded-[2px] border border-border bg-white pl-11 pr-4 text-sm text-text-primary outline-none placeholder:text-text-tertiary focus:border-border-strong focus:ring-2 focus:ring-border-muted"
-              />
-            </label>
-            <select
-              name="lifecycle"
-              defaultValue={projects.filters.lifecycle}
-              className="h-11 rounded-[2px] border border-border bg-white px-4 text-sm text-text-primary outline-none focus:border-border-strong focus:ring-2 focus:ring-border-muted"
-            >
-              <option value="all">All lifecycle states</option>
-              <option value="proposal">Proposal</option>
-              <option value="active">Active</option>
-              <option value="on_hold">On hold</option>
-              <option value="completed">Completed</option>
-              <option value="cancelled">Cancelled</option>
-            </select>
-            <select
-              name="health"
-              defaultValue={projects.filters.health}
-              className="h-11 rounded-[2px] border border-border bg-white px-4 text-sm text-text-primary outline-none focus:border-border-strong focus:ring-2 focus:ring-border-muted"
-            >
-              <option value="all">All health states</option>
-              <option value="on_track">On track</option>
-              <option value="watch">Watch</option>
-              <option value="at_risk">At risk</option>
-            </select>
-            <button
-              type="submit"
-              className="inline-flex h-11 items-center justify-center rounded-[2px] border border-black bg-black px-5 text-sm font-medium text-white hover:bg-accent-strong"
-            >
-              Apply
-            </button>
-          </form>
-          <div className="flex items-center gap-2">
-          <a href="/api/export-projects" className="inline-flex h-10 items-center justify-center rounded-[2px] border border-border bg-white px-4 text-sm font-medium text-text-secondary hover:bg-surface-muted">Export Projects</a>
-          <a href="/api/export-projects-xlsx" className="inline-flex h-10 items-center justify-center rounded-[2px] border border-border bg-white px-4 text-sm font-medium text-text-secondary hover:bg-surface-muted">Export XLSX</a>
-          <a href="/api/export-projects-pdf" className="inline-flex h-10 items-center justify-center rounded-[2px] border border-border bg-white px-4 text-sm font-medium text-text-secondary hover:bg-surface-muted">Export PDF</a>
-          </div>
+          <div className="flex w-full flex-col gap-4 md:flex-row md:items-center md:justify-between md:gap-6">
+            <form className="grid flex-1 gap-3 md:grid-cols-[minmax(220px,1fr)_170px_170px_auto]">
+              <label className="relative block">
+                <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-text-tertiary" />
+                <input
+                  type="search"
+                  name="q"
+                  defaultValue={projects.filters.q}
+                  placeholder="Search code, project, or client..."
+                  className="h-11 w-full rounded-[2px] border border-border bg-white pl-11 pr-4 text-sm text-text-primary outline-none placeholder:text-text-tertiary focus:border-border-strong focus:ring-2 focus:ring-border-muted"
+                />
+              </label>
+              <select
+                name="lifecycle"
+                defaultValue={projects.filters.lifecycle}
+                className="h-11 rounded-[2px] border border-border bg-white px-4 text-sm text-text-primary outline-none focus:border-border-strong focus:ring-2 focus:ring-border-muted"
+              >
+                <option value="all">All lifecycle states</option>
+                <option value="proposal">Proposal</option>
+                <option value="active">Active</option>
+                <option value="on_hold">On hold</option>
+                <option value="completed">Completed</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
+              <select
+                name="health"
+                defaultValue={projects.filters.health}
+                className="h-11 rounded-[2px] border border-border bg-white px-4 text-sm text-text-primary outline-none focus:border-border-strong focus:ring-2 focus:ring-border-muted"
+              >
+                <option value="all">All health states</option>
+                <option value="on_track">On track</option>
+                <option value="watch">Watch</option>
+                <option value="at_risk">At risk</option>
+              </select>
+              <button
+                type="submit"
+                className="inline-flex h-11 items-center justify-center rounded-[2px] border border-black bg-black px-5 text-sm font-medium text-white hover:bg-accent-strong"
+              >
+                Apply
+              </button>
+            </form>
+            <div className="flex flex-wrap items-center justify-end gap-2">
+              <a
+                href="/api/export-projects-xlsx"
+                className="inline-flex h-11 items-center justify-center rounded-[2px] border border-black bg-black px-5 text-sm font-medium text-white hover:bg-accent-strong"
+              >
+                Export XLSX
+              </a>
+              <a
+                href="/api/export-projects-pdf"
+                className="inline-flex h-11 items-center justify-center rounded-[2px] border border-black bg-white px-5 text-sm font-medium text-black hover:bg-surface-muted"
+              >
+                Export PDF
+              </a>
+              <a
+                href="/api/export-projects"
+                className="inline-flex h-11 items-center px-2 text-sm font-medium text-text-secondary underline-offset-4 hover:text-accent hover:underline"
+              >
+                Export · CSV
+              </a>
+            </div>
           </div>
         }
       >
