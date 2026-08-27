@@ -81,6 +81,7 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
           <div className="flex items-center gap-2">
           <a href="/api/export-projects" className="inline-flex h-10 items-center justify-center rounded-[2px] border border-border bg-white px-4 text-sm font-medium text-text-secondary hover:bg-surface-muted">Export Projects</a>
           <a href="/api/export-projects-xlsx" className="inline-flex h-10 items-center justify-center rounded-[2px] border border-border bg-white px-4 text-sm font-medium text-text-secondary hover:bg-surface-muted">Export XLSX</a>
+          <a href="/api/export-projects-pdf" className="inline-flex h-10 items-center justify-center rounded-[2px] border border-border bg-white px-4 text-sm font-medium text-text-secondary hover:bg-surface-muted">Export PDF</a>
           </div>
           </div>
         }

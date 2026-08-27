@@ -37,6 +37,7 @@ export default async function FinancePage({ searchParams }: FinancePageProps) {
             </Link>
             <a href="/api/export-finance" className="inline-flex h-10 items-center justify-center rounded-[2px] border border-border bg-white px-4 text-sm font-medium text-text-secondary hover:bg-surface-muted">Export Finance</a>
             <a href="/api/export-finance-xlsx" className="inline-flex h-10 items-center justify-center rounded-[2px] border border-border bg-white px-4 text-sm font-medium text-text-secondary hover:bg-surface-muted">Export XLSX</a>
+            <a href="/api/export-finance-pdf" className="inline-flex h-10 items-center justify-center rounded-[2px] border border-border bg-white px-4 text-sm font-medium text-text-secondary hover:bg-surface-muted">Export PDF</a>
           </>
         }
       />
