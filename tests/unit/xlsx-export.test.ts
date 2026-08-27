@@ -45,22 +45,29 @@ describe("XLSX Export - Projects (lib/xlsx/projects-export.ts)", () => {
 
   it("column headers match expected values", async () => {
     const sheet = await readSheetData();
-    expect(sheet.length).toBe(mockProjects.length + 1);
-    expect(sheet[0].length).toBe(projectsExport.PROJECT_HEADERS.length);
+    expect(sheet.length).toBe(mockProjects.length + 2);
+    expect(sheet[1].length).toBe(projectsExport.PROJECT_HEADERS.length);
 
     for (let i = 0; i < projectsExport.PROJECT_HEADERS.length; i++) {
-      expect(sheet[0][i]).toBe(projectsExport.PROJECT_HEADERS[i]);
+      expect(sheet[1][i]).toBe(projectsExport.PROJECT_HEADERS[i]);
     }
   });
 
   it("row count matches source record count", async () => {
     const sheet = await readSheetData();
-    expect(sheet.length).toBe(mockProjects.length + 1);
+    expect(sheet.length).toBe(mockProjects.length + 2);
+  });
+
+  it("metadata row contains a Generated timestamp above the header", async () => {
+    const sheet = await readSheetData();
+    expect(sheet[0][0]).toMatch(/^Generated: \d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?([+-]\d{2}:\d{2}|Z)$/);
+    // Helpers exposed for downstream assertions
+    expect(projectsExport.getGeneratedAt()).toMatch(/^Generated: \d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?([+-]\d{2}:\d{2}|Z)$/);
   });
 
   it("first data row contains mapped project data correctly", async () => {
     const sheet = await readSheetData();
-    const firstDataRow = sheet[1];
+    const firstDataRow = sheet[2];
 
     expect(firstDataRow[0]).toBe("HDA-26001");
     expect(firstDataRow[1]).toBe("Lippo Pekanbaru 36 ha");
@@ -137,10 +144,11 @@ describe("XLSX Export - Projects (lib/xlsx/projects-export.ts)", () => {
     expect(filename).toMatch(/^studioos-projects-\d{4}-\d{2}-\d{2}\.xlsx$/);
   });
 
-  it("empty rows produces workbook with only a header row", async () => {
+  it("empty rows produces workbook with metadata + header only", async () => {
     const buffer = await projectsExport.buildProjectsWorkbook([]);
     const sheet = await readSheet(buffer, "Projects");
-    expect(sheet.length).toBe(1);
+    expect(sheet.length).toBe(2);
+    expect(sheet[0][0]).toMatch(/^Generated: \d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?([+-]\d{2}:\d{2}|Z)$/);
   });
 
   it("columns constant has all 12 expected headers", () => {
@@ -170,7 +178,7 @@ describe("XLSX Export - Projects (lib/xlsx/projects-export.ts)", () => {
     const buffer = await projectsExport.buildProjectsWorkbook(rows);
     const sheet = await readSheet(buffer, "Projects");
 
-    expect(sheet.length).toBe(largeSet.length + 1);
+    expect(sheet.length).toBe(largeSet.length + 2);
     expect(sheet[sheet.length - 1][0]).toBe("HDA-26049");
   });
 });
@@ -225,12 +233,18 @@ describe("XLSX Export - Finance (lib/xlsx/finance-export.ts)", () => {
 
   it("row count matches source record count", async () => {
     const sheet = await readSheetData();
-    expect(sheet.length).toBe(mockInvoices.length + 1);
+    expect(sheet.length).toBe(mockInvoices.length + 2);
+  });
+
+  it("metadata row contains a Generated timestamp above the header", async () => {
+    const sheet = await readSheetData();
+    expect(sheet[0][0]).toMatch(/^Generated: \d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?([+-]\d{2}:\d{2}|Z)$/);
+    expect(financeExport.getGeneratedAt()).toMatch(/^Generated: \d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?([+-]\d{2}:\d{2}|Z)$/);
   });
 
   it("first data row contains mapped invoice data correctly", async () => {
     const sheet = await readSheetData();
-    const firstDataRow = sheet[1];
+    const firstDataRow = sheet[2];
 
     expect(firstDataRow[0]).toBe("Lippo Pekanbaru 36 ha");
     expect(firstDataRow[1]).toBe("INV-26001");
@@ -257,10 +271,11 @@ describe("XLSX Export - Finance (lib/xlsx/finance-export.ts)", () => {
     expect(filename).toMatch(/^studioos-finance-\d{4}-\d{2}-\d{2}\.xlsx$/);
   });
 
-  it("empty rows produces workbook with only a header row", async () => {
+  it("empty rows produces workbook with metadata + header only", async () => {
     const buffer = await financeExport.buildFinanceWorkbook([]);
     const sheet = await readSheet(buffer, "Finance");
-    expect(sheet.length).toBe(1);
+    expect(sheet.length).toBe(2);
+    expect(sheet[0][0]).toMatch(/^Generated: \d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?([+-]\d{2}:\d{2}|Z)$/);
   });
 
   it("mapInvoiceRow handles missing fields gracefully", () => {

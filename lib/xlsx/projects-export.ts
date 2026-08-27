@@ -14,6 +14,16 @@ export function formatTimestamp(): string {
   return new Date().toISOString().slice(0, 10);
 }
 
+// Returns the export timestamp in ISO 8601 with the Asia/Jakarta (+07:00)
+// timezone offset, e.g. "Generated: 2026-08-27T14:35:00+07:00".
+// Uses `sv-SE` locale for stable YYYY-MM-DD HH:mm:ss formatting, then
+// appends the fixed +07:00 offset (Asia/Jakarta does not observe DST).
+export function getGeneratedAt(): string {
+  const local = new Date().toLocaleString("sv-SE", { timeZone: "Asia/Jakarta" });
+  // `sv-SE` produces "YYYY-MM-DD HH:mm:ss" (space-separated).
+  return `Generated: ${local.replace(" ", "T")}+07:00`;
+}
+
 export function formatProjectsFilename(): string {
   return `studioos-projects-${formatTimestamp()}.xlsx`;
 }
@@ -36,7 +46,22 @@ export function isProjectActive(project: unknown): boolean {
 export async function buildProjectsWorkbook(rows: string[][]): Promise<Buffer> {
   const sheetData: SheetData = [];
 
-  // Header row
+  // Metadata row (row 0): "Generated: <ISO>" merged across all columns.
+  // `columnSpan` combines this cell with the next N-1 cells visually.
+  const metadataRow: SheetData[number] = [
+    {
+      value: getGeneratedAt(),
+      fontWeight: "bold" as const,
+      backgroundColor: "#F3F4F6",
+      columnSpan: PROJECT_HEADERS.length,
+    },
+  ];
+  for (let i = 1; i < PROJECT_HEADERS.length; i++) {
+    metadataRow.push(null);
+  }
+  sheetData.push(metadataRow);
+
+  // Header row (row 1)
   sheetData.push(
     PROJECT_HEADERS.map((header) => ({
       value: header,
