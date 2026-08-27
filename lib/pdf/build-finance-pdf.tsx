@@ -18,6 +18,8 @@ registerPdfFonts();
 const CENTER_ALIGNED_COLUMNS = new Set<number>([1, 3, 4, 5, 7, 9]);
 //   6 Amount (IDR), 8 Tax Amount (IDR)
 const RIGHT_ALIGNED_COLUMNS = new Set<number>([6, 8]);
+// Bold project name body cells (column index 0 = "Project")
+const BOLD_COLUMNS = new Set<number>([0]);
 
 // Per-column flex weights. Higher = wider. Text-heavy columns (Project,
 // Title) get more room than codes/dates so that data never has to wrap
@@ -55,6 +57,13 @@ const styles = StyleSheet.create({
     color: "#1F2428",
     marginBottom: 4,
     textAlign: "center",
+  },
+  company: {
+    fontSize: 11,
+    fontWeight: "bold",
+    color: "#68707A",
+    textAlign: "center",
+    marginTop: 2,
   },
   generated: {
     fontSize: 9,
@@ -106,6 +115,9 @@ const styles = StyleSheet.create({
   tableCellCenter: {
     textAlign: "center",
   },
+  tableCellBold: {
+    fontWeight: "bold",
+  },
 });
 
 interface FinancePdfDocumentProps {
@@ -121,10 +133,13 @@ function cellStyleFor(colIdx: number, header: boolean) {
       : CENTER_ALIGNED_COLUMNS.has(colIdx)
         ? styles.tableCellCenter
         : undefined;
+  const bold =
+    !header && BOLD_COLUMNS.has(colIdx) ? styles.tableCellBold : undefined;
   return [
     base,
     { flexGrow: COLUMN_WEIGHTS[colIdx] },
     ...(align ? [align] : []),
+    ...(bold ? [bold] : []),
   ];
 }
 
@@ -137,6 +152,7 @@ export function FinancePdfDocument({ rows }: FinancePdfDocumentProps) {
       <Page size="A4" orientation="landscape" style={styles.page} wrap>
         <View style={styles.header}>
           <Text style={styles.title}>StudioOS — Finance Report</Text>
+          <Text style={styles.company}>HDA</Text>
           <Text style={styles.generated}>{getGeneratedAt()}</Text>
           <Text style={styles.totalLine}>Total: {rows.length} rows</Text>
         </View>
