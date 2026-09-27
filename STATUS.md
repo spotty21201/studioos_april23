@@ -6,8 +6,8 @@
 ## Executive status
 
 - A dedicated branch, `migration/nabire-parallel`, was created from `main`. The canonical repository remains GitHub.
-- The application installs, builds, type-checks, lints, and passes its unit suite in this workspace.
-- Nabire has **not** been reached; production has **not** been changed; no production data has been exported or copied.
+- The branch is checked out on Nabire at `/home/spotty/projects/studioos`; locked dependencies install, build, type-check, lint, and pass the unit suite there.
+- Production has **not** been changed; no production data has been exported or copied.
 - Vercel project discovery succeeded, but project/deployment details require re-authentication to the Vercel team scope.
 - The candidate production deployment redirects anonymous requests to Vercel SSO. Authenticated current-vs-new workflow testing is therefore blocked.
 
@@ -21,7 +21,7 @@
 | Vercel | Project list contains `studioos` (`prj_QdomYwmEBchicA5GNuUyFywtl80K`). Project/deployment API calls return 403: re-authentication is required for team scope `spotty21201s-projects`. Current deployment SHA, Git link, domains, build settings and environment-variable names are unverified. No values were requested or recorded. |
 | Production reachability | A candidate project deployment hostname redirected to Vercel SSO before the application; it did not expose the app or user data. This does not establish that the current production deployment is healthy. |
 | Supabase | No direct dashboard/database connector is available in this session. Source and migration audit completed from GitHub checkout; project health, hosted schema state, users, records, and storage contents remain unverified. |
-| Nabire | SSH client exists in this workspace, but `ssh spotty@nabire` fails DNS resolution and this environment has no Tailscale CLI. No server was modified. |
+| Nabire | This execution host identifies as `nabire` (Ubuntu 24.04.5 LTS); Tailscale is active. The branch is cloned in `/home/spotty/projects/studioos`. Direct SSH to the local hostname fails host-key verification, so no SSH host key was accepted. |
 
 ## Application baseline
 
@@ -48,12 +48,14 @@
 
 ## Tests and production-vs-local baseline
 
-- Dependency installation: `npm ci` passed (474 packages).
+- On Nabire, `npm ci` passed (474 packages); npm reported 11 dependency advisories (1 low, 3 moderate, 6 high, 1 critical). No automatic audit fix was applied.
 - Unit tests: **173 passed / 26 files**.
 - ESLint: passed.
 - TypeScript: passed.
 - Production build: passed; Next enumerated the implemented routes.
-- Browser suite: **7 API/archive assertions passed**. Eleven browser-dependent cases could not start because Playwright Chromium was absent; the official browser download returned a zero-byte/invalid archive in this environment. The suite was not counted as a pass.
+- E2E: **7 of 18 passed** (CSV/XLSX export and archive API checks). The other 11 could not launch Chromium because this host lacks browser shared libraries, including `libatk-1.0.so.0`; installing the Playwright browser alone did not resolve that. `agent-browser` hit the same missing-library issue. No browser-driven UI result is claimed.
+- A private dev server on `127.0.0.1:3101` started successfully and was stopped after the browser launch attempt. Port 3100 is used by another local service and was left untouched.
+- Tailscale Funnel is enabled and proxies a separate localhost service on port 3100. Studio OS was not exposed through this route; review the existing Funnel route's intended security/access policy before relying on it.
 - Production: anonymous request was redirected to Vercel SSO, so no authenticated screen, data, persistence, or CRUD behavior was observed in this run.
 - Prior repo QA (2026-08-19 and 2026-08-27) records authenticated workflows, finance/export behavior and outstanding product gaps. It is historical evidence, not a fresh production comparison.
 
@@ -74,20 +76,22 @@ Sources: `docs/mira-indri-qa-2026-08-19.md`, `docs/qa/2026-08-27-tester-*.md`, `
 ## Actions and recovery
 
 - Production branch `main`, Vercel production, and Supabase hosted services have not been changed.
+- The development branch is `migration/nabire-parallel`, at `518c5452c8fdfc1dd03b68c678d03fa5a08458a9` before this status update. The working tree was clean after the local verification run.
+- The only changes made on Nabire were cloning the public branch, installing its locked npm dependencies, downloading Playwright browser files into the user cache, and starting/stopping a loopback-only dev server. No OS packages, services, credentials, or production data were changed.
 - No data has been migrated. Do not use demo seed data as a substitute for production export.
 - Development baseline is reproducible from GitHub branch `migration/nabire-parallel`; return to the starting point at `aa7276c364d2cd55e783fd8dd28dfa03cc562540`.
 - No production cutover, DNS change, paid infrastructure, or destructive operation has occurred.
 
 ## Smallest remaining human actions
 
-1. Reauthorize the Vercel connector for the existing `spotty21201s-projects` team scope (or provide an already-connected authorized project scope). No secrets need to be sent in chat.
-2. Connect the execution environment to Nabire through the existing private Tailscale network/SSH route, or provide an authorized reachable private hostname/IP and an established SSH mechanism. Do not paste private keys or passwords into chat.
-3. Provide/enable read-only Supabase project access or a secure authorized export path before any hosted data/schema validation. The source database must remain unchanged.
-4. When available, use an authorized ordinary-user production session for current-vs-development browser testing; the existing deployment is behind Vercel SSO.
+1. Reauthorize the Vercel connector for the existing `spotty21201s-projects` team scope (or provide an already-connected authorized project scope). A direct project query returned 403; no secrets need to be sent in chat.
+2. Enable read-only Supabase project access or a secure authorized export path before hosted data/schema validation. The source database must remain unchanged.
+3. For browser UI testing on Nabire, provide a path to install Chromium's missing OS libraries or run the browser suite in an environment that already has them.
+4. Provide an authorized ordinary-user production session for current-vs-development browser testing; the existing candidate deployment is behind Vercel SSO.
 
 ## Next safe steps
 
-1. Resume Vercel and Nabire verification as soon as access is restored.
-2. Reproduce this branch on Nabire in a separate development directory; run the same build/test gates there.
-3. Inspect live routes, integrations and backup/restore posture; then complete a production data inventory and repeatable export/transform/import/validate tooling.
-4. Keep the first Nabire backend migration reversible and retain Vercel/Supabase until owner acceptance.
+1. Resolve the browser runtime libraries so authenticated/unauthenticated UI regression checks can run locally.
+2. Reauthorize Vercel and obtain read-only Supabase access; inspect live deployments/schema before designing data migration.
+3. Inspect Nabire service supervision, backup/restore, firewall and remote administration posture. No Studio OS persistent service or local database has been configured.
+4. Build the first Nabire backend migration only after production schema/data inventory; keep it reversible and retain Vercel/Supabase until owner acceptance.
