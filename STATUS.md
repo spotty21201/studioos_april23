@@ -50,13 +50,13 @@
 
 - Initial lockfile install on Nabire reported 11 npm advisories (1 low, 3 moderate, 6 high, 1 critical). A development-branch lockfile update now resolves the affected runtime dependency chain to Next.js 16.3.6, Sharp 0.35.4, PostCSS 8.5.23, nanoid 3.3.19, and baseline-browser-mapping 2.11.26; `package.json` is unchanged.
 - On the updated lockfile, `npm audit --omit=dev` reports **0 production dependency vulnerabilities**. The full audit still reports 6 advisories, all in development dependencies.
-- Clean install from the updated lockfile, unit tests (**173/173**), lint, typecheck, and production build all pass in an isolated worktree. E2E UI launch remains blocked by missing OS libraries.
+- Clean install from the updated lockfile, unit tests (**173/173**), lint, typecheck, production build, and Playwright E2E checks pass in an isolated worktree. Chromium system libraries were installed on Nabire after user-authorized sudo authentication.
 - Unit tests: **173 passed / 26 files**.
 - ESLint: passed.
 - TypeScript: passed.
 - Production build: passed; Next enumerated the implemented routes.
 - Production-mode loopback smoke check: `GET /login` returned 200; signed-out `GET /dashboard` returned 307 to `/login`. The server listened only on `127.0.0.1:3101` and was stopped after the check.
-- E2E: **7 of 18 passed** (CSV/XLSX export and archive API checks). The other 11 could not launch Chromium because this host lacks browser shared libraries, including `libatk-1.0.so.0`; installing the Playwright browser alone did not resolve that. `agent-browser` hit the same missing-library issue. No browser-driven UI result is claimed.
+- E2E: **16 passed / 2 skipped**. The two skipped cases require authenticated test-user credentials that are not configured. Smoke checks now cover both local preview mode and live-auth mode; the preview tests confirm the login redirect and dashboard notice behavior. Chromium dependencies were installed with user-authorized sudo authentication.
 - A private dev server on `127.0.0.1:3101` started successfully and was stopped after the browser launch attempt. Port 3100 is used by another local service and was left untouched.
 - Current user-test session: the dev server is bound to Nabire's Tailscale interface on port `3111`; `GET /dashboard` returns 200. It runs in read-only preview mode with fallback records, has no Supabase authentication or production data, and is not routed through Funnel.
 - Tailscale Funnel is enabled and proxies a separate localhost service on port 3100. Studio OS was not exposed through this route; review the existing Funnel route's intended security/access policy before relying on it.
@@ -81,7 +81,7 @@ Sources: `docs/mira-indri-qa-2026-08-19.md`, `docs/qa/2026-08-27-tester-*.md`, `
 
 - Production branch `main`, Vercel production, and Supabase hosted services have not been changed.
 - The development branch is `migration/nabire-parallel`, based on the source revision `aa7276c364d2cd55e783fd8dd28dfa03cc562540`; the tested runtime dependency lockfile update changes no application source or manifest.
-- Nabire changes are limited to the development checkout/dependencies, Playwright browser files in the user cache, and temporary dev server processes. No OS packages, system services, credentials, or production data were changed.
+- Nabire changes are limited to the development checkout/dependencies, Chromium system libraries required by Playwright, Playwright browser files in the user cache, and temporary dev server processes. No system services, credentials, or production data were changed.
 - No `psql` client or active PostgreSQL service was found; no Studio OS system service is configured. Nabire backup/restore readiness remains unverified.
 - No data has been migrated. Do not use demo seed data as a substitute for production export.
 - Development baseline is reproducible from GitHub branch `migration/nabire-parallel`; return to the starting point at `aa7276c364d2cd55e783fd8dd28dfa03cc562540`.
@@ -91,12 +91,11 @@ Sources: `docs/mira-indri-qa-2026-08-19.md`, `docs/qa/2026-08-27-tester-*.md`, `
 
 1. Reauthorize the Vercel connector for the existing `spotty21201s-projects` team scope (or provide an already-connected authorized project scope). A direct project query returned 403; no secrets need to be sent in chat.
 2. Enable read-only Supabase project access or a secure authorized export path before hosted data/schema validation. The source database must remain unchanged.
-3. For browser UI testing on Nabire, install Chromium's missing OS libraries with authorized admin access (`sudo` is password-gated in this session), or run the browser suite in an environment that already has them.
-4. Provide an authorized ordinary-user production session for current-vs-development browser testing; the existing candidate deployment is behind Vercel SSO.
+3. Provide an authorized ordinary-user production session for current-vs-development browser testing; the existing candidate deployment is behind Vercel SSO.
 
 ## Next safe steps
 
-1. Resolve the browser runtime libraries so authenticated/unauthenticated UI regression checks can run locally.
-2. Reauthorize Vercel and obtain read-only Supabase access; inspect live deployments/schema before designing data migration.
+1. Reauthorize Vercel and obtain read-only Supabase access; inspect live deployments/schema before designing data migration.
+2. Use an authorized ordinary-user production session to compare the current workflow with the local preview.
 3. Inspect Nabire service supervision, backup/restore, firewall and remote administration posture. No Studio OS persistent service or local database has been configured.
 4. Build the first Nabire backend migration only after production schema/data inventory; keep it reversible and retain Vercel/Supabase until owner acceptance.
