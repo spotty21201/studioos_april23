@@ -48,7 +48,9 @@
 
 ## Tests and production-vs-local baseline
 
-- On Nabire, `npm ci` passed (474 packages); npm reported 11 dependency advisories (1 low, 3 moderate, 6 high, 1 critical). No automatic audit fix was applied.
+- Initial lockfile install on Nabire reported 11 npm advisories (1 low, 3 moderate, 6 high, 1 critical). A development-branch lockfile update now resolves the affected runtime dependency chain to Next.js 16.3.6, Sharp 0.35.4, PostCSS 8.5.23, nanoid 3.3.19, and baseline-browser-mapping 2.11.26; `package.json` is unchanged.
+- On the updated lockfile, `npm audit --omit=dev` reports **0 production dependency vulnerabilities**. The full audit still reports 6 advisories, all in development dependencies.
+- Clean install from the updated lockfile, unit tests (**173/173**), lint, typecheck, and production build all pass in an isolated worktree. E2E UI launch remains blocked by missing OS libraries.
 - Unit tests: **173 passed / 26 files**.
 - ESLint: passed.
 - TypeScript: passed.
@@ -78,8 +80,8 @@ Sources: `docs/mira-indri-qa-2026-08-19.md`, `docs/qa/2026-08-27-tester-*.md`, `
 ## Actions and recovery
 
 - Production branch `main`, Vercel production, and Supabase hosted services have not been changed.
-- The development branch is `migration/nabire-parallel`, at `518c5452c8fdfc1dd03b68c678d03fa5a08458a9` before this status update. The working tree was clean after the local verification run.
-- The only changes made on Nabire were cloning the public branch, installing its locked npm dependencies, downloading Playwright browser files into the user cache, and starting/stopping a loopback-only dev server. No OS packages, services, credentials, or production data were changed.
+- The development branch is `migration/nabire-parallel`, based on the source revision `aa7276c364d2cd55e783fd8dd28dfa03cc562540`; the tested runtime dependency lockfile update changes no application source or manifest.
+- Nabire changes are limited to the development checkout/dependencies, Playwright browser files in the user cache, and temporary dev server processes. No OS packages, system services, credentials, or production data were changed.
 - No `psql` client or active PostgreSQL service was found; no Studio OS system service is configured. Nabire backup/restore readiness remains unverified.
 - No data has been migrated. Do not use demo seed data as a substitute for production export.
 - Development baseline is reproducible from GitHub branch `migration/nabire-parallel`; return to the starting point at `aa7276c364d2cd55e783fd8dd28dfa03cc562540`.
@@ -89,7 +91,7 @@ Sources: `docs/mira-indri-qa-2026-08-19.md`, `docs/qa/2026-08-27-tester-*.md`, `
 
 1. Reauthorize the Vercel connector for the existing `spotty21201s-projects` team scope (or provide an already-connected authorized project scope). A direct project query returned 403; no secrets need to be sent in chat.
 2. Enable read-only Supabase project access or a secure authorized export path before hosted data/schema validation. The source database must remain unchanged.
-3. For browser UI testing on Nabire, provide a path to install Chromium's missing OS libraries or run the browser suite in an environment that already has them.
+3. For browser UI testing on Nabire, install Chromium's missing OS libraries with authorized admin access (`sudo` is password-gated in this session), or run the browser suite in an environment that already has them.
 4. Provide an authorized ordinary-user production session for current-vs-development browser testing; the existing candidate deployment is behind Vercel SSO.
 
 ## Next safe steps
