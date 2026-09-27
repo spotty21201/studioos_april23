@@ -53,6 +53,7 @@
 - ESLint: passed.
 - TypeScript: passed.
 - Production build: passed; Next enumerated the implemented routes.
+- Production-mode loopback smoke check: `GET /login` returned 200; signed-out `GET /dashboard` returned 307 to `/login`. The server listened only on `127.0.0.1:3101` and was stopped after the check.
 - E2E: **7 of 18 passed** (CSV/XLSX export and archive API checks). The other 11 could not launch Chromium because this host lacks browser shared libraries, including `libatk-1.0.so.0`; installing the Playwright browser alone did not resolve that. `agent-browser` hit the same missing-library issue. No browser-driven UI result is claimed.
 - A private dev server on `127.0.0.1:3101` started successfully and was stopped after the browser launch attempt. Port 3100 is used by another local service and was left untouched.
 - Tailscale Funnel is enabled and proxies a separate localhost service on port 3100. Studio OS was not exposed through this route; review the existing Funnel route's intended security/access policy before relying on it.
@@ -78,6 +79,7 @@ Sources: `docs/mira-indri-qa-2026-08-19.md`, `docs/qa/2026-08-27-tester-*.md`, `
 - Production branch `main`, Vercel production, and Supabase hosted services have not been changed.
 - The development branch is `migration/nabire-parallel`, at `518c5452c8fdfc1dd03b68c678d03fa5a08458a9` before this status update. The working tree was clean after the local verification run.
 - The only changes made on Nabire were cloning the public branch, installing its locked npm dependencies, downloading Playwright browser files into the user cache, and starting/stopping a loopback-only dev server. No OS packages, services, credentials, or production data were changed.
+- No `psql` client or active PostgreSQL service was found; no Studio OS system service is configured. Nabire backup/restore readiness remains unverified.
 - No data has been migrated. Do not use demo seed data as a substitute for production export.
 - Development baseline is reproducible from GitHub branch `migration/nabire-parallel`; return to the starting point at `aa7276c364d2cd55e783fd8dd28dfa03cc562540`.
 - No production cutover, DNS change, paid infrastructure, or destructive operation has occurred.
