@@ -56,6 +56,7 @@
 - Production-mode loopback smoke check: `GET /login` returned 200; signed-out `GET /dashboard` returned 307 to `/login`. The server listened only on `127.0.0.1:3101` and was stopped after the check.
 - E2E: **7 of 18 passed** (CSV/XLSX export and archive API checks). The other 11 could not launch Chromium because this host lacks browser shared libraries, including `libatk-1.0.so.0`; installing the Playwright browser alone did not resolve that. `agent-browser` hit the same missing-library issue. No browser-driven UI result is claimed.
 - A private dev server on `127.0.0.1:3101` started successfully and was stopped after the browser launch attempt. Port 3100 is used by another local service and was left untouched.
+- Current user-test session: the dev server is bound to Nabire's Tailscale interface on port `3111`; `GET /dashboard` returns 200. It runs in read-only preview mode with fallback records, has no Supabase authentication or production data, and is not routed through Funnel.
 - Tailscale Funnel is enabled and proxies a separate localhost service on port 3100. Studio OS was not exposed through this route; review the existing Funnel route's intended security/access policy before relying on it.
 - Production: anonymous request was redirected to Vercel SSO, so no authenticated screen, data, persistence, or CRUD behavior was observed in this run.
 - Prior repo QA (2026-08-19 and 2026-08-27) records authenticated workflows, finance/export behavior and outstanding product gaps. It is historical evidence, not a fresh production comparison.
